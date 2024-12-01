@@ -7,7 +7,11 @@ import Tilt from "react-parallax-tilt";
 import { HeroCTA } from "./call-to-action";
 import { Decoration } from "./decoration";
 
-export const HeroSection = () => (
+interface HeroProps {
+  userId: string;
+}
+
+export const HeroSection = ({userId}: HeroProps) => (
   <section id="hero" className="relative">
     <Decoration.Grid />
     <Decoration.Gradient />
@@ -31,7 +35,7 @@ export const HeroSection = () => (
         </p>
 
         <div className="mt-10 flex items-center gap-x-8">
-          <HeroCTA />
+          <HeroCTA userId={userId} />
         </div>
       </motion.div>
 
