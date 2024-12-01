@@ -29,7 +29,7 @@ export default function JobFitLandingComponent({credit_packages, userId}: Packag
 
       <div className="flex-grow">
         <section id="home" className="p-3">
-          <HeroSection />
+          <HeroSection userId={userId} />
         </section>
         <section className="py-24 bg-purple-50">
           <StatisticsSection />
