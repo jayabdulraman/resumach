@@ -9,8 +9,6 @@ type Props = {
   children: React.ReactNode;
 };
 
-export const MM_TO_PX = 3.78;
-
 // @ts-ignore
 const PageWrapper = ({ mode, children }) => {
   if (mode === 'preview') {
@@ -26,7 +24,7 @@ const PageWrapper = ({ mode, children }) => {
 };
 
 export const Page = ({ mode = "preview", pageNumber, children }: Props) => {
-
+  const MM_TO_PX = 3.78;
   const page = useResumeStore((state) => state.resume.data.metadata.page);
   const fontFamily = useResumeStore((state) => state.resume.data.metadata.typography.font.family);
 

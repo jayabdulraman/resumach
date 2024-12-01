@@ -2,9 +2,6 @@
 import html2pdf from 'html2pdf.js';
 import { usePDFStore } from '@/utils/stores/print';
 import { ResumeDto } from '@/lib/dto/resume';
-import { pageSizeMap } from "@/utils/namespaces/page";
-
-export const MM_TO_PX = 3.78;
 
 export const generatePDF = async (elementId: string, resume: ResumeDto, resumeId: string): Promise<void> => {
     const { setGenerating } = usePDFStore.getState();
