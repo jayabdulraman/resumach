@@ -5,7 +5,7 @@ import { pageSizeMap } from "@/utils/namespaces/page";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useRef } from "react";
 import { ReactZoomPanPinchRef, TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
-import { MM_TO_PX, Page } from "../components/page";
+import { Page } from "../components/page";
 import { getTemplate } from "../templates";
 import { useResumeStore } from "@/utils/stores/resume";
 import { useZoomStore } from "@/utils/stores/zoom";
@@ -28,6 +28,7 @@ export const BuilderLayout = ({userId}: BuilderLayoutProps) => {
   const resume = useResumeStore((state) => state.resume);
   const resumeId = useResumeStore((state) => state.resume.id);
   const { toast } = useToast();
+  const MM_TO_PX = 3.78;
 
   const Template = useMemo(() => getTemplate(template), [template]);
 
