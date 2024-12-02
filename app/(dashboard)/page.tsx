@@ -7,7 +7,7 @@ export default async function WebHome() {
   const { data: { user }} = await supabase.auth.getUser();
 
   if (!user) {
-    redirect(`/sign-in?next=login-to-continue`)
+    redirect(`/`)
   }
 
   const { data: credit_packages, error } = await supabase
