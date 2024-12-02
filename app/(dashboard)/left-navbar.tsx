@@ -167,7 +167,7 @@ export function LeftNavbar({
           </Sheet>
           <div className="flex items-center ml-auto gap-4">
             {user && (
-              <div className="text-primary font-normal text-sm transition-all">
+              <div className="font-normal text-sm transition-all">
                 Hey, {user.email?.split("@")[0]}!
               </div>
             )}

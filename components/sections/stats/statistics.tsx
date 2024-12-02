@@ -8,9 +8,9 @@ type Statistic = {
 
 export function StatisticsSection() {
   const stats: Statistic[] = [
-    { name: `GitHub Stars`, value: 500 },
-    { name: `Users Signed Up`, value: 1_000 },
-    { name: `Resumes Customized`, value: 10_000 },
+    { name: `Rating`, value: 4 },
+    { name: `Users`, value: 500 },
+    { name: `Resumes Tailored`, value: 1_000 },
   ];
 
   return (
