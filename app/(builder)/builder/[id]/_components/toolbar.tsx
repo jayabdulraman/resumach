@@ -18,14 +18,9 @@ import { useZoomStore } from "@/utils/stores/zoom";
 import { generatePDF } from "../../print-resume/print";
 import { usePDFStore } from "@/utils/stores/print";
 
-const openInNewTab = (url: string) => {
-  const win = window.open(url, "_blank");
-  if (win) win.focus();
-};
-
 type ZoomType = 'ZOOM_IN' | 'ZOOM_OUT' | 'RESET_VIEW' | 'CENTER_VIEW' | null
 
-export const BuilderToolbar = () => {
+export default function BuilderToolbar() {
   const { toast } = useToast();
   const setValue = useResumeStore((state) => state.setValue);
   const undo = useTemporalResumeStore((state) => state.undo);

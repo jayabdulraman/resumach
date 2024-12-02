@@ -6,7 +6,7 @@ type Statistic = {
   value: number;
 };
 
-export const StatisticsSection = () => {
+export function StatisticsSection() {
   const stats: Statistic[] = [
     { name: `GitHub Stars`, value: 500 },
     { name: `Users Signed Up`, value: 1_000 },

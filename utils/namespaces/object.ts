@@ -1,4 +1,4 @@
-export const exclude = <T, Key extends keyof T>(object: T, keys: Key[]): Omit<T, Key> => {
+export function exclude<T, Key extends keyof T>(object: T, keys: Key[]): Omit<T, Key> {
   if (!object) return object;
 
   return Object.fromEntries(

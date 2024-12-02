@@ -23,7 +23,7 @@ const formSchema = volunteerSchema;
 
 type FormValues = z.infer<typeof formSchema>;
 
-export const VolunteerDialog = () => {
+export function VolunteerDialog() {
   const form = useForm<FormValues>({
     defaultValues: defaultVolunteer,
     resolver: zodResolver(formSchema),

@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Tooltip, TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/toaster";
 
-export const SharingSection = () => {
+export function SharingSection() {
   const { toast } = useToast();
   const resumeId = useResumeStore((state) => state.resume.id);
 

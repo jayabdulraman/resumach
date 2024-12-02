@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server"
 import { fetchUserUploadedFilesWithDetails, fetchUserCustomizedFilesWithDetails } from "@/lib/adapter/actions"
-import DashboardView from "./dashboard-action"
+import { DashboardView } from "./dashboard-action"
 import { encodedRedirect } from "@/utils/utils"
 import { getUserRateLimit } from "@/lib/rate-limit"
 import { UserDto } from "@/lib/dto/user"

@@ -37,13 +37,13 @@ type Props<T extends SectionItem> = {
   children: React.ReactNode;
 };
 
-export const SectionDialog = <T extends SectionItem>({
+export function SectionDialog<T extends SectionItem>({
   id,
   form,
   defaultValues,
   pendingKeyword,
   children,
-}: Props<T>) => {
+}: Props<T>){
   const { isOpen, mode, close, payload } = useDialog<T>(id);
 
   const setValue = useResumeStore((state) => state.setValue);

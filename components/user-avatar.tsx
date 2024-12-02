@@ -7,7 +7,7 @@ type Props = {
   name: string
 };
 
-export const UserAvatar = ({ size = 36, className, name }: Props) => {
+export function UserAvatar ({ size = 36, className, name }: Props) {
 
   let picture: React.ReactNode;
 

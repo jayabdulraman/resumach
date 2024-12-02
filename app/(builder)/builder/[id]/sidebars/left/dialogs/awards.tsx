@@ -23,7 +23,7 @@ const formSchema = awardSchema;
 
 type FormValues = z.infer<typeof formSchema>;
 
-export const AwardsDialog = () => {
+export function AwardsDialog(){
   const form = useForm<FormValues>({
     defaultValues: defaultAward,
     resolver: zodResolver(formSchema),

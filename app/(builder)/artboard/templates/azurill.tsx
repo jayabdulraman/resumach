@@ -532,7 +532,7 @@ const mapSectionToComponent = (section: SectionKey) => {
   }
 };
 
-export const Azurill = ({ columns, isFirstPage = false }: TemplateProps) => {
+export default function Azurill({ columns, isFirstPage = false }: TemplateProps) {
   const [main, sidebar] = columns;
 
   return (

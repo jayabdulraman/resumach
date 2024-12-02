@@ -62,7 +62,8 @@ const testimonials: Testimonial[][] = [
   ],
 ];
 
-export const TestimonialsSection = () => (
+export function TestimonialsSection() {
+  return (
   <section id="testimonials" className="container relative">
     <div className="space-y-6 text-center">
       <h2 className="text-3xl font-bold">{`Testimonials`}</h2>
@@ -101,4 +102,4 @@ export const TestimonialsSection = () => (
       ))}
     </div>
   </section>
-);
+)};

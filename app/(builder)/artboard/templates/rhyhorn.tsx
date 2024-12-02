@@ -5,7 +5,6 @@ import {
   CustomSectionGroup,
   Education as EducationSchema,
   Experience as ExperienceSchema,
-  Profile,
   Project,
   Publication,
   Reference,
@@ -522,7 +521,7 @@ const mapSectionToComponent = (section: SectionKey) => {
   }
 };
 
-export const Rhyhorn = ({ columns, isFirstPage = false }: TemplateProps) => {
+export default function Rhyhorn({ columns, isFirstPage = false }: TemplateProps) {
   const [main, sidebar] = columns;
 
   return (

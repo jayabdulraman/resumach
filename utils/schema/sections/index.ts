@@ -109,8 +109,6 @@ export * from "./certification";
 export * from "./custom-section";
 export * from "./education";
 export * from "./experience";
-export * from "./interest";
-export * from "./language";
 export * from "./profile";
 export * from "./project";
 export * from "./publication";

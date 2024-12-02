@@ -23,7 +23,7 @@ import get from "lodash.get";
 
 import { useResumeStore } from "@/utils/stores/resume";
 
-export const getSectionIcon = (id: SectionKey, props: IconProps = {}) => {
+export function getSectionIcon(id: SectionKey, props: IconProps = {}) {
   switch (id) {
     // Left Sidebar
     case "basics": {
@@ -75,7 +75,7 @@ type SectionIconProps = ButtonProps & {
   icon?: React.ReactNode;
 };
 
-export const SectionIcon = ({ id, name, icon, ...props }: SectionIconProps) => {
+export function SectionIcon({ id, name, icon, ...props }: SectionIconProps){
   const section = useResumeStore((state) =>
     get(state.resume.data?.sections, id, defaultSection),
   ) as SectionWithItem;

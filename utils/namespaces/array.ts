@@ -1,7 +1,7 @@
 import { LayoutLocator } from "./types";
 
 // Function to find a specific item in a layout
-export const findItemInLayout = (item: string, layout: string[][][]): LayoutLocator | null => {
+export function findItemInLayout(item: string, layout: string[][][]): LayoutLocator | null {
   for (const [page, element] of layout.entries()) {
     for (const [column, element_] of element.entries()) {
       for (const [section, element__] of element_.entries()) {
@@ -16,7 +16,7 @@ export const findItemInLayout = (item: string, layout: string[][][]): LayoutLoca
 };
 
 // Function to remove a specific item in a layout
-export const removeItemInLayout = (item: string, layout: string[][][]): LayoutLocator | null => {
+export function removeItemInLayout (item: string, layout: string[][][]): LayoutLocator | null {
   const locator = findItemInLayout(item, layout);
 
   if (locator) {
@@ -27,11 +27,11 @@ export const removeItemInLayout = (item: string, layout: string[][][]): LayoutLo
 };
 
 // Function to move an item within a layout
-export const moveItemInLayout = (
+export function moveItemInLayout (
   current: LayoutLocator,
   target: LayoutLocator,
   layout: string[][][],
-): string[][][] => {
+): string[][][] {
   try {
     // Create a deep copy of the layout to avoid mutating the original array
     const newLayout = JSON.parse(JSON.stringify(layout));

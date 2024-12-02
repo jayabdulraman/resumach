@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useBuilderStore } from "@/utils/stores/builder";
 import { useResumeStore } from "@/utils/stores/resume";
 
-export const BuilderHeader = () => {
+export default function BuilderHeader(){
   const title = useResumeStore((state) => state.resume.title);
   const locked = useResumeStore((state) => state.resume.locked);
 
@@ -20,6 +20,11 @@ export const BuilderHeader = () => {
 
   const onToggle = (side: "left" | "right") => {
     toggle(side);
+  };
+
+  const shortenTitle = (text: string): string => {
+    if (text.length <= 30) return text;
+    return text.slice(0, 30 - 3) + "...";
   };
 
   return (
@@ -51,8 +56,12 @@ export const BuilderHeader = () => {
 
           <span className="mr-2 text-xs opacity-40">{"/"}</span>
 
-          <h1 className="font-medium">{title}</h1>
-
+          <TooltipProvider>
+            <Tooltip content={title}>
+              <h1 className="font-medium">{shortenTitle(title)}</h1>
+            </Tooltip>
+          </TooltipProvider>
+          
           {locked && (
             <TooltipProvider>
               <Tooltip content={`This resume is locked, please unlock to make further changes.`}>

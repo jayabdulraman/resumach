@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useResumeStore } from "@/utils/stores/resume";
 import { getSectionIcon } from "../shared/section-icon";
 
-export const TemplateSection = () => {
+export function TemplateSection(){
   const setValue = useResumeStore((state) => state.setValue);
   const currentTemplate = useResumeStore((state) => state.resume.data.metadata.template);
 

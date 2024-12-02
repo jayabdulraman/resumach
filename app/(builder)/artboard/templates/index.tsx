@@ -1,11 +1,11 @@
 import { Template } from "@/utils/namespaces/template";
 
-import { Azurill } from "./azurill";
-import { Bronzor } from "./bronzor";
-import { Kakuna } from "./kakuna";
-import { Rhyhorn } from "./rhyhorn";
+import Azurill from "./azurill";
+import Bronzor from "./bronzor";
+import Kakuna from "./kakuna";
+import Rhyhorn from "./rhyhorn";
 
-export const getTemplate = (template: Template) => {
+export default function getTemplate(template: Template){
   switch (template) {
     case "azurill": {
       return Azurill;

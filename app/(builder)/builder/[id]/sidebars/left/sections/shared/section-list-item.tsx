@@ -3,13 +3,6 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { CopySimple, DotsSixVertical, PencilSimple, TrashSimple, Eye, EyeSlash } from "@phosphor-icons/react";
-import {
-  ContextMenu,
-  ContextMenuCheckboxItem,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "@/components/ui/context-menu";
 import { cn } from "@/utils/cn";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -26,7 +19,7 @@ export type SectionListItemProps = {
   onToggleVisibility?: () => void;
 };
 
-export const SectionListItem = ({
+export function SectionListItem({
   id,
   title,
   description,
@@ -35,7 +28,7 @@ export const SectionListItem = ({
   onDuplicate,
   onDelete,
   onToggleVisibility,
-}: SectionListItemProps) => {
+}: SectionListItemProps) {
   const { setNodeRef, transform, transition, attributes, listeners, isDragging } = useSortable({
     id,
   });

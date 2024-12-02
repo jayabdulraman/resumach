@@ -35,7 +35,7 @@ import { useResumeStore } from "@/utils/stores/resume";
 
 type Props = { id: SectionKey };
 
-export const SectionOptions = ({ id }: Props) => {
+export function SectionOptions({ id }: Props) {
   const { open } = useDialog(id);
 
   const setValue = useResumeStore((state) => state.setValue);
@@ -89,12 +89,6 @@ export const SectionOptions = ({ id }: Props) => {
               <Plus />
               <span className="ml-2">{`Add a new item`}</span>
             </DropdownMenuItem>
-            {/* <DropdownMenuCheckboxItem
-              checked={true}
-              onCheckedChange={toggleSeperateLinks}
-            >
-              <span className="ml-0">{`Separate Links`}</span>
-            </DropdownMenuCheckboxItem> */}
             <DropdownMenuSeparator />
           </>
         )}
@@ -104,54 +98,8 @@ export const SectionOptions = ({ id }: Props) => {
             {section.visible ? <Eye /> : <EyeSlash />}
             <span className="ml-2">{section.visible ? `Hide` : `Show`}</span>
           </DropdownMenuItem>
-          {/* <DropdownMenuSub>
-            <DropdownMenuSubTrigger>
-              <PencilSimple />
-              <span className="ml-2">{`Rename`}</span>
-            </DropdownMenuSubTrigger>
-            <DropdownMenuSubContent>
-              <div className="relative col-span-2">
-                <Input
-                  id={`sections.${id}.name`}
-                  value={section.name}
-                  onChange={(event) => {
-                    setValue(`sections.${id}.name`, event.target.value);
-                  }}
-                />
-                <Button
-                  size="icon"
-                  variant="link"
-                  className="absolute inset-y-0 right-0"
-                  onClick={onResetName}
-                >
-                  <ArrowCounterClockwise />
-                </Button>
-              </div>
-            </DropdownMenuSubContent>
-          </DropdownMenuSub> */}
-          {/* <DropdownMenuSub>
-            <DropdownMenuSubTrigger>
-              <Columns />
-              <span className="ml-2">{`Columns`}</span>
-            </DropdownMenuSubTrigger>
-            <DropdownMenuSubContent>
-              <DropdownMenuRadioGroup value={`${1}`} onValueChange={onChangeColumns}>
-                {Array.from({ length: 5 }, (_, i) => i + 1).map((value) => (
-                  <DropdownMenuRadioItem key={value} value={`${value}`}>
-                    {value} {plural(value, { one: "Column", other: "Columns" })}
-                    {value} {`Column(s)`}
-                  </DropdownMenuRadioItem>
-                ))}
-              </DropdownMenuRadioGroup>
-            </DropdownMenuSubContent>
-          </DropdownMenuSub> */}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        {/* <DropdownMenuItem disabled={!hasItems} onClick={onResetItems}>
-          <Broom />
-          <span className="ml-2">{`Reset`}</span>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator /> */}
         <DropdownMenuItem className="text-error" disabled={!isCustomSection} onClick={onRemove}>
           <TrashSimple />
           <span className="ml-2">{`Remove`}</span>

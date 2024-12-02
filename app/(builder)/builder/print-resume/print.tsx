@@ -3,7 +3,7 @@ import html2pdf from 'html2pdf.js';
 import { usePDFStore } from '@/utils/stores/print';
 import { ResumeDto } from '@/lib/dto/resume';
 
-export const generatePDF = async (elementId: string, resume: ResumeDto, resumeId: string): Promise<void> => {
+export async function generatePDF (elementId: string, resume: ResumeDto, resumeId: string): Promise<void> {
     const { setGenerating } = usePDFStore.getState();
     try {
       setGenerating(true);

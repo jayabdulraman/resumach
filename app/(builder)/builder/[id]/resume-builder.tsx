@@ -1,17 +1,17 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { LeftSidebar } from './sidebars/left';
+import LeftSidebar from './sidebars/left';
 import { RightSidebar } from "./sidebars/right";
-import { BuilderHeader } from './_components/header';
-import { BuilderToolbar } from './_components/toolbar';
+import BuilderHeader from './_components/header';
+import BuilderToolbar from './_components/toolbar';
 import { useBuilderStore } from "@/utils/stores/builder";
 import { useResumeStore } from "@/utils/stores/resume";
 import { ResumeDto } from "@/lib/dto/resume";
 import { Sheet, SheetContent } from "@/components/ui";
 import { Panel, PanelGroup, PanelResizeHandle } from "@/components/ui/resizable-panel";
 import { useBreakpoint } from "@/lib/hooks/use-breakpoint";
-import { ResumeBuilder } from '../../artboard/page'
+import { ResumeBuilder } from '../../artboard/resume-builder'
 import { cn } from "@/utils/namespaces/style";
 import { usePathname } from 'next/navigation'
 import { useLocalStorage } from '@/lib/hooks/use-local-storage'

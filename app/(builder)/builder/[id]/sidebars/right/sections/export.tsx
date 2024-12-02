@@ -5,7 +5,7 @@ import { getSectionIcon } from "../shared/section-icon";
 import { generatePDF } from "@/app/(builder)/builder/print-resume/print";
 import { usePDFStore } from "@/utils/stores/print";
 
-export const ExportSection = () => {
+export function ExportSection() {
   const isGenerating = usePDFStore((state) => state.isGenerating);
   const { resume } = useResumeStore.getState();
 

@@ -512,7 +512,7 @@ export async function fetchUserCustomizedFilesWithDetails(
   return resumeDetails.filter((detail): detail is FileData => detail !== null);
 }
 
-export const getResume = async (resumeId: string, userId: string) => {
+export async function getResume (resumeId: string, userId: string) {
   const supabase = createClient();
   // Fetch both metadata and resume data
   const {
@@ -578,7 +578,7 @@ export const getResume = async (resumeId: string, userId: string) => {
   }
 };
 
-export const getPublicResume = async (resumeId: string) => {
+export async function getPublicResume (resumeId: string) {
   const supabase = createClient();
   
   try {
@@ -637,7 +637,7 @@ export const getPublicResume = async (resumeId: string) => {
   }
 };
 
-export const createResumeAction = async (resumeData: ResumeDto) => {
+export async function createResumeAction (resumeData: ResumeDto) {
   const supabase = createClient();
 
   try {
@@ -797,7 +797,7 @@ export async function updateResumeAction(
   }
 }
 
-export const deleteResumeAction = async (resumeId: string, userId: string) => {
+export async function deleteResumeAction (resumeId: string, userId: string) {
   const supabase = createClient();
   // Fetch the resume metadata to check ownership
   const { data: metadata, error: metadataError } = await supabase
@@ -835,7 +835,7 @@ export const deleteResumeAction = async (resumeId: string, userId: string) => {
   revalidatePath(`/dashboard`);
 };
 
-export const deleteUploadedFileAction = async (fileId: string, filename: string, userId: string) => {
+export async function deleteUploadedFileAction (fileId: string, filename: string, userId: string) {
   const supabase = createClient();
   const { data: { user }} = await supabase.auth.getUser();
   // supabase service_role client

@@ -1,7 +1,6 @@
 import React from 'react'
-import { PreviewLayout } from '../../pages/preview';
+import PreviewLayout from '../../pages/preview';
 import { getPublicResume } from "@/lib/adapter/actions";
-import { useResumeStore } from '@/utils/stores/resume';
 import { ResumeDto } from '@/lib/dto/resume';
 
 type PreviewParams = {

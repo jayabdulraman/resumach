@@ -10349,7 +10349,7 @@ export const fonts: Font[] = [
   },
 ];
 
-export const getFontUrls = (family: string, variants: string[]): string[] => {
+export function getFontUrls (family: string, variants: string[]): string[] {
   const font = fonts.find((font) => font.family === family);
 
   if (!font) return [];

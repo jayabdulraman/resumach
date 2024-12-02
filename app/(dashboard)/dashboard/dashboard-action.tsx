@@ -10,7 +10,7 @@ import { DocumentUploaderComponent } from "@/components/document-uploader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ResumeDto } from "@/lib/dto/resume";
 import { useRateLimitStore } from "@/utils/stores/rateLimitStore";
-import { formatDistanceToNow, parseISO, format } from "date-fns";
+import { format } from "date-fns";
 import { fetchUserUploadedFilesWithDetails, fetchUserCustomizedFilesWithDetails } from "@/lib/adapter/actions";
 import { UserDto } from "@/lib/dto/user";
 import { useAuthStore } from "@/utils/stores/auth";
@@ -52,7 +52,7 @@ interface FileInterface {
   userProfile: UserProfile;
 }
 
-export default function DashboardView({ UploadedUserFiles, CustomizedUserFiles, user, rateLimit, userProfile}: FileInterface) {
+export function DashboardView({ UploadedUserFiles, CustomizedUserFiles, user, rateLimit, userProfile}: FileInterface) {
   const [uploadedFiles, setUploadedFiles] = useState<FileData[]>([]);
   const [customizedFiles, setCustomizedFiles] = useState<FileData[]>([]);
   const { limitError, remaining, resetAt, setLimitError, setLimitInfo } = useRateLimitStore();

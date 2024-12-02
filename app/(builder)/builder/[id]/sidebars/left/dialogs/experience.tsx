@@ -23,7 +23,7 @@ const formSchema = experienceSchema;
 
 type FormValues = z.infer<typeof formSchema>;
 
-export const ExperienceDialog = () => {
+export function ExperienceDialog() {
   const form = useForm<FormValues>({
     defaultValues: defaultExperience,
     resolver: zodResolver(formSchema),

@@ -2,19 +2,17 @@
 import { SectionKey } from "@/utils/schema";
 import { Template } from "@/utils/namespaces/template";
 import { useEffect, useMemo, useState } from "react";
-
-import { Page } from "../components/page";
+import { Page } from "../components/resume-page";
 import { useResumeStore } from "@/utils/stores/resume";
-import { getTemplate } from "../templates";
+import getTemplate from "../templates";
 import { ResumeDto } from "@/lib/dto/resume";
-import { Circle } from "lucide-react";
 import { CircleNotch } from "@phosphor-icons/react";
 
 type PreviewLayoutProps = {
   resume: ResumeDto;
 };
 
-export const PreviewLayout = ({ resume }: PreviewLayoutProps) => {
+export default function PreviewLayout({ resume }: PreviewLayoutProps){
   const [isLoading, setIsLoading] = useState(true);
   const layout = resume.data.metadata.layout
   const template = resume.data.metadata.template as Template

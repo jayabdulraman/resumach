@@ -21,7 +21,7 @@ const formSchema = profileSchema;
 
 type FormValues = z.infer<typeof formSchema>;
 
-export const ProfilesDialog = () => {
+export function ProfilesDialog() {
   const form = useForm<FormValues>({
     defaultValues: defaultProfile,
     resolver: zodResolver(formSchema),

@@ -1,4 +1,4 @@
-import { BuilderLayout } from './pages/builder';
+import BuilderLayout from './pages/builder';
 
 interface BuilderLayoutProps {
   userId: string

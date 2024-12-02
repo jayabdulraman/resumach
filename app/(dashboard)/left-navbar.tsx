@@ -43,7 +43,7 @@ interface LeftNavbarProps {
   credit_packages: CreditPackagesTypes[];
 }
 
-export default function LeftNavbar({
+export function LeftNavbar({
   children,
   user,
   credit_packages,
