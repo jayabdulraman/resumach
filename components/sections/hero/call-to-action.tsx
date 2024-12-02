@@ -8,7 +8,7 @@ interface HeroCTAProps {
   userId: string;
 }
 
-export const HeroCTA = ({userId}: HeroCTAProps) => {
+export function HeroCTA({userId}: HeroCTAProps) {
   if (userId) {
     return (
       <>

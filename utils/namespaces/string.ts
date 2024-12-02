@@ -2,7 +2,7 @@ import { adjectives, animals, uniqueNamesGenerator } from "unique-names-generato
 
 import { LayoutLocator, SortablePayload } from "./types";
 
-export const getInitials = (name: string) => {
+export function getInitials(name: string) {
   // eslint-disable-next-line unicorn/better-regex
   const regex = new RegExp(/(\p{L}{1})\p{L}+/gu);
   const initials = [...name.matchAll(regex)];
@@ -10,7 +10,7 @@ export const getInitials = (name: string) => {
   return ((initials.shift()?.[1] ?? "") + (initials.pop()?.[1] ?? "")).toUpperCase();
 };
 
-export const isUrl = (string: string | null | undefined) => {
+export function isUrl(string: string | null | undefined) {
   if (!string) return false;
 
   const urlRegex = /https?:\/\/[^\n ]+/i;
@@ -18,19 +18,19 @@ export const isUrl = (string: string | null | undefined) => {
   return urlRegex.test(string);
 };
 
-export const isEmptyString = (string: string) => {
+export function isEmptyString(string: string) {
   if (string === "<p></p>" || !string) return true;
   return string.trim().length === 0;
 };
 
-export const extractUrl = (string: string) => {
+export function extractUrl(string: string) {
   const urlRegex = /https?:\/\/[^\n ]+/i;
 
   const result = urlRegex.exec(string);
   return result ? result[0] : null;
 };
 
-export const kebabCase = (string?: string | null) => {
+export function kebabCase(string?: string | null) {
   if (!string) return "";
 
   return (
@@ -41,7 +41,7 @@ export const kebabCase = (string?: string | null) => {
   );
 };
 
-export const generateRandomName = () => {
+export function generateRandomName() {
   return uniqueNamesGenerator({
     dictionaries: [adjectives, adjectives, animals],
     style: "capital",
@@ -50,13 +50,13 @@ export const generateRandomName = () => {
   });
 };
 
-export const processUsername = (string?: string | null) => {
+export function processUsername(string?: string | null) {
   if (!string) return "";
 
   return string.replace(/[^\d.A-Za-z-]/g, "").toLowerCase();
 };
 
-export const parseLayoutLocator = (payload: SortablePayload | null): LayoutLocator => {
+export function parseLayoutLocator(payload: SortablePayload | null): LayoutLocator {
   if (!payload) return { page: 0, column: 0, section: 0 };
 
   const section = payload.index;

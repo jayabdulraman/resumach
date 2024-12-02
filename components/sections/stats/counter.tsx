@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 type CounterProps = { from: number; to: number };
 
-export const Counter = ({ from, to }: CounterProps) => {
+export function Counter ({ from, to }: CounterProps) {
   const nodeRef = useRef<HTMLParagraphElement | null>(null);
   const isInView = useInView(nodeRef, { once: true });
 

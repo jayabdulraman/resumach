@@ -28,7 +28,7 @@ const formSchema = projectSchema;
 
 type FormValues = z.infer<typeof formSchema>;
 
-export const ProjectsDialog = () => {
+export function ProjectsDialog() {
   const form = useForm<FormValues>({
     defaultValues: defaultProject,
     resolver: zodResolver(formSchema),

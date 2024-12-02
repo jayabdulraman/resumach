@@ -11,7 +11,8 @@ interface HeroProps {
   userId: string;
 }
 
-export const HeroSection = ({userId}: HeroProps) => (
+export function HeroSection ({userId}: HeroProps) {
+  return (
   <section id="hero" className="relative">
     <Decoration.Grid />
     <Decoration.Gradient />
@@ -60,4 +61,5 @@ export const HeroSection = ({userId}: HeroProps) => (
       </div>
     </div>
   </section>
-);
+  )
+};

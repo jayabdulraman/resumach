@@ -1,7 +1,5 @@
 import { getResume } from "@/lib/adapter/actions";
 import { ResumeBuilderComponent } from "./resume-builder"
-import { fetchResume } from '@/app/actions';
-import { ResumeDto } from "@/lib/dto/resume";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -11,7 +9,7 @@ export interface ResumePageProps {
   }
 }
 
-export default async function ResumeBuilder({ params }: ResumePageProps) {
+export default async function ResumeDetailsPage({ params }: ResumePageProps) {
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser();
 

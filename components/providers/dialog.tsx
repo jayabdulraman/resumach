@@ -1,10 +1,7 @@
 import { AwardsDialog } from "@/app/(builder)/builder/[id]/sidebars/left/dialogs/awards";
 import { CertificationsDialog } from "@/app/(builder)/builder/[id]/sidebars/left/dialogs/certifications";
-import { CustomSectionDialog } from "@/app/(builder)/builder/[id]/sidebars/left/dialogs/custom-section";
 import { EducationDialog } from "@/app/(builder)/builder/[id]/sidebars/left/dialogs/education";
 import { ExperienceDialog } from "@/app/(builder)/builder/[id]/sidebars/left/dialogs/experience";
-import { InterestsDialog } from "@/app/(builder)/builder/[id]/sidebars/left/dialogs/interests";
-import { LanguagesDialog } from "@/app/(builder)/builder/[id]/sidebars/left/dialogs/languages";
 import { ProfilesDialog } from "@/app/(builder)/builder/[id]/sidebars/left/dialogs/profiles";
 import { ProjectsDialog } from "@/app/(builder)/builder/[id]/sidebars/left/dialogs/projects";
 import { PublicationsDialog } from "@/app/(builder)/builder/[id]/sidebars/left/dialogs/publications";
@@ -25,10 +22,6 @@ export const DialogProvider = ({ children }: Props) => {
       {children}
 
       <div id="dialog-root">
-        {/* <ResumeDialog />
-        <LockDialog />
-        <ImportDialog />
-        <TwoFactorDialog /> */}
 
         {isResumeLoaded && (
           <>
@@ -37,14 +30,11 @@ export const DialogProvider = ({ children }: Props) => {
             <EducationDialog />
             <AwardsDialog />
             <CertificationsDialog />
-            {/* <InterestsDialog />
-            <LanguagesDialog /> */}
             <ProjectsDialog />
             <PublicationsDialog />
             <VolunteerDialog />
             <SkillsDialog />
             <ReferencesDialog />
-            {/* <CustomSectionDialog /> */}
           </>
         )}
       </div>

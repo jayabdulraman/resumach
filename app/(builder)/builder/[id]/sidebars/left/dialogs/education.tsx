@@ -23,7 +23,7 @@ const formSchema = educationSchema;
 
 type FormValues = z.infer<typeof formSchema>;
 
-export const EducationDialog = () => {
+export function EducationDialog(){
   const form = useForm<FormValues>({
     defaultValues: defaultEducation,
     resolver: zodResolver(formSchema),

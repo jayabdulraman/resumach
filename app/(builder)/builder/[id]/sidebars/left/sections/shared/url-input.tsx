@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/popover";
 import { Tooltip, TooltipProvider } from "@/components/ui/tooltip";
 import { forwardRef, useMemo } from "react";
-import { useResumeStore } from "@/utils/stores/resume";
 
 type Props = {
   id?: string;
@@ -24,9 +23,6 @@ type Props = {
 export const URLInput = forwardRef<HTMLInputElement, Props>(
   ({ id, value, placeholder, onChange }, ref) => {
     const hasError = useMemo(() => !urlSchema.safeParse(value).success, [value]);
-    // console.log("URL and ID:", id, value);
-    // const section = useResumeStore((state) => state.resume.data.sections.experience)
-    // console.log("SECTION STATE:", section);
     
     return (
       <>

@@ -4,8 +4,6 @@ import { CreditBalance } from '@/components/credits/credit-balance'
 import { CreditHistory } from '@/components/credits/credit-history'
 import { PurchaseCredits } from '@/components/credits/purchase-credits'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useAuthStore } from '@/utils/stores/auth'
-import { useRateLimitStore } from '@/utils/stores/rateLimitStore'
 
 export default async function CreditsPage() {
   const supabase = createClient()

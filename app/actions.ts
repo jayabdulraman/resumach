@@ -5,14 +5,12 @@ import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { sampleResume } from "@/utils/schema/sample";
-import { ResumeDto } from "@/lib/dto/resume";
 import { createClient as serviceRoleClient } from '@supabase/supabase-js';
 import { createCheckoutSession } from "@/lib/adapter/actions";
 import { useAuthStore } from "@/utils/stores/auth";
-import { UserDto } from "@/lib/dto/user";
 
 
-export const fetchResume = async() => {
+export async function fetchResume() {
   try {
 
     const resume = sampleResume
@@ -22,7 +20,7 @@ export const fetchResume = async() => {
     return redirect("/dashboard");
   }
 }
-export const signUpAction = async (formData: FormData) => {
+export async function signUpAction (formData: FormData){
   const name = formData.get("name") as string;
   const email = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
@@ -83,7 +81,7 @@ export const signUpAction = async (formData: FormData) => {
   }
 };
 
-export const signInAction = async (formData: FormData) => {
+export async function signInAction (formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
   const supabase = createClient();
@@ -100,7 +98,7 @@ export const signInAction = async (formData: FormData) => {
   return redirect("/dashboard");
 };
 
-export const GoogleAuth =  async () => {
+export async function GoogleAuth() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!
   const supabase = createClient();
   const { data, error } = await supabase.auth.signInWithOAuth({
@@ -118,7 +116,7 @@ export const GoogleAuth =  async () => {
   
 };
 
-export const forgotPasswordAction = async (formData: FormData) => {
+export async function forgotPasswordAction (formData: FormData) {
   const email = formData.get("email")?.toString();
   const supabase = createClient();
   const origin = headers().get("origin");
@@ -152,7 +150,7 @@ export const forgotPasswordAction = async (formData: FormData) => {
   );
 };
 
-export const resetPasswordAction = async(formData: FormData) => {
+export async function resetPasswordAction (formData: FormData) {
   const supabase = createClient();
 
   const password = formData.get("password") as string;
@@ -190,14 +188,14 @@ export const resetPasswordAction = async(formData: FormData) => {
   encodedRedirect("success", "/settings", "Password is successfully updated!");
 };
 
-export const signOutAction = async () => {
+export async function signOutAction(){
   const supabase = createClient();
   await supabase.auth.signOut();
   useAuthStore.setState({user: null, userCurrentSubscription: null})
   return redirect("/sign-in");
 };
 
-export const deleteUserAction = async () => {
+export async function deleteUserAction() {
   // supabase client
   const supabase = createClient();
   // supabase service_role client

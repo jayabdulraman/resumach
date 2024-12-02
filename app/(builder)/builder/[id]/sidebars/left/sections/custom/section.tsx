@@ -24,7 +24,7 @@ type CustomFieldProps = {
   onRemove: (id: string) => void;
 };
 
-export const CustomField = ({ field, onChange, onRemove }: CustomFieldProps) => {
+export default function CustomField({ field, onChange, onRemove }: CustomFieldProps) {
   const controls = useDragControls();
 
   const handleChange = (key: "icon" | "name" | "value", value: string) => {
@@ -108,61 +108,3 @@ export const CustomField = ({ field, onChange, onRemove }: CustomFieldProps) => 
 type Props = {
   className?: string;
 };
-
-// export const CustomFieldsSection = ({ className }: Props) => {
-//   const setValue = useResumeStore((state) => state.setValue);
-//   const customFields = useResumeStore((state) => state.resume.data.basics.customFields);
-
-//   const onAddCustomField = () => {
-//     setValue("basics.customFields", [
-//       ...customFields,
-//       { id: createId(), icon: "", name: "", value: "" },
-//     ]);
-//   };
-
-//   const onChangeCustomField = (field: ICustomField) => {
-//     const index = customFields.findIndex((item) => item.id === field.id);
-//     const newCustomFields = JSON.parse(JSON.stringify(customFields));
-//     newCustomFields[index] = field;
-
-//     setValue("basics.customFields", newCustomFields);
-//   };
-
-//   const onReorderCustomFields = (values: ICustomField[]) => {
-//     setValue("basics.customFields", values);
-//   };
-
-//   const onRemoveCustomField = (id: string) => {
-//     setValue(
-//       "basics.customFields",
-//       customFields.filter((field) => field.id !== id),
-//     );
-//   };
-
-//   return (
-//     <div className={cn("space-y-4", className)}>
-//       <AnimatePresence>
-//         <Reorder.Group
-//           axis="y"
-//           className="space-y-4"
-//           values={customFields}
-//           onReorder={onReorderCustomFields}
-//         >
-//           {customFields.map((field) => (
-//             <CustomField
-//               key={field.id}
-//               field={field}
-//               onChange={onChangeCustomField}
-//               onRemove={onRemoveCustomField}
-//             />
-//           ))}
-//         </Reorder.Group>
-//       </AnimatePresence>
-
-//       <Button variant="link" onClick={onAddCustomField}>
-//         <Plus className="mr-2" />
-//         <span>{`Add a custom field`}</span>
-//       </Button>
-//     </div>
-//   );
-// };

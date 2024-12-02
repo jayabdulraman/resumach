@@ -5,7 +5,6 @@ import {
   CustomSectionGroup,
   Education as EducationSchema,
   Experience as ExperienceSchema,
-  Profile,
   Project,
   Publication,
   Reference,
@@ -538,7 +537,7 @@ const mapSectionToComponent = (section: SectionKey) => {
   }
 };
 
-export const Bronzor = ({ columns, isFirstPage = false }: TemplateProps) => {
+export default function Bronzor({ columns, isFirstPage = false }: TemplateProps) {
   const [main, sidebar] = columns;
 
   return (

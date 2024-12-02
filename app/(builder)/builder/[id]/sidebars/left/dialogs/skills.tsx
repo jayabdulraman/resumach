@@ -17,7 +17,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { SectionDialog } from "../sections/shared/section-dialog";
 import { BadgeInput } from "@/components/badge-input";
 
@@ -25,7 +24,7 @@ const formSchema = skillSchema;
 
 type FormValues = z.infer<typeof formSchema>;
 
-export const SkillsDialog = () => {
+export function SkillsDialog() {
   const form = useForm<FormValues>({
     defaultValues: defaultSkill,
     resolver: zodResolver(formSchema),
@@ -63,37 +62,6 @@ export const SkillsDialog = () => {
               <FormLabel>{`Description`}</FormLabel>
               <FormControl>
                 <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          name="level"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className="sm:col-span-2">
-              <FormLabel>{`Level`}</FormLabel>
-              <FormControl className="py-2">
-                <div className="flex items-center gap-x-4">
-                  <Slider
-                    {...field}
-                    min={0}
-                    max={5}
-                    value={[field.value]}
-                    orientation="horizontal"
-                    onValueChange={(value) => {
-                      field.onChange(value[0]);
-                    }}
-                  />
-
-                  {field.value === 0 ? (
-                    <span className="text-base font-bold">{`Hidden`}</span>
-                  ) : (
-                    <span className="text-base font-bold">{field.value}</span>
-                  )}
-                </div>
               </FormControl>
               <FormMessage />
             </FormItem>

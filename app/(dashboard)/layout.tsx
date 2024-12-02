@@ -6,7 +6,7 @@ import Link from "next/link";
 import "../globals.css";
 import MobileMenu from "@/components/mobile-menu";
 import { createClient } from "@/utils/supabase/server"
-import LeftNavbar from "./left-navbar"
+import { LeftNavbar } from "./left-navbar"
 import { Toaster } from "@/components/ui/toaster"
 
 const defaultUrl = process.env.VERCEL_URL

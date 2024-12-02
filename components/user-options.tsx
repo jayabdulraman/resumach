@@ -17,7 +17,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export const UserOptions = ({ children }: Props) => {
+export function UserOptions ({ children }: Props) {
   // const navigate = useNavigate();
   const router = useRouter()
 

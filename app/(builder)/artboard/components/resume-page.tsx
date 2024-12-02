@@ -23,8 +23,9 @@ const PageWrapper = ({ mode, children }) => {
   return children;
 };
 
-export const Page = ({ mode = "preview", pageNumber, children }: Props) => {
+export function Page ({ mode = "preview", pageNumber, children }: Props) {
   const MM_TO_PX = 3.78;
+
   const page = useResumeStore((state) => state.resume.data.metadata.page);
   const fontFamily = useResumeStore((state) => state.resume.data.metadata.typography.font.family);
 

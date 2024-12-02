@@ -5,8 +5,8 @@ import { pageSizeMap } from "@/utils/namespaces/page";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useRef } from "react";
 import { ReactZoomPanPinchRef, TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
-import { Page } from "../components/page";
-import { getTemplate } from "../templates";
+import { Page } from "../components/resume-page";
+import getTemplate from "../templates";
 import { useResumeStore } from "@/utils/stores/resume";
 import { useZoomStore } from "@/utils/stores/zoom";
 import { useDebouncedCallback } from 'use-debounce';
@@ -18,7 +18,7 @@ interface BuilderLayoutProps {
   userId: string
 }
 
-export const BuilderLayout = ({userId}: BuilderLayoutProps) => {
+export default function BuilderLayout({userId}: BuilderLayoutProps) {
   const transformRef = useRef<ReactZoomPanPinchRef>(null);
   const format = useResumeStore((state) => state.resume.data.metadata.page.format);
   const layout = useResumeStore((state) => state.resume.data.metadata.layout);

@@ -3,11 +3,8 @@ import { Plus, PlusCircle } from "@phosphor-icons/react";
 import {
   Award,
   Certification,
-  CustomSection,
   Education,
   Experience,
-  Interest,
-  Language,
   Profile,
   Project,
   Publication,
@@ -17,28 +14,21 @@ import {
 } from "@/utils/schema";
 import { Button, Separator } from "@/components/ui";
 import { ScrollArea } from "@/components/ui/scroll-area";
-// import { Fragment, useRef } from "react";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from 'next/link';
-import { Icon } from "@/components/ui/icon";
 import { UserAvatar } from "@/components/user-avatar";
 import { UserOptions } from "@/components/user-options";
-import { useResumeStore } from "@/utils/stores/resume";
-import { BasicsSection } from "./sections/basics";
+import BasicsSection from "./sections/basics";
 import { SectionBase } from "./sections/shared/section-base";
 import { SectionIcon } from "./sections/shared/section-icon";
-import { SummarySection } from "./sections/summary";
+import SummarySection from "./sections/summary";
 import { createClient } from "@/utils/supabase/client";
 import { HouseSimple } from "@phosphor-icons/react";
 import { DialogProvider } from "@/components/providers/dialog";
 
-export const LeftSidebar = () => {
+export default function LeftSidebar() {
   const containterRef = useRef<HTMLDivElement | null>(null);
   const [user, setUser] = useState("")
-
-  // const addSection = useResumeStore((state) => state.addSection);
-  // const customSections = useResumeStore((state) => state.resume.data.sections.custom);
-
   const scrollIntoView = (selector: string) => {
     const section = containterRef.current?.querySelector(selector);
     section?.scrollIntoView({ behavior: "smooth" });

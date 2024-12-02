@@ -1,15 +1,11 @@
 "use client";
 import { basicsSchema } from "@/utils/schema";
 import { Input, Label } from "@/components/ui";
-
 import { useResumeStore } from "@/utils/stores/resume";
-
-// import { CustomFieldsSection } from "./custom/section";
-// import { PictureSection } from "./picture/section";
 import { getSectionIcon } from "./shared/section-icon";
 import { URLInput } from "./shared/url-input";
 
-export const BasicsSection = () => {
+export default function BasicsSection() {
   const setValue = useResumeStore((state) => state.setValue);
   const basics = useResumeStore((state) => state.resume.data.basics);
 
@@ -81,7 +77,7 @@ export const BasicsSection = () => {
           <Input
             id="basics.phone"
             placeholder="+1 (123) 4567 7890"
-            value={basics.phone}
+            value={basics.phone as string}
             onChange={(event) => {
               setValue("basics.phone", event.target.value);
             }}
@@ -92,7 +88,7 @@ export const BasicsSection = () => {
           <Label htmlFor="basics.location">{`Location`}</Label>
           <Input
             id="basics.location"
-            value={basics.location}
+            value={basics.location as string}
             onChange={(event) => {
               setValue("basics.location", event.target.value);
             }}

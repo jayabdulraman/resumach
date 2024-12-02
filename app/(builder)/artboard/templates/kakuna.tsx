@@ -5,8 +5,6 @@ import {
   CustomSectionGroup,
   Education as EducationSchema,
   Experience as ExperienceSchema,
-  Interest,
-  Language,
   Project,
   Publication,
   Reference,
@@ -508,7 +506,7 @@ const mapSectionToComponent = (section: SectionKey) => {
   }
 };
 
-export const Kakuna = ({ columns, isFirstPage = false }: TemplateProps) => {
+export default function Kakuna({ columns, isFirstPage = false }: TemplateProps) {
   const [main, sidebar] = columns;
 
   return (

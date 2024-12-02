@@ -4,7 +4,6 @@ import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { SmtpMessage } from "../smtp-message";
 import {
   Card,
   CardContent,
@@ -45,8 +44,7 @@ export default function ForgotPassword({
               Reset Password
             </SubmitButton>
             <FormMessage message={searchParams} />
-          </div><br></br>
-          <SmtpMessage/>
+          </div><br/>
         </CardContent>
       </Card>
     </div>

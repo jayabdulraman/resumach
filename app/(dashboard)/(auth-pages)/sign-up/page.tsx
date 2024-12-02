@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { SmtpMessage } from "../smtp-message";
 import {
   Card,
   CardContent,
@@ -16,7 +15,6 @@ import {
 } from "@/components/ui/card";
 import { FaGoogle } from "react-icons/fa";
 import { useState } from "react";
-import { usePathname } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
 export default function Signup({ searchParams }: { searchParams: Message }) {
@@ -106,7 +104,6 @@ export default function Signup({ searchParams }: { searchParams: Message }) {
               Sign up with Google
             </SubmitButton>
           </form><br />
-          <SmtpMessage />
         </CardContent>
       </Card>
     </div>

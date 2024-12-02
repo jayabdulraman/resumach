@@ -28,7 +28,6 @@ import { useResumeStore } from "@/utils/stores/resume";
 import { getSectionIcon } from "./section-icon";
 import { SectionListItem } from "./section-list-item";
 import { SectionOptions } from "./section-options";
-import { DialogProvider } from "@/components/providers/dialog";
 
 type Props<T extends SectionItem> = {
   id: SectionKey;
@@ -36,11 +35,11 @@ type Props<T extends SectionItem> = {
   description?: (item: T) => string | undefined;
 };
 
-export const SectionBase = <T extends SectionItem>({
+export function SectionBase<T extends SectionItem>({
   id,
   title,
   description,
-}: Props<T>) => {
+}: Props<T>) {
   const { open } = useDialog(id);
   const dialogState = useDialog(id);
 

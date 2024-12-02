@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-export const sortByDate = <T>(a: T, b: T, key: keyof T, desc = true) => {
+export function sortByDate<T>(a: T, b: T, key: keyof T, desc = true) {
   if (!a[key] || !b[key]) return 0;
   if (!(a[key] instanceof Date) || !(b[key] instanceof Date)) return 0;
 
@@ -10,7 +10,7 @@ export const sortByDate = <T>(a: T, b: T, key: keyof T, desc = true) => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const deepSearchAndParseDates = (obj: any, dateKeys: string[]): any => {
+export function deepSearchAndParseDates(obj: any, dateKeys: string[]): any {
   if (typeof obj !== "object" || obj === null) {
     return obj;
   }

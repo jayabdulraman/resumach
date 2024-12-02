@@ -23,7 +23,7 @@ const formSchema = certificationSchema;
 
 type FormValues = z.infer<typeof formSchema>;
 
-export const CertificationsDialog = () => {
+export function CertificationsDialog() {
   const form = useForm<FormValues>({
     defaultValues: defaultCertification,
     resolver: zodResolver(formSchema),

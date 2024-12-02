@@ -13,9 +13,6 @@ import { Input } from "@/components/ui/";
 import { RichInput } from "@/components/ui/rich-input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-// import { AiActions } from "@/client/components/ai-actions";
-
 import { SectionDialog } from "../sections/shared/section-dialog";
 import { URLInput } from "../sections/shared/url-input";
 
@@ -23,7 +20,7 @@ const formSchema = publicationSchema;
 
 type FormValues = z.infer<typeof formSchema>;
 
-export const PublicationsDialog = () => {
+export function PublicationsDialog() {
   const form = useForm<FormValues>({
     defaultValues: defaultPublication,
     resolver: zodResolver(formSchema),
