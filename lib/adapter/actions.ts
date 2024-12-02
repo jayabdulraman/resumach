@@ -26,7 +26,7 @@ interface pdfData {
 }
 
 const openai = new OpenAI({
-  apiKey: process.env.NEXT_PUBLIC_OPENAI_KEY!,
+  apiKey: process.env.OPENAI_KEY!,
 });
 
 export async function extractTextFromPDF(formData: FormData) {
