@@ -81,7 +81,7 @@ const Pricing = ({credit_packages, userId, page='home'}: PackagesProps) => {
 
             <CardFooter>
               <Button 
-                className={`w-full ${tier.popular ? 'bg-purple-500 hover:bg-purple-600' : ''}`}
+                className={`w-full`}
                 onClick={() => handleSelectPlan(tier.id, tier.name)}
                 disabled={loadingTierId === tier.id} // Disable button if loading
               >

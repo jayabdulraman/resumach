@@ -6,10 +6,6 @@ export default async function WebHome() {
   const supabase = createClient()
   const { data: { user }} = await supabase.auth.getUser();
 
-  if (!user) {
-    redirect(`/`)
-  }
-
   const { data: credit_packages, error } = await supabase
     .from('credit_packages')
     .select('*')
@@ -28,7 +24,7 @@ export default async function WebHome() {
   );
 
   return (
-    <main className="">
+    <main>
       <JobFitLandingComponent credit_packages={pricingTiers as []} userId={user?.id as string} />
     </main>
   );

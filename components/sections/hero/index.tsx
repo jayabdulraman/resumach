@@ -27,7 +27,7 @@ export function HeroSection ({userId}: HeroProps) {
         <div className="space-y-2">
           <h6 className="text-base font-bold tracking-wide">{`Finally,`}</h6>
           <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
-            {`Customize Your Resume with AI`}
+            {`Tailor Your Resume with AI`}
           </h1>
         </div>
 
