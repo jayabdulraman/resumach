@@ -9,6 +9,10 @@ import { createClient as serviceRoleClient } from '@supabase/supabase-js';
 import { createCheckoutSession } from "@/lib/adapter/actions";
 import { useAuthStore } from "@/utils/stores/auth";
 
+type UserDetails = {
+  id: string;
+  email: string | undefined;
+};
 
 export async function fetchResume() {
   try {
@@ -51,7 +55,7 @@ export async function signUpAction (formData: FormData){
   else {
     if (packageId) {
       const originPath = "signup"
-      await createCheckoutSession(packageId, originPath)
+      await createCheckoutSession(packageId, originPath, data.user as UserDetails)
     } else {
       // Create pending upgrade record
       const { data: credit_packages, error: packageError } = await supabase

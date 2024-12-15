@@ -49,7 +49,7 @@ export default async function ResumeDetailsPage({ params }: ResumePageProps) {
     return (
       <div>
         {/* @ts-ignore */}
-        <ResumeBuilderComponent initialResume={resume} userId={user.id} resumeId={resume.id} credit_packages={pricingTiers as []} />
+        <ResumeBuilderComponent initialResume={resume} user={user} resumeId={resume.id} credit_packages={pricingTiers as []} />
       </div>
     )
   }

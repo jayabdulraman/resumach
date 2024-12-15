@@ -25,10 +25,15 @@ type CreditPackagesTypes = {
   features: string[];
 }
 
+type UserDetails = {
+  id: string;
+  email: string;
+}
+
 export interface ResumeProps extends React.ComponentProps<'div'> {
   initialResume?: ResumeDto
   resumeId?: string
-  userId?: string
+  user: UserDetails;
   credit_packages: CreditPackagesTypes[]
 }
 
@@ -36,7 +41,7 @@ const onOpenAutoFocus = (event: Event) => {
   event.preventDefault();
 };
 
-export function ResumeBuilderComponent({ initialResume, resumeId, userId, credit_packages }: ResumeProps) {
+export function ResumeBuilderComponent({ initialResume, resumeId, user, credit_packages }: ResumeProps) {
   const path = usePathname()
   const { isDesktop } = useBreakpoint();
   const [isDataLoaded, setIsDataLoaded] = useState(false);
@@ -61,12 +66,12 @@ export function ResumeBuilderComponent({ initialResume, resumeId, userId, credit
   }, [initialResume]);
 
   useEffect(() => {
-    if (userId) {
+    if (user) {
       if (!path.includes('builder') && initialResume) {
         window.history.replaceState({}, '', `/builder/${resumeId}`)
       }
     }
-  }, [resumeId, path, userId, initialResume])
+  }, [resumeId, path, user.id, initialResume])
 
   useEffect(() => {
     setNewResumeId(resumeId)
@@ -95,7 +100,7 @@ export function ResumeBuilderComponent({ initialResume, resumeId, userId, credit
               {isDataLoaded && 
                 <>
                   <BuilderHeader /> 
-                  <ResumeBuilder userId={userId as string} /> 
+                  <ResumeBuilder userId={user.id as string} /> 
                   <BuilderToolbar />
                 </>
               }
@@ -113,7 +118,7 @@ export function ResumeBuilderComponent({ initialResume, resumeId, userId, credit
             onResize={rightSetSize}
           >
              {/* Right Sidebar */}
-             {isDataLoaded && <RightSidebar userId={userId as string} credit_packages={credit_packages} />}
+             {isDataLoaded && <RightSidebar user={user} credit_packages={credit_packages} />}
           </Panel>
         </PanelGroup>
       </div>
@@ -139,7 +144,7 @@ export function ResumeBuilderComponent({ initialResume, resumeId, userId, credit
           {isDataLoaded && 
             <>
               <BuilderHeader /> 
-              <ResumeBuilder userId={userId as string} /> 
+              <ResumeBuilder userId={user.id as string} /> 
               <BuilderToolbar /> 
             </>
           }
@@ -152,7 +157,7 @@ export function ResumeBuilderComponent({ initialResume, resumeId, userId, credit
           onOpenAutoFocus={onOpenAutoFocus}
         >
           {/* Right Sidebar */}
-          {isDataLoaded && <RightSidebar userId={userId as string} credit_packages={credit_packages} />}
+          {isDataLoaded && <RightSidebar user={user} credit_packages={credit_packages} />}
         </SheetContent>
       </Sheet>
     </div>

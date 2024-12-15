@@ -6,17 +6,24 @@ import { Button } from '@/components/ui/button'
 import { createCheckoutSession } from '@/lib/adapter/actions'
 import { CreditPackage } from '@/lib/dto/credits/credit'
 
+type UserDetails = {
+  id: string;
+  email: string | undefined;
+};
+
 interface PurchaseCreditsProps {
   packages: CreditPackage[]
+  user: UserDetails
 }
 
-export function PurchaseCredits({ packages }: PurchaseCreditsProps) {
+export function PurchaseCredits({ packages, user }: PurchaseCreditsProps) {
   const [loading, setLoading] = useState<string | null>(null)
 
   const handlePurchase = async (packageId: string) => {
     try {
       setLoading(packageId)
-      await createCheckoutSession(packageId)
+      const originPath = "non-signup"
+      await createCheckoutSession(packageId, originPath, user)
     } catch (error) {
       console.error('Purchase failed:', error)
     } finally {

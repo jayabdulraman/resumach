@@ -17,18 +17,23 @@ type CreditPackagesTypes = {
   features: string[];
 }
 
+type UserDetails = {
+  id: string;
+  email: string | undefined;
+};
+
 interface PackagesProps {
   credit_packages: CreditPackagesTypes[];
-  userId: string;
+  user: UserDetails | null;
 }
 
-export default function JobFitLandingComponent({credit_packages, userId}: PackagesProps) {
+export default function JobFitLandingComponent({credit_packages, user}: PackagesProps) {
 
   return (
     // <div className="flex min-h-screen">
       <div className="flex-grow">
         <section id="home">
-          <HeroSection userId={userId} />
+          <HeroSection userId={user?.id as string} />
         </section>
         <section id="statistics" className="py-12 sm:py-16 lg:py-24 bg-purple-50 dark:bg-slate-800">
           <StatisticsSection />
@@ -40,7 +45,7 @@ export default function JobFitLandingComponent({credit_packages, userId}: Packag
           <FeaturesSection />
         </section>
         <section id="pricing" className="py-12 sm:py-16 lg:py-24">
-          <Pricing credit_packages={credit_packages} userId={userId} />
+          <Pricing credit_packages={credit_packages} user={user} />
         </section>
         <section id="testimonial" className="py-12 sm:py-16 lg:py-24 bg-purple-50 dark:bg-slate-800">
           <TestimonialsSection />

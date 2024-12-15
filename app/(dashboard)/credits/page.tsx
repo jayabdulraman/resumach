@@ -5,6 +5,11 @@ import { CreditHistory } from '@/components/credits/credit-history'
 import { PurchaseCredits } from '@/components/credits/purchase-credits'
 import { Skeleton } from '@/components/ui/skeleton'
 
+type UserDetails = {
+  id: string;
+  email: string | undefined;
+};
+
 export default async function CreditsPage() {
   const supabase = createClient()
   const {data: {user}} = await supabase.auth.getUser()
@@ -39,7 +44,7 @@ export default async function CreditsPage() {
         <Suspense fallback={<Skeleton className="h-[200px]" />}>
           <CreditBalance credits={credits} />
         </Suspense>
-        <PurchaseCredits packages={credit_packages || []} />
+        <PurchaseCredits packages={credit_packages || []} user={user as UserDetails} />
       </div>
       
       <Suspense fallback={<Skeleton className="h-[400px]" />}>

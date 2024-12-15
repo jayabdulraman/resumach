@@ -6,6 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import Pricing from './pricing';
 
+type UserDetails = {
+  id: string;
+  email: string;
+}
+
 type CreditPackagesTypes = {
   id: string;
   name: string;
@@ -17,10 +22,10 @@ type CreditPackagesTypes = {
 
 interface UpgradeCardProps {
   credit_packages: CreditPackagesTypes[];
-  userId?: string;
+  user: UserDetails | null
 }
 
-const UpgradeCard: React.FC<UpgradeCardProps> = ({ credit_packages, userId }) => {
+const UpgradeCard: React.FC<UpgradeCardProps> = ({ credit_packages, user }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -41,7 +46,7 @@ const UpgradeCard: React.FC<UpgradeCardProps> = ({ credit_packages, userId }) =>
           <DialogContent className="max-w-6xl p-0">
             <Pricing 
               credit_packages={credit_packages} 
-              userId={userId || ''} 
+              user={user} 
               page='upgrade'
             />
           </DialogContent>
