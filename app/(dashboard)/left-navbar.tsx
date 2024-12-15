@@ -46,7 +46,7 @@ interface LeftNavbarProps {
 export function LeftNavbar({
   children,
   user,
-  credit_packages,
+  credit_packages
 }: LeftNavbarProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -168,7 +168,7 @@ export function LeftNavbar({
           <div className="flex items-center ml-auto gap-4">
             {user && (
               <div className="font-normal text-sm transition-all">
-                Hey, {user.email?.split("@")[0]}!
+                Hey, {user.user_metadata.name ? user.user_metadata.name : user.email?.split("@")[0]}!
               </div>
             )}
             <div className="h-8 w-8 flex items-center">

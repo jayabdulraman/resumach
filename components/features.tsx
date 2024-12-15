@@ -10,13 +10,13 @@ interface FeatureProps {
 }
 
 const FeatureCard = ({ icon: Icon, title, description }: FeatureProps) => (
-  <Card className="bg-white border-none shadow-sm hover:shadow-md transition-shadow">
+  <Card className="bg-white dark:bg-slate-900 border-none shadow-sm hover:shadow-md transition-shadow">
     <CardContent className="pt-6">
-      <div className="rounded-lg bg-purple-50 w-12 h-12 flex items-center justify-center mb-4">
+      <div className="rounded-lg bg-purple-50 dark:bg-black w-12 h-12 flex items-center justify-center mb-4">
         <Icon className="w-6 h-6 text-purple-600" />
       </div>
       <h3 className="text-xl font-bold mb-2">{title}</h3>
-      <p className="text-gray-600 leading-relaxed">{description}</p>
+      <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{description}</p>
     </CardContent>
   </Card>
 );
@@ -59,7 +59,7 @@ const FeaturesSection = () => {
     <div className="w-full max-w-6xl mx-auto px-4">
       <div className="text-center mb-12">
         <h2 className="text-4xl font-bold mb-4">Features</h2>
-        <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+        <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
           Discover why our JobFit AI is the preferred choice for {" "}
           <span className='text-purple-600'>quickly</span> {" "} tailoring your resume with {" "}<span className='text-purple-600'>quality</span>.
         </p>

@@ -57,8 +57,8 @@ export default function Signup({ searchParams }: { searchParams: Message }) {
   };
 
   return (
-    <div className="flex w-full items-center justify-center md:ml-6 p-6">
-      <Card className="max-w-sm">
+    <div className="flex w-full items-center justify-center md:p-10 p-4">
+      <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">Sign up</CardTitle>
           <CardDescription>

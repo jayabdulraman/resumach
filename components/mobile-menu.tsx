@@ -16,7 +16,7 @@ export default function MobileMenu() {
         {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
       </Button>
       {isOpen && (
-        <div className="fixed inset-0 top-16 z-50 bg-background border-b border-b-foreground/10 p-4 overflow-y-auto">
+        <div className="fixed inset-0 top-16 z-50 bg-background border-b border-b-foreground/10 p-4">
           <nav className="flex flex-col space-y-4">
             <Link href="/" className="hover:text-primary" onClick={toggleMenu}>Home</Link>
             <Link href="#features" className="hover:text-primary" onClick={toggleMenu}>Features</Link>
@@ -25,10 +25,10 @@ export default function MobileMenu() {
             <Link href="#contact" className="hover:text-primary" onClick={toggleMenu}>Contact</Link>
           </nav>
           <div className="mt-4 flex flex-col space-y-2">
-            <Button asChild size="sm" variant="outline">
+            <Button asChild variant="outline">
               <Link href="/sign-in">Sign in</Link>
             </Button>
-            <Button asChild size="sm" variant="default">
+            <Button asChild variant="default">
               <Link href="/sign-up">Sign up</Link>
             </Button>
           </div>

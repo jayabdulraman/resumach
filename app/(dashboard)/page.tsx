@@ -24,8 +24,8 @@ export default async function WebHome() {
   );
 
   return (
-    <main>
+    <div>
       <JobFitLandingComponent credit_packages={pricingTiers as []} userId={user?.id as string} />
-    </main>
+    </div>
   );
 }

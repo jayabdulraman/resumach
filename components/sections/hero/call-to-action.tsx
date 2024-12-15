@@ -9,7 +9,7 @@ interface HeroCTAProps {
 }
 
 export function HeroCTA({userId}: HeroCTAProps) {
-  if (userId) {
+  if (!userId) {
     return (
       <>
         <Button asChild size="lg">
