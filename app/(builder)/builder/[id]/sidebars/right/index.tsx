@@ -19,11 +19,17 @@ type CreditPackagesTypes = {
   features: string[];
 }
 
+type UserDetails = {
+  id: string;
+  email: string;
+}
+
 interface RightSidebarProps {
-  userId: string;
+  user: UserDetails;
   credit_packages: CreditPackagesTypes[]
 }
-export function RightSidebar({ userId, credit_packages } : RightSidebarProps) {
+
+export function RightSidebar({ user, credit_packages } : RightSidebarProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const userCurrentSubscription = useAuthStore((state) => state.userCurrentSubscription);
   console.log("CREDIT PACKAGES:", credit_packages);
@@ -36,7 +42,7 @@ export function RightSidebar({ userId, credit_packages } : RightSidebarProps) {
   const LockedOverlay = ({ sectionName }: { sectionName: string }) => (
     <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center z-10">
       <div className="dark:bg-gray-800 p-6 rounded-lg shadow-lg text-center">
-        <UpgradeCard credit_packages={credit_packages} userId={userId}/>
+        <UpgradeCard credit_packages={credit_packages} user={user}/>
       </div>
     </div>
   );

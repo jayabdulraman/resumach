@@ -23,7 +23,7 @@ type UserMetadata = {
 };
 type UserDetails = {
   id: string;
-  email: string | undefined;
+  email: string;
   email_confirmed_at: string;
   user_metadata: UserMetadata;
 };
@@ -96,7 +96,7 @@ export function LeftNavbar({
           </Link>
         </nav>
         <div className="p-4">
-          <UpgradeCard credit_packages={credit_packages} userId={user?.id} />
+          <UpgradeCard credit_packages={credit_packages} user={user} />
         </div>
       </div>
 
@@ -160,7 +160,7 @@ export function LeftNavbar({
               <div className="mt-auto">
                 <UpgradeCard
                   credit_packages={credit_packages}
-                  userId={user?.id}
+                  user={user}
                 />
               </div>
             </SheetContent>
