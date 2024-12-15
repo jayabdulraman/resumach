@@ -36,6 +36,9 @@ export async function signUpAction (formData: FormData){
     email,
     password,
     options: {
+      data: {
+        name: name,
+      },
       emailRedirectTo: `${origin}/auth/callback`,
     },
   });
@@ -50,10 +53,7 @@ export async function signUpAction (formData: FormData){
       const originPath = "signup"
       await createCheckoutSession(packageId, originPath)
     } else {
-
-      console.log("RUNNING FREE USER:", data.user?.id)
-
-      // 2. Create pending upgrade record
+      // Create pending upgrade record
       const { data: credit_packages, error: packageError } = await supabase
         .from('credit_packages')
         .select('*')

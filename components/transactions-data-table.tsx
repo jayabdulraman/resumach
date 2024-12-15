@@ -107,6 +107,7 @@ export function TransactionsDataTable({ data }: DataTableProps) {
 
   return (
     <div className="w-full">
+      <h2 className="text-2xl font-semibold leading-none tracking-tight">Transaction History</h2>
       <div className="flex items-center justify-between py-4">
         <Input
           placeholder="Search files..."

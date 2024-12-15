@@ -73,11 +73,11 @@ const StepsExplanation = () => {
       {/* Steps Container with true staircase effect */}
       <div className="max-w-3xl mx-auto relative z-10">
         <div className="relative space-y-6">
-          {/* Step containers with absolute positioning for staircase effect */}
-          <div className="relative w-full" style={{ height: '430px' }}>
+          {/* Step containers with absolute positioning for staircase effect style={{ height: '430px' }} */}
+          <div className="relative w-full h-64 md:h-96">
             {/* Step 1 - Outermost */}
             <div className="absolute top-0 left-0 w-full">
-              <Card className={`${steps[0].bgColor} border-none shadow-sm hover:shadow-md transition-all duration-200`}>
+              <Card className={`${steps[0].bgColor} dark:bg-slate-800 border-none shadow-sm hover:shadow-md transition-all duration-200`}>
                 <div className="p-6">
                   <div className="flex items-start gap-6">
                     <div className="flex-shrink-0">
@@ -87,7 +87,7 @@ const StepsExplanation = () => {
                     </div>
                     <div className="flex-1">
                       <h3 className="text-xl font-semibold mb-2">{steps[0].title}</h3>
-                      <p className="text-gray-600">{steps[0].description}</p>
+                      <p className="hidden md:block text-gray-500">{steps[0].description}</p>
                     </div>
                     <div className="flex-shrink-0 mt-1">
                       <FileText className="w-6 h-6 text-purple-600" />
@@ -98,8 +98,8 @@ const StepsExplanation = () => {
             </div>
 
             {/* Step 2 - Middle */}
-            <div className="absolute top-36 left-8 right-[-8px] w-full">
-              <Card className={`${steps[1].bgColor} border-none shadow-sm hover:shadow-md transition-all duration-200`}>
+            <div className="absolute top-24 md:top-36 left-4 right-[-4px] w-full">
+              <Card className={`${steps[1].bgColor} dark:bg-slate-800 border-none shadow-sm hover:shadow-md transition-all duration-200`}>
                 <div className="p-6">
                   <div className="flex items-start gap-6">
                     <div className="flex-shrink-0">
@@ -109,7 +109,7 @@ const StepsExplanation = () => {
                     </div>
                     <div className="flex-1">
                       <h3 className="text-xl font-semibold mb-2">{steps[1].title}</h3>
-                      <p className="text-gray-600">{steps[1].description}</p>
+                      <p className="hidden md:block text-gray-500">{steps[1].description}</p>
                     </div>
                     <div className="flex-shrink-0 mt-1">
                       <Layout className="w-6 h-6 text-purple-600" />
@@ -120,8 +120,8 @@ const StepsExplanation = () => {
             </div>
 
             {/* Step 3 - Innermost */}
-            <div className="absolute top-72 left-16 right-[-16px] w-full">
-              <Card className={`${steps[2].bgColor} border-none shadow-sm hover:shadow-md transition-all duration-200`}>
+            <div className="absolute top-44 md:top-72 left-8 right-[-8] w-full">
+              <Card className={`${steps[2].bgColor} dark:bg-slate-800 border-none shadow-sm hover:shadow-md transition-all duration-200`}>
                 <div className="p-6">
                   <div className="flex items-start gap-6">
                     <div className="flex-shrink-0">
@@ -131,7 +131,7 @@ const StepsExplanation = () => {
                     </div>
                     <div className="flex-1">
                       <h3 className="text-xl font-semibold mb-2">{steps[2].title}</h3>
-                      <p className="text-gray-600">{steps[2].description}</p>
+                      <p className="hidden md:block text-gray-500">{steps[2].description}</p>
                     </div>
                     <div className="flex-shrink-0 mt-1">
                       <Download className="w-6 h-6 text-purple-600" />

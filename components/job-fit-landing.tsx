@@ -25,31 +25,30 @@ interface PackagesProps {
 export default function JobFitLandingComponent({credit_packages, userId}: PackagesProps) {
 
   return (
-    <div className="flex flex-col min-h-screen">
-
+    // <div className="flex min-h-screen">
       <div className="flex-grow">
-        <section id="home" className="p-3">
+        <section id="home">
           <HeroSection userId={userId} />
         </section>
-        <section className="py-24 bg-purple-50">
+        <section id="statistics" className="py-12 sm:py-16 lg:py-24 bg-purple-50 dark:bg-slate-800">
           <StatisticsSection />
         </section>
-        <section id="steps">
+        <section id="steps" className="px-4 sm:px-6 lg:px-8">
           <StepsExplanation />
         </section>
-        <section id="features" className="py-16 bg-purple-50">
+        <section id="features" className="py-12 sm:py-16 lg:py-24 bg-purple-50 dark:bg-slate-800">
           <FeaturesSection />
         </section>
-        <section id="pricing" className="py-16">
+        <section id="pricing" className="py-12 sm:py-16 lg:py-24">
           <Pricing credit_packages={credit_packages} userId={userId} />
         </section>
-        <section id="testimonial" className="py-24 bg-purple-50">
+        <section id="testimonial" className="py-12 sm:py-16 lg:py-24 bg-purple-50 dark:bg-slate-800">
           <TestimonialsSection />
         </section>
-        <section id="contact" className="py-5">
+        <section id="contact" className="py-8 sm:py-10 lg:py-16">
           <ContactUs />
         </section>
       </div>
-    </div>
+    // </div>
   )
 }

@@ -9,12 +9,13 @@ import { createClient } from '@/utils/supabase/client'
 export function CreditBalance({ credits }: { credits: UserCredits }) {
   const userCurrentSubscription = useAuthStore((state) => state.userCurrentSubscription)
   const remaining = useRateLimitStore((state) => state.remaining)
+  const rateLimit = process.env.NEXT_PUBLIC_RATE_LIMIT! as unknown as number
   let creditUsage;
   if (userCurrentSubscription === "Free") {
     const userFreeUsage = {
       available_credits: remaining,
-      total_credits_used: 5 - remaining,
-      total_credits_earned: 5,
+      total_credits_used: rateLimit - remaining,
+      total_credits_earned: rateLimit,
     }
     creditUsage = userFreeUsage
   } else {
