@@ -15,21 +15,27 @@ type CreditPackagesTypes = {
   features: string[];
 }
 
+type UserDetails = {
+  id: string;
+  email: string | undefined;
+};
+
 interface PackagesProps {
   credit_packages: CreditPackagesTypes[];
-  userId: string;
+  user: UserDetails | null;
   page?: string;
 }
 
-const Pricing = ({credit_packages, userId, page='home'}: PackagesProps) => {
+const Pricing = ({credit_packages, user, page='home'}: PackagesProps) => {
   const [loadingTierId, setLoadingTierId] = useState<string | null>(null);
   const router = useRouter();
   const handleSelectPlan = async (packageId: string, name: string) => {
     // In real implementation, this would trigger the sign-up flow
     setLoadingTierId(packageId);
     if (name !== "Free") {
-        if (userId) {
-            await createCheckoutSession(packageId)
+        if (user) {
+            const originPath="non-signup"
+            await createCheckoutSession(packageId, originPath, user)
         } else {
             router.push(`/sign-up?packageId=${packageId}`)
         }

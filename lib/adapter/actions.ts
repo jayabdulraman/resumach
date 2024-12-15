@@ -887,10 +887,15 @@ async function getOrCreateStripeCustomer(email: string): Promise<string> {
   }
 }
 
-export async function createCheckoutSession(packageId: string, originPath="non-signup") {
+type UserDetails = {
+  id: string;
+  email: string | undefined;
+};
+
+export async function createCheckoutSession(packageId: string, originPath="non-signup", user: UserDetails) {
   const supabase = createClient()
   
-  const { data: { user } } = await supabase.auth.getUser()
+  // const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
   
   // Get package details from database
@@ -944,7 +949,8 @@ export async function createCheckoutSession(packageId: string, originPath="non-s
     stripe_session_id: session.payment_intent,
     status: 'pending',
   })
+  
+  if (insertError) throw insertError
 
-if (insertError) throw insertError
   redirect(session.url)
 }

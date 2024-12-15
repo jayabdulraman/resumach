@@ -2,6 +2,11 @@ import { createClient } from '@/utils/supabase/server'
 import JobFitLandingComponent from "@/components/job-fit-landing"
 import { redirect } from 'next/navigation';
 
+type UserDetails = {
+  id: string;
+  email: string;
+}
+
 export default async function WebHome() {
   const supabase = createClient()
   const { data: { user }} = await supabase.auth.getUser();
@@ -25,7 +30,7 @@ export default async function WebHome() {
 
   return (
     <div>
-      <JobFitLandingComponent credit_packages={pricingTiers as []} userId={user?.id as string} />
+      <JobFitLandingComponent credit_packages={pricingTiers as []} user={user as UserDetails} />
     </div>
   );
 }
