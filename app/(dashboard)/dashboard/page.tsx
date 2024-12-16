@@ -9,7 +9,7 @@ export default async function Dashboard() {
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser() // Destructure directly to user
   if (!user) {
-    console.error('User not logged in')
+    console.log("No logged in user found!")
     return encodedRedirect("error", "/sign-in", "Login to continue");
   }
 
@@ -23,7 +23,12 @@ export default async function Dashboard() {
   const userId = user.id as string // Remove the extra user? check
   const fetchUserUploadedFiles = await fetchUserUploadedFilesWithDetails(userId as string)
   const fetchUserCustomizedFiles = await fetchUserCustomizedFilesWithDetails(userId as string)
-  const getUserLimit = await getUserRateLimit(userId, "customize-resume")
+  let getUserLimit;
+  try {
+    getUserLimit = await getUserRateLimit(userId, "customize-resume")
+  } catch (error) {
+    console.log("Rate Limit Error:", error)
+  }
 
   return (
     <>

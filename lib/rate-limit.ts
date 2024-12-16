@@ -45,10 +45,10 @@ export async function getUserRateLimit(
     userId: string,
     action: string
   ): Promise<{ remaining: number; resetAt: Date, error: string }> {
-    const key = `rate-limit:${action}:${userId}`;
+    const key = `rate-limit:${action}:${userId ? userId: 0}`;
     const now = Date.now();
-    const maxRequests = process.env.NEXT_PUBLIC_RATE_LIMIT! as unknown as number
-    const windowInHours = process.env.NEXT_PUBLIC_RATE_LIMIT_EXPIRY_HOURS! as unknown as number
+    const maxRequests = Number(process.env.NEXT_PUBLIC_RATE_LIMIT!)
+    const windowInHours = Number(process.env.NEXT_PUBLIC_RATE_LIMIT_EXPIRY_HOURS!)
     const windowMs = windowInHours * 60 * 60 * 1000;
     // set window time-period
     const windowStart = now - windowMs;
@@ -69,6 +69,7 @@ export async function getUserRateLimit(
           resetAt: resetAt
       }
     }
+
     return {
       remaining: maxRequests - requestTimes.length,
       resetAt: resetAt,
