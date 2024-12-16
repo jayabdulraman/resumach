@@ -18,6 +18,7 @@ import { createClient as serviceRoleClient } from '@supabase/supabase-js';
 import { encodedRedirect } from "@/utils/utils";
 import { defaultMetadata } from "@/utils/schema";
 import { createId } from "@paralleldrive/cuid2";
+import { UUID } from "crypto";
 
 interface pdfData {
   text: string;
@@ -931,26 +932,15 @@ export async function createCheckoutSession(packageId: string, originPath="non-s
     customer: customerId,
     client_reference_id: user.id.toString(),
     metadata: {
-      userId: user.id,
-      packageId: packageId,
-      credits: credit_packages.credits,
+      userId: user.id as UUID,
+      packageId: packageId as UUID,
+      credits: credit_packages.credits as number,
+      amount: credit_packages.price as number,
       package_name: credit_packages.name,
     },
   })
 
   if (!session.url) throw new Error('Failed to create session')
-
-  // Create pending upgrade record
-  const { error: insertError } = await supabase
-  .from('pending_upgrades')
-  .insert({
-    user_id: user.id,
-    package_id: packageId,
-    stripe_session_id: session.payment_intent,
-    status: 'pending',
-  })
-  
-  if (insertError) throw insertError
 
   redirect(session.url)
 }

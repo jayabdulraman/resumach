@@ -43,11 +43,11 @@ export function CreditBalance({ credits }: { credits: UserCredits }) {
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
               <p className="text-muted-foreground">Total Earned</p>
-              <p className="font-medium">{creditUsage.total_credits_earned ? creditUsage.total_credits_earned: 5}</p>
+              <p className="font-medium">{creditUsage?.total_credits_earned ? creditUsage.total_credits_earned: 5}</p>
             </div>
             <div>
               <p className="text-muted-foreground">Total Used</p>
-              <p className="font-medium">{creditUsage.total_credits_used ? creditUsage.total_credits_used : 0}</p>
+              <p className="font-medium">{creditUsage?.total_credits_used ? creditUsage.total_credits_used : 0}</p>
             </div>
           </div>
         </div>
