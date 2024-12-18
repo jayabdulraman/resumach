@@ -8,7 +8,7 @@ type Statistic = {
 
 export function StatisticsSection() {
   const stats: Statistic[] = [
-    { name: `Rating`, value: 4 },
+    { name: `Rating`, value: 4.5 },
     { name: `Users`, value: 500 },
     { name: `Resumes Tailored`, value: 1_000 },
   ];
@@ -21,7 +21,7 @@ export function StatisticsSection() {
             <div key={index} className="mx-auto flex max-w-xs flex-col gap-y-3">
               <dt className="text-base leading-7 opacity-60">{stat.name}</dt>
               <dd className="order-first text-3xl font-semibold tracking-tight sm:text-5xl">
-                <Counter from={0} to={stat.value} />+
+                <Counter from={0} to={stat.value} />
               </dd>
             </div>
           ))}

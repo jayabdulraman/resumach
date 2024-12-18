@@ -48,6 +48,7 @@
     "@tiptap/react": "^2.8.0",
     "@tiptap/starter-kit": "^2.8.0",
     "@types/file-saver": "^2.0.7",
+    "@types/google-one-tap": "^1.2.6",
     "@types/lodash.debounce": "^4.0.9",
     "@types/lodash.get": "^4.4.9",
     "@types/lodash.set": "^4.3.9",

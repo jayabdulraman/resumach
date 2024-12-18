@@ -26,7 +26,6 @@ import { useFormStatus } from "react-dom";
 import { useFormState } from "react-dom";
 import { extractTextAndKeywords } from "@/lib/adapter/actions";
 import { extractTextFromDOCX } from "@/lib/adapter/text-extracter";
-import { extractTextFromPDF } from "@/lib/adapter/actions";
 import { SubmitButton } from "./submit-button";
 import { createClient } from "@/utils/supabase/client";
 import { fetchUserUploadedFilesWithDetails } from "@/lib/adapter/actions";

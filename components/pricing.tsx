@@ -21,7 +21,7 @@ type UserDetails = {
 };
 
 interface PackagesProps {
-  credit_packages: CreditPackagesTypes[];
+  credit_packages: CreditPackagesTypes[] | undefined;
   user: UserDetails | null;
   page?: string;
 }

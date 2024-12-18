@@ -1,13 +1,13 @@
-import { AwardsDialog } from "@/app/(builder)/builder/[id]/sidebars/left/dialogs/awards";
-import { CertificationsDialog } from "@/app/(builder)/builder/[id]/sidebars/left/dialogs/certifications";
-import { EducationDialog } from "@/app/(builder)/builder/[id]/sidebars/left/dialogs/education";
-import { ExperienceDialog } from "@/app/(builder)/builder/[id]/sidebars/left/dialogs/experience";
-import { ProfilesDialog } from "@/app/(builder)/builder/[id]/sidebars/left/dialogs/profiles";
-import { ProjectsDialog } from "@/app/(builder)/builder/[id]/sidebars/left/dialogs/projects";
-import { PublicationsDialog } from "@/app/(builder)/builder/[id]/sidebars/left/dialogs/publications";
-import { ReferencesDialog } from "@/app/(builder)/builder/[id]/sidebars/left/dialogs/references";
-import { SkillsDialog } from "@/app/(builder)/builder/[id]/sidebars/left/dialogs/skills";
-import { VolunteerDialog } from "@/app/(builder)/builder/[id]/sidebars/left/dialogs/volunteer";
+import { AwardsDialog } from "@/app/(protected)/(builder)/builder/[id]/sidebars/left/dialogs/awards";
+import { CertificationsDialog } from "@/app/(protected)/(builder)/builder/[id]/sidebars/left/dialogs/certifications";
+import { EducationDialog } from "@/app/(protected)/(builder)/builder/[id]/sidebars/left/dialogs/education";
+import { ExperienceDialog } from "@/app/(protected)/(builder)/builder/[id]/sidebars/left/dialogs/experience";
+import { ProfilesDialog } from "@/app/(protected)/(builder)/builder/[id]/sidebars/left/dialogs/profiles";
+import { ProjectsDialog } from "@/app/(protected)/(builder)/builder/[id]/sidebars/left/dialogs/projects";
+import { PublicationsDialog } from "@/app/(protected)/(builder)/builder/[id]/sidebars/left/dialogs/publications";
+import { ReferencesDialog } from "@/app/(protected)/(builder)/builder/[id]/sidebars/left/dialogs/references";
+import { SkillsDialog } from "@/app/(protected)/(builder)/builder/[id]/sidebars/left/dialogs/skills";
+import { VolunteerDialog } from "@/app/(protected)/(builder)/builder/[id]/sidebars/left/dialogs/volunteer";
 import { useResumeStore } from "@/utils/stores/resume";
 
 type Props = {

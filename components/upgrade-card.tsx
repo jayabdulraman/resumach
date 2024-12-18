@@ -21,7 +21,7 @@ type CreditPackagesTypes = {
 }
 
 interface UpgradeCardProps {
-  credit_packages: CreditPackagesTypes[];
+  credit_packages: CreditPackagesTypes[] | undefined;
   user: UserDetails | null
 }
 

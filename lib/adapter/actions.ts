@@ -1,19 +1,12 @@
 "use server";
 import OpenAI from "openai";
-import pdfParse from "pdf-parse";
 import { ResumeSchema } from "@/utils/resumeZodSchema";
 import { zodResponseFormat } from "openai/helpers/zod";
-import { format } from "date-fns";
-import { PdfReader } from "pdfreader";
 import { createClient } from "@/utils/supabase/server";
 import { ResumeDto } from "../dto/resume";
-import { count, profile } from "console";
 import { redirect } from "next/navigation";
-import { fetchResume } from "@/app/actions";
 import { revalidatePath } from "next/cache";
-import { checkRateLimit, RateLimitError } from '@/lib/rate-limit';
 import { stripe } from '../stripe'
-import { cookies } from 'next/headers'
 import { createClient as serviceRoleClient } from '@supabase/supabase-js';
 import { encodedRedirect } from "@/utils/utils";
 import { defaultMetadata } from "@/utils/schema";
@@ -29,38 +22,6 @@ interface pdfData {
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_KEY!,
 });
-
-export async function extractTextFromPDF(formData: FormData) {
-  const file = formData.get("document");
-  if (!file) {
-    throw new Error("No file uploaded");
-  }
-  console.log("FILE:", file);
-
-  // try {
-  //     // Convert the file to an ArrayBuffer
-  //     // const arrayBuffer = await file.arrayBuffer();
-  //     // const buffer = Buffer.from(arrayBuffer);
-
-  //     // const data = await pdfParse(buffer);
-  //     // const serializeData: pdfData = JSON.parse(JSON.stringify(data))
-  //     // const sanitizedArray = serializeData.pageData.map(str => str.replace(/\\t/g, ' ').replace(/\\n/g, ' ').replace(/\\r/g, ' '));
-
-  //     // console.log("PDF Content:", serializeData);
-  //     // return sanitizedArray;
-  //     let pdfParsed;
-  //     new PdfReader().parseFileItems("test/sample.pdf", (err, item) => {
-  //         if (err) console.error("error:", err);
-  //         else if (!item) console.warn("end of file");
-  //         else if (item.text) pdfParsed = item.text;
-  //     });
-  //     console.log("PDF Content:", pdfParsed);
-
-  //   } catch (error) {
-  //     console.error('Error parsing PDF:', error);
-  //     throw new Error('Failed to parse PDF');
-  //   }
-}
 
 export async function extractKeywordsFromJobDescription(
   jobDescription: string
@@ -927,8 +888,8 @@ export async function createCheckoutSession(packageId: string, originPath="non-s
       quantity: 1,
     }],
     mode: 'payment',
-    success_url: originPath === "non-signup" ? `${process.env.NEXT_PUBLIC_BASE_URL!}/dashboard?success=true` : `${process.env.NEXT_PUBLIC_BASE_URL!}/sign-up?success=Thanks for signing up! Please check your email for a verification link.`,
-    cancel_url: originPath === "non-signup" ? `${process.env.NEXT_PUBLIC_BASE_URL!}/dashboard?canceled=true` : `${process.env.NEXT_PUBLIC_BASE_URL!}/sign-up?error=Error with payment, please try again!`,
+    success_url: originPath === "non-signup" ? `${process.env.NEXT_PUBLIC_BASE_URL ?? `https://resumach.com`}/dashboard?success=true` : `${process.env.NEXT_PUBLIC_BASE_URL ?? `https://resumach.com`}/sign-up?success=Thanks for signing up! Please check your email for a verification link.`,
+    cancel_url: originPath === "non-signup" ? `${process.env.NEXT_PUBLIC_BASE_URL ?? `https://resumach.com`}/dashboard?canceled=true` : `${process.env.NEXT_PUBLIC_BASE_URL ?? `https://resumach.com`}/sign-up?error=Error with payment, please try again!`,
     customer: customerId,
     client_reference_id: user.id.toString(),
     metadata: {
