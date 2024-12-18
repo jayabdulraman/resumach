@@ -4,13 +4,14 @@ import { Progress } from '@/components/ui/progress'
 import { UserCredits } from '@/lib/dto/credits/credit'
 import { useAuthStore } from '@/utils/stores/auth'
 import { useRateLimitStore } from '@/utils/stores/rateLimitStore'
-import { createClient } from '@/utils/supabase/client'
 
 export function CreditBalance({ credits }: { credits: UserCredits }) {
   const userCurrentSubscription = useAuthStore((state) => state.userCurrentSubscription)
   const remaining = useRateLimitStore((state) => state.remaining)
-  const rateLimit = process.env.NEXT_PUBLIC_RATE_LIMIT! as unknown as number
+  const rateLimit = Number(process.env.NEXT_PUBLIC_RATE_LIMIT!)
   let creditUsage;
+
+  console.log("Subscription:", userCurrentSubscription)
   if (userCurrentSubscription === "Free") {
     const userFreeUsage = {
       available_credits: remaining,

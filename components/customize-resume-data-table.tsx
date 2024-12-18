@@ -48,7 +48,7 @@ import { useEffect, useState } from "react"
 import { formatDate, formatFileSize } from '@/utils/formatting';
 import Link from 'next/link'
 import { ResumeDto } from "@/lib/dto/resume"
-import { generatePDF } from "@/app/(builder)/builder/print-resume/print"
+import { generatePDF } from "@/app/(protected)/(builder)/builder/print-resume/print"
 import { useToast } from "@/components/hooks/use-toast"
 import { Loader2 } from "lucide-react"
 import { Toaster } from "./ui/toaster"

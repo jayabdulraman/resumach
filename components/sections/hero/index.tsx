@@ -32,7 +32,7 @@ export function HeroSection({ userId }: HeroProps) {
           </div>
 
           <p className="prose prose-base prose-zinc mt-6 text-base sm:text-lg leading-relaxed dark:prose-invert">
-            {`JobFit uses AI to tailor your resume to specific job descriptions, increasing your chances of landing an interview.`}
+            {`resumach uses AI to tailor your resume to specific job descriptions, increasing your chances of landing an interview.`}
           </p>
 
           <div className="my-8 sm:my-10 flex items-center gap-x-4 sm:gap-x-8">
@@ -51,8 +51,8 @@ export function HeroSection({ userId }: HeroProps) {
                 <img
                   width={3600}
                   height={2078}
-                  src="/screenshots/builder.jpg"
-                  alt="JobFit - Screenshot - Builder Screen"
+                  src="/screenshots/builder.png"
+                  alt="resumach - Screenshot - Builder Screen"
                   className="w-[76rem] rounded-lg bg-background/5 shadow-2xl ring-1 ring-foreground/10"
                 />
               </Tilt>

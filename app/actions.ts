@@ -14,6 +14,54 @@ type UserDetails = {
   email: string | undefined;
 };
 
+type CreditPackagesTypes = {
+  id: string;
+  name: string;
+  credits: number;
+  price: number;
+  popular: boolean;
+  features: string[];
+};
+
+export async function getUser() {
+  const supabase = createClient();
+  try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    return user
+  } catch(error) {
+    console.error("User Fetch Error:", error)
+  }
+}
+
+export async function getPaidPackages() {
+  const supabase = createClient();
+  const { data: credit_packages, error } = await supabase
+    .from("credit_packages")
+    .select("*")
+    .eq("is_active", true)
+    .order("credits");
+
+  if (error) {
+    console.error("Package Fetch Error in Layout:", error.message);
+  }
+
+  const pricingTiers: CreditPackagesTypes[] | undefined = credit_packages
+    ?.map((pkg) => ({
+      id: pkg.id,
+      name: pkg.name,
+      credits: pkg.credits,
+      price: pkg.price,
+      popular: pkg.is_popular,
+      features: pkg.description.split(",") as [],
+    }))
+    .filter((pack) => pack.name !== "Free")
+
+  return pricingTiers
+}
+
 export async function fetchResume() {
   try {
 
@@ -103,7 +151,7 @@ export async function signInAction (formData: FormData) {
 };
 
 export async function GoogleAuth() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? `https://resumach.com`
   const supabase = createClient();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',

@@ -36,7 +36,7 @@ const StepsExplanation = () => {
     {
       number: "2",
       title: "Add the job description",
-      description: "Copy and paste the job description and hit customize. JobFit AI will do the rest by comprehensively tailoring your resume to the job description.",
+      description: "Copy and paste the job description and hit generate. resumach AI will do the rest by comprehensively tailoring your resume to the job description.",
       icon: Layout,
       bgColor: "bg-purple-50"
     },
@@ -53,7 +53,7 @@ const StepsExplanation = () => {
     <div className="w-full max-w-6xl mx-auto px-4 py-12 relative overflow-hidden">
       {/* Title */}
       <h2 className="text-4xl font-bold text-center mb-16">
-        Customize your resume in{" "}
+        Tailor your resume in{" "}
         <span className="bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent">
           3 easy steps
         </span>{" "}

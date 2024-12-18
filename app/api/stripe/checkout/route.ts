@@ -41,8 +41,8 @@ export async function POST(req: NextRequest) {
         },
       ],
       mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/credits?success=true`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/credits?canceled=true`,
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL ?? `https://resumach.com`}/dashboard/credits?success=true`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL ?? `https://resumach.com`}/dashboard/credits?canceled=true`,
       metadata: {
         userId: user.id,
         packageId: packageId,
