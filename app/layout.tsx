@@ -7,9 +7,9 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: {
     template: '%s - resumach',
-    default: 'resumach - tailor your resume',
+    default: 'resumach - tailor your resume with AI',
   },
-  description: 'Quickly tailor your resume to match any job description!',
+  description: 'Quickly tailor your resume to match any job description with AI!',
   keywords: `resume, resume builder, tailor resume`,
   metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}` ?? `https://resumach.com`),
 };

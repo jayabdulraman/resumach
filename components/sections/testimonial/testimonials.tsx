@@ -60,10 +60,9 @@ export function TestimonialsSection() {
         <div className="space-y-6 text-center mb-4">
           <h2 className="text-3xl font-bold">{`Testimonials`}</h2>
           <p className="mx-auto max-w-2xl text-gray-600 leading-relaxed">
-              I always love to hear from you with feedback or support. Here are
-              some of the messages I've received. If you have any feedback, feel free to drop me an
+              I always love to hear from you with feedback or support. If you have any, feel free to drop me an
               email at{" "}
-              <a href={email} className="underline">
+              <a href={email} className="text-purple-600 underline">
                 {email}
               </a>
               .

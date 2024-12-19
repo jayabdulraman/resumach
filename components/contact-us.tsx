@@ -6,7 +6,10 @@ const ContactUs = () => {
     return (
         <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold mb-12 text-center">Contact Us</h2>
-            <form className="max-w-md mx-auto">
+            <p className="text-center mb-6">
+                If you have any questions or need assistance, feel free to reach out to us at <a href="mailto:info@ajalloh.com" className="text-purple-600 underline">info@ajalloh.com</a>. We look forward to hearing from you!
+            </p>
+            {/* <form className="max-w-md mx-auto">
                 <div className="mb-4">
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>
                 <Input id="name" placeholder="Your name" />
@@ -20,7 +23,7 @@ const ContactUs = () => {
                 <Textarea id="message" placeholder="Your message" />
                 </div>
                 <Button className="w-full">Send Message</Button>
-            </form>
+            </form> */}
         </div>
     )
 }
