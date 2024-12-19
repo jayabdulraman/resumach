@@ -94,7 +94,6 @@ export const FormMessage = forwardRef<
 >(({ className, children, ...props }, ref) => {
   const { error, formMessageId } = useFormField();
   const body = error ? String(error.message) : children;
-  // console.log("FORM ERROR:", error)
 
   if (!body) {
     return null;

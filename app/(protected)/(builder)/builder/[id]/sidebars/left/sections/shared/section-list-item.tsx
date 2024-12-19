@@ -34,7 +34,6 @@ export function SectionListItem({
     id,
   });
   const education = useResumeStore((state) => state.resume.data.sections.education);
-  console.log("EDUCATION:", education)
 
   const style: React.CSSProperties = {
     transform: CSS.Transform.toString(transform),

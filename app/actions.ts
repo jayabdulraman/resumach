@@ -97,7 +97,6 @@ export async function signUpAction (formData: FormData){
 
   if (error) {
     console.error(error.code + " " + error.message);
-    console.log("ERROR:", error)
     return encodedRedirect("error", "/sign-up", error.message);
   }
   else {
@@ -223,13 +222,11 @@ export async function resetPasswordAction (formData: FormData) {
       "Passwords do not match",
     );
   }
-  console.log("Updating password...")
   const { error } = await supabase.auth.updateUser({
     password: password,
   });
 
   if (error) {
-    console.log("PASSWORD UPDATE ERROR:", error)
     return encodedRedirect(
       "error",
       "/settings",
@@ -257,7 +254,6 @@ export async function deleteUserAction() {
   const { data: { user }, error: userError } = await supabase.auth.getUser();
   
   if (userError || !user) {
-    console.log("User retrieval error:", userError);
     return encodedRedirect("error", "/settings", "User not found or not authenticated.");
   }
 
@@ -272,7 +268,6 @@ export async function deleteUserAction() {
   });
 
   if (listError) {
-    console.log("Error listing objects:", listError);
   }
   // @ts-ignore
   if (objects?.length >= 1) {
@@ -285,7 +280,6 @@ export async function deleteUserAction() {
         .remove(objectKeys as string[]);
     
     if (deleteObjectsError) {
-      console.log("USER OBJECTS DELETION ERROR:", deleteObjectsError);
       return encodedRedirect("error", "/settings", deleteObjectsError.message);
     }
   }
@@ -293,7 +287,6 @@ export async function deleteUserAction() {
   const { error: deleteError } = await serviceClient.auth.admin.deleteUser(user.id);
   
   if (deleteError) {
-    console.log("USER DELETION ERROR:", deleteError);
     encodedRedirect("error", "/settings", deleteError.message);
   }
 

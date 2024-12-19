@@ -7,7 +7,6 @@ export async function POST(request: NextRequest) {
     const { previewUrl, elementId, resume } = await request.json();
     const metadataPage = resume.data.metadata.page;
     const filename = resume.title+".pdf";
-    console.log("PDF DETAILS:", previewUrl, elementId, filename)
 
     // Launch browser
     const browser = await puppeteer.launch({

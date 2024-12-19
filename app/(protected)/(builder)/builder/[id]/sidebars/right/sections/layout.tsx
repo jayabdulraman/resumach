@@ -156,13 +156,11 @@ export function LayoutSection() {
 
     const newLayout = moveItemInLayout(current, target, layout);
     setValue("metadata.layout", newLayout);
-    console.log("Layout:", newLayout)
   };
 
   const onDragEnd = (event: DragEndEvent) => {
     onDragEvent(event);
     setActiveId(null);
-    console.log("DragEnd")
   };
 
   const onAddPage = () => {

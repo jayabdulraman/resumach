@@ -13,7 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { FaGoogle } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 
@@ -23,8 +23,6 @@ export default function Signup({ searchParams }: { searchParams: Message }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  console.log("SearchParams:", "packageId" in searchParams ? searchParams.packageId: "");
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault(); // Prevent default form submission
@@ -100,7 +98,7 @@ export default function Signup({ searchParams }: { searchParams: Message }) {
           </form>
           <form>
             <SubmitButton variant="outline" className="w-full" pendingText="Redirecting..." formAction={GoogleAuth}>
-              <FaGoogle className="mr-3 size-4" />
+              <FcGoogle className="mr-3 size-4" />
               Sign up with Google
             </SubmitButton>
           </form><br />

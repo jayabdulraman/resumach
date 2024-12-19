@@ -53,8 +53,7 @@ export default function SettingsPage({ searchParams }: { searchParams: Message }
       setShowSecurityButtons(false)
     }
   }
-
-  console.log("SearchParams:", searchParams)
+  
   return (
     <div className="ml-10 py-8 max-w-3xl">
       <h1 className="text-3xl font-bold mb-6">Settings</h1>

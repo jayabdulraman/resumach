@@ -64,8 +64,7 @@ export default function BuilderToolbar() {
   const handleZoom = (type: ZoomType) => {
     setZoomType(type)
   }
-
-  // console.log("ZOOM:", zoomAction)
+  
   return (
     <motion.div className="fixed inset-x-0 bottom-0 mx-auto hidden py-6 text-center md:block">
       <div className="inline-flex items-center justify-center rounded-full bg-background px-4 shadow-xl">

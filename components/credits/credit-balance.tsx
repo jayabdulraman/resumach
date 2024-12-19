@@ -10,8 +10,7 @@ export function CreditBalance({ credits }: { credits: UserCredits }) {
   const remaining = useRateLimitStore((state) => state.remaining)
   const rateLimit = Number(process.env.NEXT_PUBLIC_RATE_LIMIT!)
   let creditUsage;
-
-  console.log("Subscription:", userCurrentSubscription)
+  
   if (userCurrentSubscription === "Free") {
     const userFreeUsage = {
       available_credits: remaining,

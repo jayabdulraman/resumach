@@ -14,7 +14,6 @@ export default async function Dashboard() {
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) {
-    console.log("No logged in user found!")
     return encodedRedirect("error", "/sign-in", "Login to continue");
   }
 
