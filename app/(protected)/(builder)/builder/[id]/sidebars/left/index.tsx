@@ -47,8 +47,6 @@ export default function LeftSidebar() {
     getUser();
   }, []);
 
-  console.log("USER:", user)
-
   return (
     <div className="flex bg-secondary-accent/50">
       <div className="hidden basis-12 flex-col items-center justify-between bg-secondary-accent/30 py-4 sm:flex">

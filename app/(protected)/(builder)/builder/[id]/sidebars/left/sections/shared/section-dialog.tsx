@@ -62,7 +62,6 @@ export function SectionDialog<T extends SectionItem>({
 
   const onSubmit = (values: T) => {
     if (!section) {
-      console.log("NO SECTION!")
       return
     };
 

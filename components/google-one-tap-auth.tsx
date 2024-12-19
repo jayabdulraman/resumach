@@ -24,23 +24,20 @@ const OneTapComponent = () => {
 
   useEffect(() => {
     const initializeGoogleOneTap = () => {
-      console.log('Initializing Google One Tap')
       window.addEventListener('load', async () => {
         const [nonce, hashedNonce] = await generateNonce()
-        console.log('Nonce: ', nonce, hashedNonce)
 
         // check if there's already an existing session before initializing the one-tap UI
-        const { data, error } = await supabase.auth.getUser()
+        const { data, error } = await supabase.auth.getSession()
         if (error) {
-          console.error('Error getting session', error)
+          //console.error('Error getting session', error)
         }
-        if (data.user) {
+        if (data.session) {
           router.push('/sign-in')
           return
         }
 
         const googleClientID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!
-        console.log("Google ID:", googleClientID);
         /* global google */
         // @ts-ignore
         google.accounts.id.initialize({
@@ -55,9 +52,6 @@ const OneTapComponent = () => {
               })
 
               if (error) throw error
-              
-              console.log('Session data: ', data)
-              console.log('Successfully logged in with Google One Tap')
 
               // redirect to protected page
               router.push('/dashboard')

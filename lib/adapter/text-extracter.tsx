@@ -69,12 +69,9 @@ export async function extractTextFromDOCX(formData: Blob): Promise<string> {
 
             // Process the entire document
             const finalContent = processNode(tempDiv)
-
-            console.log("CONTENT:", finalContent);
             resolve(finalContent);
         };
     });
-    console.log("CONTENT:", content);
 
     return content;
 }

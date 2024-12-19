@@ -167,7 +167,6 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
           .upload(`${userId}/${newFile.name}`, newFile);
 
         if (uploadError) {
-          console.log("Error uploading file:", uploadError);
           setFileError(uploadError.message)
           return router.push("/dashboard");
         }
@@ -190,7 +189,6 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
           }
           // assign text a value
           extractedResumeContent = textUploaded.extracted_text
-          console.log("File Content Extracted and Added to Database!")
         } else {
           setFileError("File is not supported! Try docx or doc!");
         }
@@ -213,7 +211,6 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
         // Call the refresh callback after successful upload
         await onUploadSuccess();
       } catch (error) {
-        console.log("Error during upload:", error);
         return router.push("/dashboard");
       } finally {
         setPendingText(false);
@@ -259,6 +256,8 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
   useEffect(() => {
     if (state?.message) { // message contains the resume ID
       router.push(`/builder/${state.message}`);
+    } else if (state.error) {
+      setError(state.error);
     }
   }, [state]);
 

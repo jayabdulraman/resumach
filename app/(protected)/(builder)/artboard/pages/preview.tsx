@@ -22,7 +22,6 @@ export default function PreviewLayout({ resume }: PreviewLayoutProps){
 
   useEffect(() => {
     if (resume ) {
-      console.log("PREVIEW RESUME in UseEffect:", resume)
       useResumeStore.setState({ resume: resume as ResumeDto});
       useResumeStore.temporal.getState().clear();
       setIsLoading(false); // Set loading to false after state is set

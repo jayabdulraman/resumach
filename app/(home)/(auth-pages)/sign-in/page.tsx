@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { FaGoogle } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { useState } from "react";
 import { useToast } from "@/components/hooks/use-toast";
 import { createClient } from "@/utils/supabase/client";
@@ -113,7 +113,7 @@ export default function Login({ searchParams }: { searchParams: Message }) {
                         pendingText="Redirecting..."
                         formAction={GoogleAuth}
                       >
-                        <FaGoogle className="mr-3 size-4" />
+                        <FcGoogle className="mr-3 size-4" />
                         Login with Google
                       </SubmitButton>
                     </div>

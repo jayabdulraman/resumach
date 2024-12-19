@@ -158,11 +158,12 @@ export async function extractTextAndKeywords(
       });
 
       const tailoredResponse = response.choices[0].message
-      console.log("GPT Response:", tailoredResponse);
       if (tailoredResponse.parsed) {
         adaptedResponse = tailoredResponse.parsed
       } else if (tailoredResponse.refusal) {
-        throw new Error("Refused to Parse Result. Try again!");
+        return {
+          error: tailoredResponse.refusal
+        }
       }
 
     } catch (e) {
@@ -172,18 +173,23 @@ export async function extractTextAndKeywords(
         // Retry with a higher max tokens
         // @ts-ignore
         console.log("Too many tokens: ", e.message);
-        throw new Error(`Too many tokens: ${e}`)
+        return {
+          // @ts-ignore
+          error: e.message
+        }
       } else {
         // Handle other exceptions
         // @ts-ignore
         console.log("An error occurred: ", e.message);
-        throw new Error(`An error occured: ${e}`)
+        return {
+          // @ts-ignore
+          error: e.message
+        }
       }
     }
 
     // generate fileName
     const fileName = await generateFileName(jobDescription as string) as string;
-    console.log("File Name:", fileName);
     // get tailored resume
     //const adaptedResponse = response.choices[0].message.parsed;
     const contructResumeData = {
@@ -302,7 +308,6 @@ export async function extractTextAndKeywords(
         .select("*").eq("user_id", userId).single()
       
       if (getUserUsageData) {
-        console.log("Fetch Usage Details:", getUserUsageData);
         if (getUserUsageData.total_credits_earned === getUserUsageData.total_credits_used) {
           // if user hits pro usage credit limit, downgrade to "Free" version
           const {error: updateProfileError} = await supabase
@@ -315,7 +320,7 @@ export async function extractTextAndKeywords(
           // update credit usage for specific user
           const creditsUsed = Number(getUserUsageData.total_credits_used) + 1
           const availableCredit = Number(getUserUsageData.available_credits) - 1
-          console.log("Credit Details:", availableCredit, creditsUsed);
+       
           const {data: updateUsage, error: updateUsageError} = await supabase
           .from("user_credits")
           .update({
@@ -339,8 +344,7 @@ export async function extractTextAndKeywords(
     const duration = endTime - startTime; // Duration in milliseconds
     const minutes = Math.floor(duration / 1000 / 60); // Convert to minutes
     const seconds = Math.floor((duration / 1000) % 60); // Remaining seconds
-    console.log(`Time taken: ${minutes} minutes and ${seconds} seconds`); // Log time taken
-    console.log(`Resume saved:`, createResumeDataResponse);
+    //console.log(`Time taken: ${minutes} minutes and ${seconds} seconds`);
 
     return {
       message: createResumeDataResponse.id as string,
@@ -376,7 +380,6 @@ export async function fetchUserUploadedFilesWithDetails(
   }
 
   if (!files) {
-    console.log("No files found");
     return [];
   }
 
@@ -395,7 +398,6 @@ export async function fetchUserUploadedFilesWithDetails(
         .single()
       
       if (error) {
-        console.log("No document found!")
       }
 
       return {
@@ -432,7 +434,6 @@ export async function fetchUserCustomizedFilesWithDetails(
   }
 
   if (!resumeMetadata?.length) {
-    console.log("No resume metadata found for user");
     return [];
   }
 
@@ -559,7 +560,6 @@ export async function getPublicResume (resumeId: string) {
       .eq("id", resumeId)
       .single();
 
-    console.log("metadataError:", metadataError)
     if (metadataError) throw metadataError;
 
     const { data: resumeData, error: dataError } = await supabase
@@ -603,7 +603,6 @@ export async function getPublicResume (resumeId: string) {
 
     return resume;
   } catch (error) {
-    console.log("Public Resume error:", error)
     return error;
   }
 };
@@ -819,7 +818,6 @@ export async function deleteUploadedFileAction (fileId: string, filename: string
     .remove([`${userId}/${filename}`])
 
     if (deleteObjectsError) {
-      console.log("USER OBJECTS DELETION ERROR:", deleteObjectsError);
       return encodedRedirect("error", "/dashboard", deleteObjectsError.message);
     }
 
@@ -830,10 +828,8 @@ export async function deleteUploadedFileAction (fileId: string, filename: string
       .eq("file_id", fileId)
 
     if (deleteContentError) {
-      console.log("Error Deleting Extracted Resume Text:", deleteContentError);
       return encodedRedirect("error", "/dashboard", deleteContentError.message);
     }
-    console.log("File and Content Deleted!")
   }
    
   return
