@@ -9,6 +9,7 @@ import { useResumeStore } from "@/utils/stores/resume";
 
 export default function BuilderHeader(){
   const title = useResumeStore((state) => state.resume.title);
+  const headline = useResumeStore((state) => state.resume.data.basics.headline);
   const locked = useResumeStore((state) => state.resume.locked);
 
   const toggle = useBuilderStore((state) => state.toggle);
@@ -58,7 +59,7 @@ export default function BuilderHeader(){
 
           <TooltipProvider>
             <Tooltip content={title}>
-              <h1 className="font-medium">{shortenTitle(title)}</h1>
+              <h1 className="font-medium">{shortenTitle(title ?? (headline || "..."))}</h1>
             </Tooltip>
           </TooltipProvider>
           

@@ -30,7 +30,7 @@ export const URLInput = forwardRef<HTMLInputElement, Props>(
           <Input
             ref={ref}
             id={id}
-            value={value.href}
+            value={value?.href}
             className="flex-1"
             type="url"
             //@ts-ignore
@@ -53,7 +53,7 @@ export const URLInput = forwardRef<HTMLInputElement, Props>(
             </TooltipProvider>
             <PopoverContent className="p-1.5">
               <Input
-                value={value.label || ""}
+                value={value?.label || ""}
                 placeholder={`Label`}
                 onChange={(event) => {
                   onChange({ ...value, label: event.target.value });

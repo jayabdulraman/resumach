@@ -32,7 +32,6 @@ interface RightSidebarProps {
 export function RightSidebar({ user, credit_packages } : RightSidebarProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const userCurrentSubscription = useAuthStore((state) => state.userCurrentSubscription);
-  console.log("CREDIT PACKAGES:", credit_packages);
 
   const scrollIntoView = (selector: string) => {
     const section = containerRef.current?.querySelector(selector);

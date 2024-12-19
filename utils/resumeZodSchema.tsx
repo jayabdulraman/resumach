@@ -87,25 +87,16 @@ const ReferenceSchema = z.object({
   url: SocialLink.describe("website label and url of the reference"),
 });
 
-// const BasicSchema = z.object({
-//   name: z.string().describe("full name of the candidate."),
-//   headline: z.string().describe("professional title of the candidate eg Software Engineer."),
-//   email: z.literal("").or(z.string().email()).describe("email of the candidate"),
-//   phone: z.string().nullable().describe("Mobile phone number of the candidate."),
-//   location: z.string().nullable().describe("Location of the candidate e.g Tempe, AZ."),
-//   url: SocialLink.array().describe("Personal website URL and text of candidate."),
-// })
-
 export const ResumeSchema = z.object({
   name: z.string().describe("full name of the candidate."),
   headline: z.string().describe("professional title of the candidate eg Software Engineer."),
   email: z.string().describe("email of the candidate"),
   phone: z.string().nullable().describe("Mobile phone number of the candidate."),
   location: z.string().nullable().describe("Location of the candidate e.g Tempe, AZ."),
-  website: SocialLink.describe("Personal website URL and label of candidate."),
+  website: SocialLink.nullable().describe("Personal website URL and label of candidate."),
   summary: z.string().nullable().describe("Summary of the user's profile."),
-  profile: ProfileSchema.array().describe("Array of social media profiles eg X/twitter, github, facebook etc"),
-  education: EducationSchema.array().describe("Array of education records."),
+  profile: ProfileSchema.array().nullable().describe("Array of social media profiles eg X/twitter, github, facebook etc"),
+  education: EducationSchema.array().nullable().describe("Array of education records."),
   experience: ExperienceSchema.array().nullable().describe("Array of employment experience records."),
   skill: SkillSchema.array().describe("Array of skills."),
   project: ProjectSchema.array().nullable().describe("Array of projects."),

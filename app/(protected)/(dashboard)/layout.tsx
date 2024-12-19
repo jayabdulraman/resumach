@@ -17,6 +17,7 @@ import { ThemeSwitcher } from "@/components/theme-switcher";
 import { Coin } from "@phosphor-icons/react";
 import UpgradeCard from "@/components/upgrade-card";
 import { useEffect, useState } from "react";
+import { useAuthStore } from "@/utils/stores/auth";
 
 type UserMetadata = {
   name: string;
@@ -51,6 +52,7 @@ export default function DashboardNavbar({
 }: LeftNavbarProps) {
   const [userData, setUserData] = useState<UserDetails | null>(null);;
   const [creditPackages, setCreditPackages] = useState<CreditPackagesTypes[] | undefined>([]);
+  const userCurrentSubscription = useAuthStore((state) => state.userCurrentSubscription);
 
   const pathname = usePathname();
 
@@ -113,9 +115,11 @@ export default function DashboardNavbar({
             Settings
           </Link>
         </nav>
-        <div className="p-4">
-          <UpgradeCard credit_packages={creditPackages} user={userData} />
-        </div>
+        {userCurrentSubscription === "Free" && (
+          <div className="p-4">
+            <UpgradeCard credit_packages={creditPackages} user={userData} />
+          </div>
+        )}
       </div>
 
       {/* Main content area */}

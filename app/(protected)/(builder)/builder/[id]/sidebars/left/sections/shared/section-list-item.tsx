@@ -7,6 +7,7 @@ import { cn } from "@/utils/cn";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipProvider } from "@/components/ui/tooltip";
+import { useResumeStore } from "@/utils/stores/resume";
 
 export type SectionListItemProps = {
   id: string;
@@ -32,6 +33,8 @@ export function SectionListItem({
   const { setNodeRef, transform, transition, attributes, listeners, isDragging } = useSortable({
     id,
   });
+  const education = useResumeStore((state) => state.resume.data.sections.education);
+  console.log("EDUCATION:", education)
 
   const style: React.CSSProperties = {
     transform: CSS.Transform.toString(transform),
@@ -77,8 +80,8 @@ export function SectionListItem({
           )}
           onClick={onUpdate}
         >
-          <h4 className="font-medium leading-relaxed">{shortenTitle(title)}</h4>
-          {description && <p className="text-xs leading-relaxed opacity-50">{shortenTitle(description)}</p>}
+          <h4 className="font-medium leading-relaxed">{shortenTitle(title ?? '...')}</h4>
+          {description && <p className="text-xs leading-relaxed opacity-50">{shortenTitle(description ?? '...')}</p>}
         </div>
         
         {/* Right actions with border */}
