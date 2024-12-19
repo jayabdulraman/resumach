@@ -94,8 +94,12 @@ export default async function HomeLayout({
         <Toaster />
       </div>
 
-      <footer className="w-full flex flex-col items-center border-t text-center text-xs gap-4 py-8 px-4">
-        <div className="flex gap-4">
+      <footer className="w-full flex flex-col items-center border-t text-center gap-4 py-8 px-4">
+        <div className="text-balance text-center text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 ">
+          <a href="https://docs.google.com/document/d/15Rwq1WWSHMkPtH1E9nX1TfIGpb4gEXy2HSAnZf4VTYE/edit?usp=sharing" target="_blank" className="hover:text-primary">Terms of Service</a> and{" "}
+          <a href="https://docs.google.com/document/d/1FkjE8br8MoZ30yoaPYk98JbslrSaHaiyckjQjY9nLNI/edit?usp=sharing" target="_blank" className="hover:text-primary">Privacy Policy</a>
+        </div>
+        <div className="flex text-xs gap-4">
           <a
             href="https://x.com/jayabdulraman"
             target="_blank"
@@ -104,8 +108,8 @@ export default async function HomeLayout({
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
+              width="15"
+              height="15"
               viewBox="0 0 24 24"
               fill="currentColor"
               className="hover:text-primary"
@@ -121,8 +125,8 @@ export default async function HomeLayout({
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
+              width="15"
+              height="15"
               viewBox="0 0 24 24"
               fill="currentColor"
               className="hover:text-primary"
@@ -138,8 +142,8 @@ export default async function HomeLayout({
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
+              width="15"
+              height="15"
               viewBox="0 0 24 24"
               fill="currentColor"
               className="hover:text-primary"
@@ -148,7 +152,7 @@ export default async function HomeLayout({
             </svg>
           </a>
         </div>
-        <p>&copy; 2024 resumach. All rights reserved.</p>
+        <p className="text-xs">&copy; 2024 resumach. All rights reserved.</p>
       </footer>
     </div>
   );
