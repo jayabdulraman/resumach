@@ -27,7 +27,6 @@ export async function POST(req: NextRequest) {
         package_name: string
       }
       // Create pending upgrade record
-      console.log("Payment ID:", session.payment_intent, "and Metadata:", session.metadata)
       const { error: insertError } = await supabase
       .from('pending_upgrades')
       .insert({

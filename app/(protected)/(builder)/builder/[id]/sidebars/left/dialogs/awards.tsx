@@ -69,10 +69,6 @@ export function AwardsDialog(){
                 <Input
                   {...field}
                   placeholder={`March 2023`}
-                  // placeholder={t({
-                  //   message: "March 2023",
-                  //   comment: "The month and year should be uniform across all languages.",
-                  // })}
                 />
               </FormControl>
               <FormMessage />

@@ -226,7 +226,6 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
       // Check rate limit before processing
       try {
         const rateResult = await checkRateLimit(userId, 'customize-resume');
-        console.log("Rate Result:", rateResult)
         if ('remaining' in rateResult && 'resetAt' in rateResult) {
           setLimitInfo({
             remaining: rateResult.remaining,
@@ -238,17 +237,15 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
       }
     }
     // Make this function async
-    formData.set("document", selectedDocument?.file as File);
     formData.set("jobDescription", jobDescription);
     formData.set("userCurrentSubscription", userCurrentSubscription as string);
     // get extracted resume text for selected document
     const resumeText = documents.find((doc) => doc.id === selectedDocument?.id)?.text || '';
     if (resumeText){
       formData.set("resumeText", resumeText)
-      console.log("Resume Text:", resumeText);
     } else {
       setError("Could not parse resume! Try again!")
-      throw new Error("Could not parse resume Text! Try again!")
+      return;
     }
     try {
       return formAction(formData);
@@ -334,11 +331,11 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
               Generate
             </SubmitButton>
           </DialogFooter>
+          {error && <p style={{ color: "red" }}>{error}</p>}
         </form>
         {/* {state?.message && (
           <p className="text-sm text-green-500 mt-2">{state.message}</p>
         )} */}
-        {error && <p style={{ color: "red" }}>{error}</p>}
       </DialogContent>
       <Dialog open={isUploadModalOpen} onOpenChange={setIsUploadModalOpen}>
         <DialogContent className="sm:max-w-[425px]">

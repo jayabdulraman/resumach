@@ -30,16 +30,17 @@ const OneTapComponent = () => {
         console.log('Nonce: ', nonce, hashedNonce)
 
         // check if there's already an existing session before initializing the one-tap UI
-        const { data, error } = await supabase.auth.getSession()
+        const { data, error } = await supabase.auth.getUser()
         if (error) {
           console.error('Error getting session', error)
         }
-        if (data.session) {
+        if (data.user) {
           router.push('/sign-in')
           return
         }
 
         const googleClientID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!
+        console.log("Google ID:", googleClientID);
         /* global google */
         // @ts-ignore
         google.accounts.id.initialize({

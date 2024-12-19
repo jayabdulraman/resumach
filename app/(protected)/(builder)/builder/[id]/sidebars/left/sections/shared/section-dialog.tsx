@@ -60,15 +60,11 @@ export function SectionDialog<T extends SectionItem>({
     if (isOpen) onReset();
   }, [isOpen, payload]);
 
-  //console.log("SECTION:", section)
-
   const onSubmit = (values: T) => {
     if (!section) {
       console.log("NO SECTION!")
       return
     };
-
-    console.log("Payload ID:", payload.item?.id, "with Item ID:", section.items)
 
     if (isCreate || isDuplicate) {
       if (pendingKeyword && "keywords" in values) {

@@ -144,7 +144,7 @@ type LinkProps = {
 };
 
 const Link = ({ url, icon, iconOnRight, label, className }: LinkProps) => {
-  if (!isUrl(url.href)) return null;
+  if (!isUrl(url?.href)) return null;
   return (
     <div className="flex items-center gap-x-1.5">
       {!iconOnRight && (icon ?? <i className="ph ph-bold ph-link text-black" />)}

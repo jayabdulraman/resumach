@@ -125,10 +125,6 @@ export function SectionBase<T extends SectionItem>({
             <Plus size={14} />
             <span className="font-medium">
               {`Add a new item`}
-              {/* {t({
-                message: "Add a new item",
-                context: "For example, add a new work experience, or add a new profile.",
-              })} */}
             </span>
           </Button>
         )}
@@ -181,10 +177,6 @@ export function SectionBase<T extends SectionItem>({
             <Plus />
             <span>
               {`Add a new item`}
-              {/* {t({
-                message: "Add a new item",
-                context: "For example, add a new work experience, or add a new profile.",
-              })} */}
             </span>
           </Button>
         </footer>

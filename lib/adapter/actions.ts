@@ -95,14 +95,12 @@ export async function extractTextAndKeywords(
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  const document = formData.get("document");
   const jobDescription = formData.get("jobDescription");
   const resumeText = formData.get("resumeText");
   const userId = user?.id as string
   const userCurrentSubscription = formData.get("userCurrentSubscription");
   const startTime = Date.now(); // Start timer
   const keywords = await extractKeywordsFromJobDescription(jobDescription as string);
-  console.log("Keywords:", keywords);
 
   const system_prompt = `
       You are an expert in tailoring resumes to match specific job description and their keywords.
@@ -160,6 +158,7 @@ export async function extractTextAndKeywords(
       });
 
       const tailoredResponse = response.choices[0].message
+      console.log("GPT Response:", tailoredResponse);
       if (tailoredResponse.parsed) {
         adaptedResponse = tailoredResponse.parsed
       } else if (tailoredResponse.refusal) {
@@ -187,7 +186,6 @@ export async function extractTextAndKeywords(
     console.log("File Name:", fileName);
     // get tailored resume
     //const adaptedResponse = response.choices[0].message.parsed;
-    console.log("Adapted Resume:", JSON.stringify(adaptedResponse, null, 2));
     const contructResumeData = {
       basics: {
         name: adaptedResponse?.name as string, 
@@ -304,7 +302,8 @@ export async function extractTextAndKeywords(
         .select("*").eq("user_id", userId).single()
       
       if (getUserUsageData) {
-        if (getUserUsageData.available_credits === getUserUsageData.total_credits_used) {
+        console.log("Fetch Usage Details:", getUserUsageData);
+        if (getUserUsageData.total_credits_earned === getUserUsageData.total_credits_used) {
           // if user hits pro usage credit limit, downgrade to "Free" version
           const {error: updateProfileError} = await supabase
           .from("user_profile")
@@ -314,15 +313,25 @@ export async function extractTextAndKeywords(
           }).eq("user_id", userId)
         } else {
           // update credit usage for specific user
-          const credits_used = getUserUsageData.total_credits_used + 1
-          const available_credit = getUserUsageData.available_credit - 1
+          const creditsUsed = Number(getUserUsageData.total_credits_used) + 1
+          const availableCredit = Number(getUserUsageData.available_credits) - 1
+          console.log("Credit Details:", availableCredit, creditsUsed);
           const {data: updateUsage, error: updateUsageError} = await supabase
           .from("user_credits")
           .update({
-            available_credits: available_credit,
-            total_credits_used: credits_used,
+            available_credits: availableCredit,
+            total_credits_used: creditsUsed,
             updated_at: new Date().toISOString()
-          }).eq("user_id", userId)
+          }).eq("user_id", userId).select().single()
+
+          if (updateUsage[0].total_credits_earned === updateUsage[0].total_credits_used) {
+            const {error: updateError} = await supabase
+            .from("user_profile")
+            .update({
+              current_subscription_type: "Free",
+              updated_at: new Date().toISOString()
+            }).eq("user_id", userId)
+          }
         }
       }
     }
@@ -469,7 +478,7 @@ export async function fetchUserCustomizedFilesWithDetails(
       };
     })
   );
-
+  resumeDetails.sort((a, b) => new Date(b?.dateModified).getTime() - new Date(a?.dateModified).getTime());
   // Filter out any null entries from failed fetches
   return resumeDetails.filter((detail): detail is FileData => detail !== null);
 }
