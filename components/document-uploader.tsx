@@ -166,6 +166,10 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
       try {
         const userId = (await supabase.auth.getUser()).data.user?.id;
         
+        if (newFile.size > 3242880) {
+          setFileError("File must be less than 3mb!")
+          return
+        } 
         const { data: uploadedFile, error: uploadError } = await supabase.storage
           .from("resume-files")
           .upload(`${userId}/${newFile.name}`, newFile);
@@ -211,7 +215,7 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
            // assign text a value
            extractedResumeContent = textUploaded.extracted_text
         } else {
-          setFileError("File is not supported! Try docx or doc!");
+          setFileError("File is not supported! Try docx, doc or pdf!");
           return
         }
         // retrieve details of recent uploaded file
