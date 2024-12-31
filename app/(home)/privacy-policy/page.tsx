@@ -46,7 +46,7 @@ export default function PrivacyPolicy() {
       <section className="mb-8">
         <h2 className="text-2xl font-semibold mb-4">Your Rights</h2>
         <p>
-          You have the right to access, modify, or delete your personal information. Please contact us at [Insert Contact Email] to make such requests.
+          You have the right to access, modify, or delete your personal information. Please contact us at info@ajalloh.com to make such requests.
         </p>
       </section>
 
