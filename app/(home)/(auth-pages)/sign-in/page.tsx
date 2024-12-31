@@ -174,11 +174,6 @@ export default function Login({ searchParams }: { searchParams: Message }) {
               </CardContent>
               <Toaster />
             </Card>
-            <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 ">
-              By clicking continue, you agree to our{" "}
-              <a href="https://docs.google.com/document/d/15Rwq1WWSHMkPtH1E9nX1TfIGpb4gEXy2HSAnZf4VTYE/edit?usp=sharing" target="_blank" className="hover:text-primary">Terms of Service</a> and{" "}
-              <a href="https://docs.google.com/document/d/1FkjE8br8MoZ30yoaPYk98JbslrSaHaiyckjQjY9nLNI/edit?usp=sharing" target="_blank" className="hover:text-primary">Privacy Policy</a>.
-            </div>
           </div>
         </div>
       </div>
