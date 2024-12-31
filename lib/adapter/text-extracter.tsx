@@ -1,3 +1,4 @@
+import * as pdfjsLib from 'pdfjs-dist';
 //import * as mammoth from 'mammoth';
 var mammoth = require("mammoth");
 

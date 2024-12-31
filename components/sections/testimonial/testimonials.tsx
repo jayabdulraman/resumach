@@ -6,34 +6,28 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface Testimonial {
   name: string;
   comment: string;
-  image: string;
 }
 
 const testimonials: Testimonial[] = [
   {
     name: "Amanda Williams",
     comment: "This is really a thank you for resumach. Tailoring resumes took too much time, so your app really made the whole process easy and smooth!",
-    image: "/api/placeholder/100/100"
   },
   {
     name: "James Clarfort",
     comment: "Hi! First off, many thanks for making resumach! I used to spend hours tailoring my resumes on specific jobs. I didn't know you can do it in seconds thanks to resumach. Have also recommended it to many of my friends...",
-    image: "/api/placeholder/100/100"
   },
   {
     name: "Foday Kamara",
     comment: "Hey, Just wanted to let you know that I was able to get an interview by submitting the resume your tool customized for me. I also wanted to let you know you really made a difference with your resume tailoring tool.",
-    image: "/api/placeholder/100/100"
   },
   {
     name: "Alice Mandrega",
     comment: "Hey, I have loved your resumach Website. Thank you so much for making this kind of thing.",
-    image: "/api/placeholder/100/100"
   },
   {
     name: "Innocent Ndobesie",
     comment: "Wow, the level of details and accuracy is spot on. Very much better than many premium resume builders...",
-    image: "/api/placeholder/100/100"
   }
 ];
 

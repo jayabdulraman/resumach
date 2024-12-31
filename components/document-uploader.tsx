@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,7 +11,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Select,
@@ -22,10 +20,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { AlertCircle, Loader2, Upload } from "lucide-react";
-import { useFormStatus } from "react-dom";
 import { useFormState } from "react-dom";
 import { extractTextAndKeywords } from "@/lib/adapter/actions";
 import { extractTextFromDOCX } from "@/lib/adapter/text-extracter";
+import { extractTextFromPDF } from "@/lib/adapter/pdf-extracter";
 import { SubmitButton } from "./submit-button";
 import { createClient } from "@/utils/supabase/client";
 import { fetchUserUploadedFilesWithDetails } from "@/lib/adapter/actions";
@@ -56,6 +54,11 @@ const initialState: FormState = {
 interface UploaderProps {
   userId: string;
   onUploadSuccess: () => Promise<void>;
+}
+
+interface ExtractedData {
+  text: string;
+  hyperlinks: string[];
 }
 
 
@@ -133,7 +136,8 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
       const fileType = selectedFile.type;
       if (
         fileType ===
-          "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || 
+          fileType === "application/pdf"
       ) {
         setNewFile(selectedFile);
         setNewUploadFile(selectedFile);
@@ -162,13 +166,17 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
       try {
         const userId = (await supabase.auth.getUser()).data.user?.id;
         
+        if (newFile.size > 3242880) {
+          setFileError("File must be less than 3mb!")
+          return
+        } 
         const { data: uploadedFile, error: uploadError } = await supabase.storage
           .from("resume-files")
           .upload(`${userId}/${newFile.name}`, newFile);
 
         if (uploadError) {
           setFileError(uploadError.message)
-          return router.push("/dashboard");
+          return
         }
 
         let extractedResumeContent;
@@ -189,10 +197,27 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
           }
           // assign text a value
           extractedResumeContent = textUploaded.extracted_text
+        } else if (newFile.type === "application/pdf") {
+          const resumeText = await extractTextFromPDF(newFile);
+          const { data: textUploaded, error: textError} = await supabase.from("document_content")
+          .insert({
+            extracted_text: resumeText,
+            file_id: uploadedFile.id,
+            user_id: userId
+          })
+          .select()
+          .single()
+
+          if (textError) {
+            setError("Failed to upload and parse PDF. Please try again.");
+            return
+          }
+           // assign text a value
+           extractedResumeContent = textUploaded.extracted_text
         } else {
-          setFileError("File is not supported! Try docx or doc!");
+          setFileError("File is not supported! Try docx, doc or pdf!");
+          return
         }
-        
         // retrieve details of recent uploaded file
         const recentDocument: Document = {
           id: uploadedFile.id,
@@ -233,7 +258,6 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
         setLimitError(error as string);
       }
     }
-    // Make this function async
     formData.set("jobDescription", jobDescription);
     formData.set("userCurrentSubscription", userCurrentSubscription as string);
     // get extracted resume text for selected document
@@ -350,7 +374,7 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
               <Input
                 id="document-upload"
                 type="file"
-                accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                accept="application/pdf,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 onChange={handleFileChange}
               />
               {fileError && (

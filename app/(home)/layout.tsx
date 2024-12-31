@@ -24,31 +24,8 @@ export default async function HomeLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
 
-  const { data: credit_packages, error } = await supabase
-    .from("credit_packages")
-    .select("*")
-    .eq("is_active", true)
-    .order("credits");
-
-  if (error) {
-    console.error("Package Fetch Error in Layout:", error.message);
-  }
-
-  const pricingTiers = credit_packages
-    ?.map((pkg) => ({
-      id: pkg.id,
-      name: pkg.name,
-      credits: pkg.credits,
-      price: pkg.price,
-      popular: pkg.is_popular,
-      features: pkg.description.split(",") as [],
-    }))
-    .filter((pack) => pack.name !== "Free");
+  const currentYear = new Date().getFullYear();
 
   return (
     <div className="flex flex-col h-screen overflow-x-hidden">
@@ -96,8 +73,8 @@ export default async function HomeLayout({
 
       <footer className="w-full flex flex-col items-center border-t text-center gap-4 py-8 px-4">
         <div className="text-balance text-center text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 ">
-          <a href="https://docs.google.com/document/d/15Rwq1WWSHMkPtH1E9nX1TfIGpb4gEXy2HSAnZf4VTYE/edit?usp=sharing" target="_blank" className="hover:text-primary">Terms of Service</a> and{" "}
-          <a href="https://docs.google.com/document/d/1FkjE8br8MoZ30yoaPYk98JbslrSaHaiyckjQjY9nLNI/edit?usp=sharing" target="_blank" className="hover:text-primary">Privacy Policy</a>
+          <a href="/terms-of-service" target="_blank" className="hover:text-primary">Terms of Service</a> and{" "}
+          <a href="/privacy-policy" target="_blank" className="hover:text-primary">Privacy Policy</a>
         </div>
         <div className="flex text-xs gap-4">
           <a
@@ -152,7 +129,7 @@ export default async function HomeLayout({
             </svg>
           </a>
         </div>
-        <p className="text-xs">&copy; 2024 resumach. All rights reserved.</p>
+        <p className="text-xs">&copy; {currentYear} resumach. All rights reserved.</p>
       </footer>
     </div>
   );
