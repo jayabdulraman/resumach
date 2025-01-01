@@ -69,9 +69,6 @@ const Pricing = ({credit_packages, user, page='home'}: PackagesProps) => {
                 <span className="text-3xl font-bold">${tier.price}</span>
                 <span className="text-gray-600 ml-2">({tier.credits} credits)</span>
               </div>
-              <p className="text-sm text-gray-600 mt-2">
-                ${(tier.price / tier.credits).toFixed(2)} per resume
-              </p>
             </CardHeader>
 
             <CardContent>
