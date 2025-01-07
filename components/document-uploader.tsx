@@ -32,6 +32,7 @@ import { useRateLimitStore } from '@/utils/stores/rateLimitStore';
 import { checkRateLimit, RateLimitError } from "@/lib/rate-limit";
 import { useDocumentStore } from "@/utils/stores/uploadFileStore";
 import { useAuthStore } from "@/utils/stores/auth";
+import { cn } from "@/utils/namespaces/style";
 
 type FormState = {
   message?: string; // This will contain the resume ID
@@ -80,6 +81,9 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
   const { setLimitError, setLimitInfo } = useRateLimitStore();
   const [ pendingText, setPendingText ] = useState(false);
   const userCurrentSubscription = useAuthStore((state) => state.userCurrentSubscription);
+  const JOB_DESCRIPTION_LIMIT = Number(process.env.NEXT_PUBLIC_JOB_DESCRIPTION_LIMIT)
+  const charCount = jobDescription.length;
+  const isOverLimit = charCount > JOB_DESCRIPTION_LIMIT;
 
   // set navigation router
   const router = useRouter();
@@ -88,7 +92,7 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
   const fetchFileContent = async (fileUrl: string): Promise<Blob> => {
     const response = await fetch(fileUrl);
     if (!response.ok) {
-      throw new Error("Failed to fetch file content");
+      console.error("Failed to fetch file content");
     }
     return await response.blob(); // Return the file content as a Blob
   };
@@ -170,19 +174,27 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
           setFileError("File must be less than 3mb!")
           return
         } 
-        const { data: uploadedFile, error: uploadError } = await supabase.storage
-          .from("resume-files")
-          .upload(`${userId}/${newFile.name}`, newFile);
-
-        if (uploadError) {
-          setFileError(uploadError.message)
-          return
-        }
 
         let extractedResumeContent;
+        let uploadedFileId;
+        const resumeContentLengthLimit = Number(process.env.NEXT_PUBLIC_RESUME_LIMIT)
 
         if (newFile.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
           const resumeText = await extractTextFromDOCX(newFile);
+          if (resumeText.length > resumeContentLengthLimit) {
+            setFileError(`Resume content length must be Less than ${resumeContentLengthLimit} characters!`)
+            return;
+          }
+          const { data: uploadedFile, error: uploadError } = await supabase.storage
+            .from("resume-files")
+            .upload(`${userId}/${newFile.name}`, newFile);
+
+          if (uploadError) {
+            setFileError(uploadError.message)
+            return
+          }
+          uploadedFileId = uploadedFile.id
+
           const { data: textUploaded, error: textError} = await supabase.from("document_content")
           .insert({
             extracted_text: resumeText,
@@ -199,6 +211,20 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
           extractedResumeContent = textUploaded.extracted_text
         } else if (newFile.type === "application/pdf") {
           const resumeText = await extractTextFromPDF(newFile);
+          if (resumeText.length > resumeContentLengthLimit) {
+            setFileError(`Resume content length must be Less than ${resumeContentLengthLimit} characters!`)
+            return;
+          }
+          const { data: uploadedFile, error: uploadError } = await supabase.storage
+            .from("resume-files")
+            .upload(`${userId}/${newFile.name}`, newFile);
+
+          if (uploadError) {
+            setFileError(uploadError.message)
+            return
+          }
+          uploadedFileId = uploadedFile.id
+
           const { data: textUploaded, error: textError} = await supabase.from("document_content")
           .insert({
             extracted_text: resumeText,
@@ -220,7 +246,7 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
         }
         // retrieve details of recent uploaded file
         const recentDocument: Document = {
-          id: uploadedFile.id,
+          id: uploadedFileId,
           name: newFile.name,
           type: newFile.type,
           file: newFile,
@@ -257,6 +283,11 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
       } catch(error) {
         setLimitError(error as string);
       }
+    }
+
+    if (jobDescription.length > 4500) {
+      setError("Job description length must be less than 4500 characters!")
+      return;
     }
 
     try {
@@ -303,32 +334,7 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
       setError(error as string);
       return false;
     }
-    // formData.set("jobDescription", jobDescription);
-    // formData.set("userCurrentSubscription", userCurrentSubscription as string);
-    // // get extracted resume text for selected document
-    // const resumeText = documents.find((doc) => doc.id === selectedDocument?.id)?.text || '';
-    // if (!resumeText){
-    //   setError("Could not parse resume! Try again!")
-    //   return;
-      
-    // } 
-    // formData.set("resumeText", resumeText)
-    // try {
-    //   return formAction(formData);
-    // } catch (error) {
-    //   setError(error as string);
-    //   return false;
-    // }
   };
-
-  // Watch for state changes and redirect when we get a resume ID
-  // useEffect(() => {
-  //   if (state?.message) { // message contains the resume ID
-  //     router.push(`/builder/${state.message}`);
-  //   } else if (state.error) {
-  //     setError(state.error);
-  //   }
-  // }, [state]);
 
   return (
     <>
@@ -380,30 +386,38 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
             </div>
           </div>
           <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="job-description-link">Job Description</Label>
-            <Textarea
-              id="job-description"
-              aria-label="Job description"
-              name="jobDescriptionLink"
-              placeholder="Copy and paste the job description here"
-              value={jobDescription}
-              onChangeCapture={(e) => setJobDescription(e.currentTarget.value)}
-            />
+            <div className="relative">
+              <Textarea
+                id="job-description"
+                aria-label="Job description"
+                name="jobDescriptionLink"
+                placeholder="Copy and paste the job description here"
+                value={jobDescription}
+                onChange={(e) => setJobDescription(e.target.value)}
+                className={cn(
+                  "resize-none",
+                  isOverLimit && "border-red-500 focus-visible:ring-red-500"
+                )}
+              />
+              <div className={cn(
+                "text-xs mt-1 text-right",
+                isOverLimit ? "text-red-500" : "text-muted-foreground"
+              )}>
+                {charCount}/{JOB_DESCRIPTION_LIMIT}
+              </div>
+            </div>
           </div>
           <DialogFooter>
             <SubmitButton
               className="w-full"
               pendingText="Generating..."
-              disabled={!jobDescription || !newFile}
+              disabled={!jobDescription || !newFile || isOverLimit}
             >
               Generate
             </SubmitButton>
           </DialogFooter>
           {error && <p style={{ color: "red" }}>{error}</p>}
         </form>
-        {/* {state?.message && (
-          <p className="text-sm text-green-500 mt-2">{state.message}</p>
-        )} */}
       </DialogContent>
       <Dialog open={isUploadModalOpen} onOpenChange={setIsUploadModalOpen}>
         <DialogContent className="sm:max-w-[425px]">

@@ -10,28 +10,25 @@ export async function POST(req: NextRequest) {
       if (!session) {
         return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
       }
-  
+
+      const jobDescription = formData.get('jobDescription') as string;
+      const resumeText = formData.get('resumeText') as string;
       // Check for existing processing ID first
       const existingProcessingId = formData.get('processingId') as string;
       if (existingProcessingId) {
         const { data: existingEntry, error: searchError } = await supabase
           .from('resume_processing')
-          .select('id, status, resume_metadata_id')
+          .select('id, status, resume_metadata_id, job_description, resume_text')
           .eq('id', existingProcessingId)
           .single();
   
         if (!searchError) {
-          // If there's an existing entry that's completed, return its resume
-          if (existingEntry?.status === 'completed' && existingEntry?.resume_metadata_id) {
-            return NextResponse.json({ 
-              processingId: existingEntry.id,
-              resumeId: existingEntry.resume_metadata_id,
-              status: 'completed'
-            });
-          }
-  
+          // Only reuse the processing if it's for the exact same content
+          const isSameContent = 
+          existingEntry.job_description === jobDescription && 
+          existingEntry.resume_text === resumeText;
           // If there's an existing entry that's pending or processing, retry processing
-          if (existingEntry?.status === 'pending' || existingEntry?.status === 'processing') {
+          if (isSameContent && (existingEntry?.status === 'pending' || existingEntry?.status === 'processing')) {
             // Trigger background processing again in case it stalled
             fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/resume/process`, {
               method: 'POST',
@@ -52,10 +49,15 @@ export async function POST(req: NextRequest) {
               status: existingEntry.status 
             });
           }
+          // If completed or failed, we'll create a new entry below
         }
       }
   
-      // Create new processing entry if no existing ID or previous one failed
+      // Create new processing entry if:
+      // 1. No existing ID was provided
+      // 2. Previous entry was not found
+      // 3. Previous entry was completed
+      // 4. Previous entry failed
       const { data: processingEntry, error: processingError } = await supabase
         .from('resume_processing')
         .insert({
