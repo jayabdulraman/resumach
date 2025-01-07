@@ -152,7 +152,6 @@ export async function signInAction (formData: FormData) {
 export async function GoogleAuth() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? `https://resumach.com`
   const supabase = createClient();
-  console.log("BASE URL:", baseUrl)
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
@@ -160,7 +159,6 @@ export async function GoogleAuth() {
     },
   })
   if (data.url) {
-    console.log("REDIRECT URL:", data.url)
     redirect(data.url) // use the redirect API for your server framework
   } else if (error) {
     console.error("Error during Google authentication:", error.message);
