@@ -177,11 +177,12 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
 
         let extractedResumeContent;
         let uploadedFileId;
+        const resumeContentLengthLimit = Number(process.env.NEXT_PUBLIC_RESUME_LIMIT)
 
         if (newFile.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
           const resumeText = await extractTextFromDOCX(newFile);
-          if (resumeText.length > 5000) {
-            setFileError("Resume content length must be Less than 5000 characters!")
+          if (resumeText.length > resumeContentLengthLimit) {
+            setFileError(`Resume content length must be Less than ${resumeContentLengthLimit} characters!`)
             return;
           }
           const { data: uploadedFile, error: uploadError } = await supabase.storage
@@ -210,8 +211,8 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
           extractedResumeContent = textUploaded.extracted_text
         } else if (newFile.type === "application/pdf") {
           const resumeText = await extractTextFromPDF(newFile);
-          if (resumeText.length > 5000) {
-            setFileError("Resume content length must be Less than 5000 characters!")
+          if (resumeText.length > resumeContentLengthLimit) {
+            setFileError(`Resume content length must be Less than ${resumeContentLengthLimit} characters!`)
             return;
           }
           const { data: uploadedFile, error: uploadError } = await supabase.storage
