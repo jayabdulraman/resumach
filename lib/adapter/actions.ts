@@ -104,19 +104,19 @@ export async function extractTextAndKeywords(
   const keywords = await extractKeywordsFromJobDescription(jobDescription as string);
 
   const system_prompt = `
-      You are an expert in tailoring resumes to match specific job description and their keywords.
+      You are an expert in tailoring resumes to match job description and their keywords.
       Given the job description and the following keywords, tailor the Resume to emphasize relevant skills and experience, 
-      including relevant job-related keywords and action verbs.
+      including relevant job-related keywords.
       Follow further instructions below:
-      - Add a one sentence summary of the candidate relevant to the job description.
-      - Divide the skills into relevant categories based on domain of job description and add any missing skills from the job description into the tailored resume. 
-      - Tailor the experience bullet points to add any missing relevant keywords and action verbs provided below, MAINTAIN any impact stats provided from the candidate's resume.
-      - Only add certifications or awards that are relevant to the job description.
+      - Add a one sentence summary of the candidate relevant to the job.
+      - Divide the skills into relevant categories based on domain of job, and add any missing skills from the job description. 
+      - Tailor the experience accomplishments in this format: 'Accomplished [X], as measured by [Y], by doing [Z],' ensuring clarity and conciseness. MAINTAIN any impact stats provided from the candidate's resume.
+      - Only add experience, projects, skills, certifications or awards that are relevant to the job description.
       - Do not use any markdown formatting in the response.
-      - DO NOT add information that is not provided in the keywords, job description, and resume. Do NOT hallucinate!
+      - DO NOT add information that is not provided in the keywords, job description, and resume.
       - If there is only one date in Education or Experience sections, use it as the end date.\n
 
-      Job Description Keywords & Action Verbs: ${keywords}\n
+      Job Description Keywords: ${keywords}\n
 
       Job Description:
       ${jobDescription}\n
@@ -173,7 +173,7 @@ export async function extractTextAndKeywords(
       if (e.constructor.name == "LengthFinishReasonError") {
         // Retry with a higher max tokens
         // @ts-ignore
-        console.log("Too many tokens: ", e.message);
+        console.log("Too many tokens: ", e);
         return {
           // @ts-ignore
           error: e.message
@@ -623,7 +623,6 @@ export async function createResumeAction (prevState:any, resumeData: ResumeDto) 
       );
       // Get current user
       const {data: { user }, error: userError} = await supabaseClient.auth.getUser(prevState.jwt);
-      console.log("AUTH USER:", user);
 
       if (userError || !user) {
         console.log("AUTH ERROR:", userError);
@@ -682,7 +681,6 @@ export async function createResumeAction (prevState:any, resumeData: ResumeDto) 
     const supabase = createClient();
     const {data: { user }, error: userError} = await supabase.auth.getUser();
       if (userError || !user) {
-        console.log("AUTH ERROR:", userError);
         throw new Error("User not authenticated");
       }
 
