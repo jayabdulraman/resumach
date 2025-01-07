@@ -623,7 +623,6 @@ export async function createResumeAction (prevState:any, resumeData: ResumeDto) 
       );
       // Get current user
       const {data: { user }, error: userError} = await supabaseClient.auth.getUser(prevState.jwt);
-      console.log("AUTH USER:", user);
 
       if (userError || !user) {
         console.log("AUTH ERROR:", userError);
@@ -682,7 +681,6 @@ export async function createResumeAction (prevState:any, resumeData: ResumeDto) 
     const supabase = createClient();
     const {data: { user }, error: userError} = await supabase.auth.getUser();
       if (userError || !user) {
-        console.log("AUTH ERROR:", userError);
         throw new Error("User not authenticated");
       }
 

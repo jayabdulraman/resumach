@@ -33,19 +33,19 @@ export async function POST(req: NextRequest) {
           // If there's an existing entry that's pending or processing, retry processing
           if (existingEntry?.status === 'pending' || existingEntry?.status === 'processing') {
             // Trigger background processing again in case it stalled
-            fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/resume/process`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${session.access_token}`,
-              },
-              body: JSON.stringify({
-                processingId: existingEntry.id,
-                jobDescription: formData.get('jobDescription'),
-                resumeText: formData.get('resumeText'),
-                userCurrentSubscription: formData.get('userCurrentSubscription')
-              }),
-            }).catch(console.error);
+            // fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/resume/process`, {
+            //   method: 'POST',
+            //   headers: {
+            //     'Content-Type': 'application/json',
+            //     'Authorization': `Bearer ${session.access_token}`,
+            //   },
+            //   body: JSON.stringify({
+            //     processingId: existingEntry.id,
+            //     jobDescription: formData.get('jobDescription'),
+            //     resumeText: formData.get('resumeText'),
+            //     userCurrentSubscription: formData.get('userCurrentSubscription')
+            //   }),
+            // }).catch(console.error);
   
             return NextResponse.json({ 
               processingId: existingEntry.id,
@@ -73,19 +73,19 @@ export async function POST(req: NextRequest) {
       if (processingError) throw processingError;
   
       // Trigger the background processing
-      fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/resume/process`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({
-          processingId: processingEntry.id,
-          jobDescription: formData.get('jobDescription'),
-          resumeText: formData.get('resumeText'),
-          userCurrentSubscription: formData.get('userCurrentSubscription')
-        }),
-      }).catch(console.error);
+    //   fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/resume/process`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'Authorization': `Bearer ${session.access_token}`,
+    //     },
+    //     body: JSON.stringify({
+    //       processingId: processingEntry.id,
+    //       jobDescription: formData.get('jobDescription'),
+    //       resumeText: formData.get('resumeText'),
+    //       userCurrentSubscription: formData.get('userCurrentSubscription')
+    //     }),
+    //   }).catch(console.error);
   
       return NextResponse.json({ 
         processingId: processingEntry.id,
