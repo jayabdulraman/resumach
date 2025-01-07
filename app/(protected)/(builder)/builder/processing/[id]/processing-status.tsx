@@ -91,12 +91,14 @@ export function ProcessingStatus({ processingId }: ProcessingStatusProps) {
               </div>
             </div>
           </Panel>
+          <PanelResizeHandle />
           <Panel defaultSize={40} className="overflow-hidden">
             {/* Main Content */}
             <div className="h-full">
               {error ? <ErrorContent /> : <LoadingContent />}
             </div>
           </Panel>
+          <PanelResizeHandle />
           <Panel
             minSize={25}
             maxSize={45}
