@@ -15,6 +15,7 @@ import { ResumeBuilder } from '../../artboard/resume-builder'
 import { cn } from "@/utils/namespaces/style";
 import { usePathname } from 'next/navigation'
 import { useLocalStorage } from '@/lib/hooks/use-local-storage'
+import { Loader2 } from 'lucide-react';
 
 type CreditPackagesTypes = {
   id: string;
@@ -76,6 +77,15 @@ export function ResumeBuilderComponent({ initialResume, resumeId, user, credit_p
   useEffect(() => {
     setNewResumeId(resumeId)
   })
+
+  if (!isDataLoaded) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <h2 className="text-2xl font-semibold">Loading Resume Builder</h2>
+      </div>
+    );
+  }
   
   if (isDesktop) {
     return (

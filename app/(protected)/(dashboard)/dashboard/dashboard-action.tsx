@@ -101,6 +101,16 @@ export function DashboardView({ UploadedUserFiles, CustomizedUserFiles, user, ra
     // set user session state
     useAuthStore.setState({user: user, userCurrentSubscription: userProfile?.current_subscription_type})
   }, [])
+
+  useEffect(() => {
+    // Check for error query parameter
+    const params = new URLSearchParams(window.location.search);
+    const error = params.get('error');
+    if (error) {
+      // Clear the error from URL
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, []);
   
 
   return (

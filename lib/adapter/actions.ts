@@ -3,6 +3,7 @@ import OpenAI from "openai";
 import { ResumeSchema } from "@/utils/resumeZodSchema";
 import { zodResponseFormat } from "openai/helpers/zod";
 import { createClient } from "@/utils/supabase/server";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { ResumeDto } from "../dto/resume";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
@@ -300,7 +301,7 @@ export async function extractTextAndKeywords(
       userId: user?.id as string,
     };
     
-    const createResumeDataResponse = await createResumeAction(resume);
+    const createResumeDataResponse = await createResumeAction({ jwt: prevState.jwt }, resume);
     // update usage
     if (userCurrentSubscription !== "Free") {
       const {data: getUserUsageData, error: usageError} = await supabase
@@ -344,7 +345,7 @@ export async function extractTextAndKeywords(
     const duration = endTime - startTime; // Duration in milliseconds
     const minutes = Math.floor(duration / 1000 / 60); // Convert to minutes
     const seconds = Math.floor((duration / 1000) % 60); // Remaining seconds
-    //console.log(`Time taken: ${minutes} minutes and ${seconds} seconds`);
+    console.log(`Time taken: ${minutes} minutes and ${seconds} seconds`);
 
     return {
       message: createResumeDataResponse.id as string,
@@ -607,18 +608,83 @@ export async function getPublicResume (resumeId: string) {
   }
 };
 
-export async function createResumeAction (resumeData: ResumeDto) {
-  const supabase = createClient();
+export async function createResumeAction (prevState:any, resumeData: ResumeDto) {
 
   try {
-    // Get current user
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser();
-    if (userError || !user) {
-      throw new Error("User not authenticated");
+    if (prevState.jwt) {
+      // doing this because edge function cannot access cookies for JWT which you need to access current logged-in user
+      const supabaseClient = createSupabaseClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        { 
+            auth: {persistSession: false,autoRefreshToken: false,},
+            global: { headers: { Authorization: `Bearer ${prevState.jwt}` } } 
+        }
+      );
+      // Get current user
+      const {data: { user }, error: userError} = await supabaseClient.auth.getUser(prevState.jwt);
+      console.log("AUTH USER:", user);
+
+      if (userError || !user) {
+        console.log("AUTH ERROR:", userError);
+        throw new Error("User not authenticated");
+      }
+
+      // First insert the resume data into resume_data table
+      const { data: resumeDataRecord, error: dataError } = await supabaseClient
+        .from("resume_data")
+        .insert({
+          basics: resumeData.data.basics,
+          summary: resumeData.data.sections.summary,
+          education: resumeData.data.sections.education,
+          experience: resumeData.data.sections.experience,
+          skills: resumeData.data.sections.skills,
+          projects: resumeData.data.sections.projects,
+          profiles: resumeData.data.sections.profiles,
+          awards: resumeData.data.sections.awards,
+          certifications: resumeData.data.sections.certifications,
+          volunteer: resumeData.data.sections.volunteer,
+          publications: resumeData.data.sections.publications,
+          references: resumeData.data.sections.references,
+          custom: resumeData.data.sections.custom,
+          metadata: resumeData.data.metadata,
+        })
+        .select()
+        .single();
+
+      if (dataError) {
+        throw new Error(`Error inserting resume data: ${dataError.message}`);
+      }
+
+      // Insert metadata into resume_metadata table
+      const { data: metadataRecord, error: metadataError } = await supabaseClient
+        .from("resume_metadata")
+        .insert({
+          title: resumeData.title,
+          slug: resumeData.slug,
+          visibility: resumeData.visibility,
+          locked: resumeData.locked,
+          user_id: user.id,
+          data: resumeDataRecord.id, // Reference to resume_data
+        })
+        .select()
+        .single();
+
+      if (metadataError) {
+        throw new Error(
+          `Error inserting resume metadata: ${metadataError.message}`
+        );
+      }
+
+      return metadataRecord;
     }
+    // Get current user by accessing jwt from cookies
+    const supabase = createClient();
+    const {data: { user }, error: userError} = await supabase.auth.getUser();
+      if (userError || !user) {
+        console.log("AUTH ERROR:", userError);
+        throw new Error("User not authenticated");
+      }
 
     // First insert the resume data into resume_data table
     const { data: resumeDataRecord, error: dataError } = await supabase

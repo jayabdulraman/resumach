@@ -1,10 +1,5 @@
 import { redis } from "./redis";
 
-interface RateLimitConfig {
-  maxRequests: number; // Maximum number of requests allowed
-  windowInHours: number; // Time window in hours
-}
-
 export class RateLimitError extends Error {
   constructor(message: string) {
     super(message);
