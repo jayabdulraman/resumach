@@ -258,32 +258,77 @@ export function DocumentUploaderComponent({userId, onUploadSuccess}: UploaderPro
         setLimitError(error as string);
       }
     }
-    formData.set("jobDescription", jobDescription);
-    formData.set("userCurrentSubscription", userCurrentSubscription as string);
-    // get extracted resume text for selected document
-    const resumeText = documents.find((doc) => doc.id === selectedDocument?.id)?.text || '';
-    if (resumeText){
-      formData.set("resumeText", resumeText)
-    } else {
-      setError("Could not parse resume! Try again!")
-      return;
-    }
+
     try {
-      return formAction(formData);
+       // Get stored processingId if exists
+      const storedProcessingId = localStorage.getItem('currentResumeProcessingId');
+      
+      formData.set("jobDescription", jobDescription);
+      formData.set("userCurrentSubscription", userCurrentSubscription as string);
+      
+      if (storedProcessingId) {
+        formData.append("processingId", storedProcessingId);
+      }
+      
+      // get extracted resume text for selected document
+      const resumeText = documents.find((doc) => doc.id === selectedDocument?.id)?.text || '';
+      if (!resumeText) {
+        setError("Could not parse resume! Try again!")
+        return;
+      }
+      formData.set("resumeText", resumeText);
+  
+      // Create processing entry
+      const response = await fetch('/api/resume/create', {
+        method: 'POST',
+        body: formData
+      });
+  
+      if (!response.ok) {
+        setError('Failed to initiate resume processing');
+        return;
+      }
+  
+      const { processingId } = await response.json();
+
+      // Save the processingId for future reference
+      if (processingId) {
+        localStorage.setItem('currentResumeProcessingId', processingId);
+      }
+      
+      // Redirect to processing status page
+      router.push(`/builder/processing/${processingId}`);
+  
     } catch (error) {
       setError(error as string);
       return false;
     }
+    // formData.set("jobDescription", jobDescription);
+    // formData.set("userCurrentSubscription", userCurrentSubscription as string);
+    // // get extracted resume text for selected document
+    // const resumeText = documents.find((doc) => doc.id === selectedDocument?.id)?.text || '';
+    // if (!resumeText){
+    //   setError("Could not parse resume! Try again!")
+    //   return;
+      
+    // } 
+    // formData.set("resumeText", resumeText)
+    // try {
+    //   return formAction(formData);
+    // } catch (error) {
+    //   setError(error as string);
+    //   return false;
+    // }
   };
 
   // Watch for state changes and redirect when we get a resume ID
-  useEffect(() => {
-    if (state?.message) { // message contains the resume ID
-      router.push(`/builder/${state.message}`);
-    } else if (state.error) {
-      setError(state.error);
-    }
-  }, [state]);
+  // useEffect(() => {
+  //   if (state?.message) { // message contains the resume ID
+  //     router.push(`/builder/${state.message}`);
+  //   } else if (state.error) {
+  //     setError(state.error);
+  //   }
+  // }, [state]);
 
   return (
     <>
