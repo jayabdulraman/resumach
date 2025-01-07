@@ -7,7 +7,8 @@ export async function GET(request: Request) {
   const code = searchParams.get('code')
   // if "next" is in param, use it as the redirect URL
   const next = searchParams.get('next') ?? '/'
-  
+  console.log("CODE:", code)
+  console.log("NEXT:", next)
   if (code) {
     const supabase = createClient()
     const { error } = await supabase.auth.exchangeCodeForSession(code)
@@ -15,11 +16,14 @@ export async function GET(request: Request) {
       const forwardedHost = request.headers.get('x-forwarded-host') // original origin before load balancer
       const isLocalEnv = process.env.NEXT_PUBLIC_NODE_ENV! === 'development'
       if (isLocalEnv) {
+        console.log("isLocalEnv:", isLocalEnv, origin, next)
         // we can be sure that there is no load balancer in between, so no need to watch for X-Forwarded-Host
         return NextResponse.redirect(`${origin}${next}`)
       } else if (forwardedHost) {
+        console.log("forwaredHost:", forwardedHost, next)
         return NextResponse.redirect(`https://${forwardedHost}${next}`)
       } else {
+        console.log("ORIGIN/NEXT:", origin, next)
         return NextResponse.redirect(`${origin}${next}`)
       }
     }
