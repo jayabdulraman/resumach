@@ -4,7 +4,6 @@ export async function generatePDF (elementId: string, resume: ResumeDto, resumeI
     try {
       // Get the current URL for the preview page
       const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!
-      console.log("BASE URL:", baseUrl)
       var previewUrl = `${baseUrl}/artboard/preview/${resumeId}`;
       const response = await fetch('/api/resume/generate', {
         method: 'POST',

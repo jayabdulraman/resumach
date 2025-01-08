@@ -35,7 +35,7 @@ export function TemplateSection(){
                 className="rounded-sm object-cover w-full h-full"
               />
               <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-transparent to-background/80">
-                <p className="absolute inset-x-0 bottom-2 text-center text-sm font-medium capitalize text-white">
+                <p className="absolute inset-x-0 bottom-2 text-center text-sm font-medium capitalize dark:text-white">
                   {template}
                 </p>
               </div>
