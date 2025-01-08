@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { pageSizeMap } from "@/utils/namespaces/page";
-import { Browser } from "puppeteer";
+import puppeteer, { Browser } from 'puppeteer';
+import chromium from '@sparticuz/chromium';
 
 export const maxDuration = 30;
 
@@ -12,8 +13,8 @@ export async function POST(request: NextRequest) {
     const filename = resume.title+".pdf";
 
     if (process.env.NEXT_PUBLIC_NODE_ENV !== 'development') {
-      const puppeteer = require('puppeteer-core');
-      const chromium = require("@sparticuz/chromium");
+      // const puppeteer = require('puppeteer-core');
+      // const chromium = require("@sparticuz/chromium");
       
       chromium.setHeadlessMode = true;
       chromium.setGraphicsMode = false;
@@ -34,10 +35,10 @@ export async function POST(request: NextRequest) {
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath(),
         headless: true,
-        ignoreHTTPSErrors: true,
+        // ignoreHTTPSErrors: true,
       })
     } else {
-      const puppeteer = require('puppeteer')
+      // const puppeteer = require('puppeteer')
       browser = await puppeteer.launch({
         headless: true,
         args: [
@@ -53,7 +54,8 @@ export async function POST(request: NextRequest) {
     // Create new page with increased timeout
     //@ts-ignore
     const page = await browser.newPage();
-    await page.setDefaultNavigationTimeout(30000); // 60 seconds timeout
+    await page.emulateMediaType('print');
+    page.setDefaultNavigationTimeout(30000); // 60 seconds timeout
 
     // Set viewport size
     await page.setViewport({
