@@ -174,7 +174,7 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (error) {
-    //console.error("PDF generation error:", error);
+    console.error("PDF generation error:", error);
     return NextResponse.json(
       { message: "Error generating PDF", error: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
