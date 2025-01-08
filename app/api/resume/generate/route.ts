@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { pageSizeMap } from "@/utils/namespaces/page";
 
-export const maxDuration = 30;
+export const maxDuration = 20;
 
 export async function POST(request: NextRequest) {
   let browser;
@@ -13,16 +13,18 @@ export async function POST(request: NextRequest) {
     if (process.env.NEXT_PUBLIC_NODE_ENV !== 'development') {
       const chromium = require("@sparticuz/chromium");
       const puppeteer = require('puppeteer-core')
+      console.log("PROFILE ICONS:", resume.data.sections.profiles.items)
       // Load icons for each profile item
-      if (resume.data.sections.profiles.items.length > 0) {
-        for (const item of resume.data.sections.profiles.items) {
-          if (item.visible) { // Check if the item is visible
-            await chromium.font(
-              `https://cdn.simpleicons.org/${item.icon}`
-            );
-          }
-        }
-      }
+      // if (resume.data.sections.profiles.items.length > 0) {
+      //   for (const item of resume.data.sections.profiles.items) {
+      //     if (item.visible) { // Check if the item is visible
+      //       console.log("PROFILE ICONS:", resume.data.sections.profiles.items)
+      //       await chromium.font(
+      //         `https://cdn.simpleicons.org/${item.icon}`
+      //       );
+      //     }
+      //   }
+      // }
       browser = await puppeteer.launch({
         args: chromium.args,
         defaultViewport: chromium.defaultViewport,
@@ -67,7 +69,7 @@ export async function POST(request: NextRequest) {
       } catch (error) {
         retries--;
         if (retries === 0) throw error;
-        await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 5s before retry
+        await new Promise(resolve => setTimeout(resolve, 3000)); // Wait 5s before retry
       }
     }
 
