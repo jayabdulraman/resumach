@@ -8,94 +8,100 @@ export async function POST(request: NextRequest) {
   try {
     const { previewUrl, elementId, resume } = await request.json();
     const metadataPage = resume.data.metadata.page;
-    const filename = resume.title+".pdf";
+    const filename = resume.title + ".pdf";
 
     if (process.env.NEXT_PUBLIC_NODE_ENV !== 'development') {
       const chromium = require("@sparticuz/chromium");
-      const puppeteer = require('puppeteer-core')
-      console.log("PROFILE ICONS:", resume.data.sections.profiles.items)
-      // Load icons for each profile item
-      // if (resume.data.sections.profiles.items.length > 0) {
-      //   for (const item of resume.data.sections.profiles.items) {
-      //     if (item.visible) { // Check if the item is visible
-      //       console.log("PROFILE ICONS:", resume.data.sections.profiles.items)
-      //       await chromium.font(
-      //         `https://cdn.simpleicons.org/${item.icon}`
-      //       );
-      //     }
-      //   }
-      // }
+      const puppeteer = require('puppeteer-core');
+      
       browser = await puppeteer.launch({
-        args: chromium.args,
+        args: [
+          ...chromium.args,
+          '--disable-web-security',
+          '--disable-gpu',
+        ],
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath(),
         headless: chromium.headless,
         ignoreHTTPSErrors: true,
-      })
+      });
     } else {
-      const puppeteer = require('puppeteer')
+      const puppeteer = require('puppeteer');
       browser = await puppeteer.launch({
         headless: true,
         args: [
           '--no-sandbox',
           '--disable-setuid-sandbox',
-          '--disable-dev-shm-usage',
-          '--disable-accelerated-2d-canvas',
           '--disable-gpu',
-          '--window-size=1920,1080'
+          '--disable-web-security',
         ],
       });
     }
-    // Create new page with increased timeout
-    const page = await browser.newPage();
-    await page.setDefaultNavigationTimeout(60000); // 60 seconds timeout
 
-    // Set viewport size
+    const page = await browser.newPage();
+    
+    // Optimize page settings
+    await page.setDefaultNavigationTimeout(15000);
     await page.setViewport({
-      width: 1920,
-      height: 1080,
-      deviceScaleFactor: 2, // Higher resolution
+      width: 1200,  // Reduced from 1920
+      height: 800,  // Reduced from 1080
+      deviceScaleFactor: 1.5,  // Reduced from 2 for faster rendering
     });
 
-    // Go to the specified URL with retry logic
-    let retries = 3;
-    while (retries > 0) {
-      try {
-        await page.goto(previewUrl, {
-          waitUntil: ["networkidle0", "domcontentloaded"],
-          timeout: 60000,
-        });
-        break;
-      } catch (error) {
-        retries--;
-        if (retries === 0) throw error;
-        await new Promise(resolve => setTimeout(resolve, 3000)); // Wait 5s before retry
+    // Optimize resource loading
+    await page.setRequestInterception(true);
+    page.on('request', (request:any) => {
+      // Only allow necessary resource types
+      const resourceType = request.resourceType();
+      if (['document', 'script', 'stylesheet', 'image', 'font'].includes(resourceType)) {
+        request.continue();
+      } else {
+        request.abort();
       }
-    }
+    });
 
-    // Wait for critical content
+    // Inject minimal image loading check
+    await page.evaluateOnNewDocument(() => {
+      window.addEventListener('load', () => {
+        const images = document.getElementsByTagName('img');
+        for (let img of images) {
+          if (!img.complete) {
+            img.addEventListener('error', () => img.dataset.error = 'true');
+            img.addEventListener('load', () => img.dataset.loaded = 'true');
+          } else {
+            img.dataset.loaded = 'true';
+          }
+        }
+      });
+    });
+
+    // Navigate to page with optimized wait conditions
+    await page.goto(previewUrl, {
+      waitUntil: 'domcontentloaded',  // Changed from networkidle0 for faster loading
+      timeout: 10000,
+    });
+
+    // Wait for essential content with reduced timeouts
     await Promise.all([
-      page.waitForFunction(() => document.readyState === 'complete'),
-      page.waitForSelector(`#${elementId}`, { timeout: 30000 }),
-      // Wait for fonts to load
-      page.waitForFunction(() => document.fonts.ready),
-      // Wait for images to load
-      page.waitForFunction(() => 
-        Array.from(document.images).every((img) => img.complete)
-      ),
+      page.waitForSelector(`#${elementId}`, { timeout: 5000 }),
+      page.waitForFunction(() => document.fonts.ready, { timeout: 5000 }),
+      // Optimized image loading check specifically for icons
+      page.waitForFunction(() => {
+        const images = document.getElementsByTagName('img');
+        return Array.from(images).every(img => {
+          // Consider small images (icons) as loaded if they have dimensions
+          if (img.width > 0 && img.height > 0 && img.width <= 64 && img.height <= 64) {
+            return true;
+          }
+          return img.dataset.loaded === 'true' || img.dataset.error === 'true';
+        });
+      }, { timeout: 5000 }),
     ]);
 
-    // Additional wait for any dynamic content
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
-    // Get the element
-    const element = await page.$(`#${elementId}`);
-    if (!element) {
-      throw new Error(`Element with ID ${elementId} not found`);
-    }
+    // Short wait for final render
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     const MM_TO_PX = 3.78;
-    // Generate PDF with specific settings
     const pdf = await page.pdf({
       format: "A4",
       printBackground: true,
@@ -105,7 +111,7 @@ export async function POST(request: NextRequest) {
       height: `${pageSizeMap[metadataPage.format].height * MM_TO_PX}px`,
       margin: { top: 0, right: 0, bottom: 0, left: 0 },
       preferCSSPageSize: true,
-      timeout: 60000,
+      timeout: 10000,
     });
 
     return new NextResponse(pdf, {
