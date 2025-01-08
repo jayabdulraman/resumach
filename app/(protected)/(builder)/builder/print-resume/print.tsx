@@ -1,17 +1,12 @@
-import { usePDFStore } from '@/utils/stores/print';
 import { ResumeDto } from '@/lib/dto/resume';
 
 export async function generatePDF (elementId: string, resume: ResumeDto, resumeId: string): Promise<void> {
-    const { setGenerating } = usePDFStore.getState();
     try {
-      setGenerating(true);
-      // Get the current URL
-      const url = window.location.href;
-    
       // Get the current URL for the preview page
-      const baseUrl = window.location.origin;
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!
+      console.log("BASE URL:", baseUrl)
       var previewUrl = `${baseUrl}/artboard/preview/${resumeId}`;
-      const response = await fetch('/api/generate-pdf/', {
+      const response = await fetch('/api/resume/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -24,7 +19,7 @@ export async function generatePDF (elementId: string, resume: ResumeDto, resumeI
       });
   
       if (!response.ok) {
-        throw new Error('PDF generation failed');
+        throw new Error(response.statusText);
       }
   
       // Get the PDF blob
@@ -46,8 +41,6 @@ export async function generatePDF (elementId: string, resume: ResumeDto, resumeI
     } catch (error) {
       console.error('Error downloading PDF:', error);
       throw error;
-    } finally {
-        setGenerating(false);
     }
 };
 

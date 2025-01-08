@@ -1,19 +1,23 @@
+'use client'
 import { CircleNotch, FilePdf } from "@phosphor-icons/react";
 import { Button } from "@/components/ui";
 import { useResumeStore } from "@/utils/stores/resume";
 import { getSectionIcon } from "../shared/section-icon";
 import { generatePDF } from "@/app/(protected)/(builder)/builder/print-resume/print";
-import { usePDFStore } from "@/utils/stores/print";
+import { useState } from "react";
 
 export function ExportSection() {
-  const isGenerating = usePDFStore((state) => state.isGenerating);
+  const [isGenerating, setGenerating] = useState(false)
   const { resume } = useResumeStore.getState();
 
   const handleDownload = async () => {
     try {
+      setGenerating(true)
       await generatePDF("resume-id", resume, resume.id as string);
     } catch (error) {
       console.error("Failed to generate PDF:", error);
+    } finally {
+      setGenerating(false)
     }
   };
 
