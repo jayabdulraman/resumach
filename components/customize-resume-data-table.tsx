@@ -115,7 +115,6 @@ export function CustomizedResumeDataTable({ data, onDeleteSuccess }: DataTablePr
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
-  
   const [filesData, setFilesData] = useState<FileData[]>([]); // State to hold file data
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -139,13 +138,25 @@ export function CustomizedResumeDataTable({ data, onDeleteSuccess }: DataTablePr
     })
 
     try {
-      await generatePDF("resume-id", file.resume as ResumeDto, file.id)
-      // Update the toast to indicate success
-      toast({
-        title: "Download ready ✅",
-        description: "Your file is ready for download.",
-        duration: 5000,
+      const res = await generatePDF("resume-id", file.resume as ResumeDto, file.id)
+      // @ts-ignore
+      if (res.success) {
+        // Update the toast to indicate success
+        toast({
+          title: "Download ready ✅",
+          description: "Your file is ready for download.",
+          duration: 5000,
         })
+      } else {
+        // Update the toast to indicate an error
+        toast({
+          title: "Download failed ❌",
+          description: "There was an error preparing your file. Please try again!",
+          variant: "destructive",
+          duration: 5000,
+      });
+      }
+     
       } catch (error) {
       // Update the toast to indicate an error
       toast({
@@ -154,9 +165,7 @@ export function CustomizedResumeDataTable({ data, onDeleteSuccess }: DataTablePr
         variant: "destructive",
         duration: 5000,
       })
-      } finally {
-      // Optionally dismiss the initial loading toast if your toast library supports it
-    }
+      }
   }
 
   // Handle delete action
