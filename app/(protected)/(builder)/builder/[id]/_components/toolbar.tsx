@@ -1,3 +1,4 @@
+'use client'
 import {
   ArrowClockwise,
   ArrowCounterClockwise,
@@ -16,7 +17,7 @@ import { useBuilderStore } from "@/utils/stores/builder";
 import { useResumeStore, useTemporalResumeStore } from "@/utils/stores/resume";
 import { useZoomStore } from "@/utils/stores/zoom";
 import { generatePDF } from "../../print-resume/print";
-import { usePDFStore } from "@/utils/stores/print";
+import { useState } from "react";
 
 type ZoomType = 'ZOOM_IN' | 'ZOOM_OUT' | 'RESET_VIEW' | 'CENTER_VIEW' | null
 
@@ -33,33 +34,18 @@ export default function BuilderToolbar() {
   const pageOptions = useResumeStore((state) => state.resume.data.metadata.page.options);
   const resume = useResumeStore((state) => state.resume);
   const resumeId = useResumeStore((state) => state.resume.id)
-  const isGenerating = usePDFStore((state) => state.isGenerating);
+  const [isGenerating, setGenerating] = useState(false)
 
   const handleDownload = async () => {
     try {
+      setGenerating(true)
       await generatePDF("resume-id", resume, resumeId as string);
     } catch (error) {
       console.error('Failed to generate PDF:', error);
+    } finally {
+      setGenerating(false)
     }
   };
-
-  // const onPrint = async () => {
-  //   // const { url } = await printResume({ id });
-  //   const url = ""
-
-  //   openInNewTab(url);
-  // };
-
-  // const onCopy = async () => {
-  //   const { url } = await printResume({ id });
-  //   await navigator.clipboard.writeText(url);
-
-  //   toast({
-  //     variant: "success",
-  //     title: t`A link has been copied to your clipboard.`,
-  //     description: t`Anyone with this link can view and download the resume. Share it on your profile or with recruiters.`,
-  //   });
-  // };
 
   const handleZoom = (type: ZoomType) => {
     setZoomType(type)
@@ -133,44 +119,6 @@ export default function BuilderToolbar() {
         </TooltipProvider>
 
         <Separator orientation="vertical" className="h-9" />
-
-        {/* <Tooltip content={`Toggle Page Break Line`}>
-          <Toggle
-            className="rounded-none"
-            pressed={pageOptions.breakLine}
-            onPressedChange={(pressed) => {
-              setValue("metadata.page.options.breakLine", pressed);
-            }}
-          >
-            <LineSegment />
-          </Toggle>
-        </Tooltip> */}
-
-        {/* <Tooltip content={`Toggle Page Numbers`}>
-          <Toggle
-            className="rounded-none"
-            pressed={pageOptions.pageNumbers}
-            onPressedChange={(pressed) => {
-              setValue("metadata.page.options.pageNumbers", pressed);
-            }}
-          >
-            <Hash />
-          </Toggle>
-        </Tooltip>
-
-        <Separator orientation="vertical" className="h-9" /> */}
-
-        {/* <Tooltip content={`Copy Link to Resume`}>
-          <Button
-            size="icon"
-            variant="ghost"
-            className="rounded-none"
-            disabled={!isPublic}
-            onClick={onCopy}
-          >
-            <LinkSimple />
-          </Button>
-        </Tooltip> */}
         
         <TooltipProvider>
           <Tooltip content={`Download PDF`}>
