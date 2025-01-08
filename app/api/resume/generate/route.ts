@@ -9,14 +9,14 @@ export async function POST(request: NextRequest) {
     const filename = resume.title+".pdf";
 
     if (process.env.NEXT_PUBLIC_NODE_ENV !== 'development') {
-      const chromium = require('chrome-aws-lambda');
+      const chromium = require("@sparticuz/chromium");
       const puppeteer = require('puppeteer-core')
-      chromium.setGraphicsMode = false
       browser = await puppeteer.launch({
-          args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox'],
-          defaultViewport: chromium.defaultViewport,
-          executablePath: await chromium.executablePath,
-          headless: chromium.headless,
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath(),
+        headless: chromium.headless,
+        ignoreHTTPSErrors: true,
       })
     } else {
       const puppeteer = require('puppeteer')
