@@ -84,6 +84,7 @@ const Header = () => {
                 />
               </div>
             ))}
+            <img width={fontSize} height={fontSize} src="/screenshots/icon.png" alt="favicon"/>
         </div>
       )}
     </div>
