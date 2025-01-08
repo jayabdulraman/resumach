@@ -19,6 +19,10 @@ export async function POST(request: NextRequest) {
           ...chromium.args,
           '--disable-web-security',
           '--disable-gpu',
+          '--enable-async-dns', // Enable async DNS lookups
+          '--no-first-run',     // Skip first run tasks
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
         ],
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath(),
@@ -40,66 +44,115 @@ export async function POST(request: NextRequest) {
 
     const page = await browser.newPage();
     
-    // Optimize page settings
+    // Set shorter timeout for initial page load
     await page.setDefaultNavigationTimeout(15000);
+    
+    // Set viewport
     await page.setViewport({
-      width: 1200,  // Reduced from 1920
-      height: 800,  // Reduced from 1080
-      deviceScaleFactor: 1.5,  // Reduced from 2 for faster rendering
+      width: 1200,
+      height: 800,
+      deviceScaleFactor: 1.5,
     });
 
-    // Optimize resource loading
+    // Enable request interception
     await page.setRequestInterception(true);
-    page.on('request', (request:any) => {
-      // Only allow necessary resource types
+
+    // Track failed image requests
+    const failedImages = new Set();
+
+    // Handle requests
+    page.on('request', (request: { resourceType: () => any; url: () => any; continue: () => void; abort: () => void; }) => {
       const resourceType = request.resourceType();
-      if (['document', 'script', 'stylesheet', 'image', 'font'].includes(resourceType)) {
+      if (resourceType === 'image') {
+        // Store the image URL
+        const imageUrl = request.url();
+        // Only proceed with the request if we haven't seen it fail before
+        if (!failedImages.has(imageUrl)) {
+          request.continue();
+        } else {
+          request.abort();
+        }
+      } else if (['document', 'script', 'stylesheet', 'font'].includes(resourceType)) {
         request.continue();
       } else {
         request.abort();
       }
     });
 
-    // Inject minimal image loading check
+    // Handle failed requests
+    page.on('requestfailed', (request: { resourceType: () => string; url: () => unknown; }) => {
+      if (request.resourceType() === 'image') {
+        failedImages.add(request.url());
+      }
+    });
+
+    console.log("FAILED IMAGES:", failedImages)
+
+    // Inject code to handle image loading
     await page.evaluateOnNewDocument(() => {
       window.addEventListener('load', () => {
         const images = document.getElementsByTagName('img');
+        console.log("IMAGES TO LOAD:", images)
         for (let img of images) {
-          if (!img.complete) {
-            img.addEventListener('error', () => img.dataset.error = 'true');
-            img.addEventListener('load', () => img.dataset.loaded = 'true');
-          } else {
-            img.dataset.loaded = 'true';
+          // Force reload any images that failed to load
+          if (!img.complete || img.naturalHeight === 0) {
+            const originalSrc = img.src;
+            img.src = '';  // Clear the src
+            setTimeout(() => {
+              img.src = originalSrc;  // Retry loading
+            }, 100);
           }
+          
+          // Add load/error listeners
+          img.addEventListener('load', () => {
+            img.dataset.loaded = 'true';
+          });
+          
+          img.addEventListener('error', () => {
+            img.dataset.error = 'true';
+          });
         }
       });
     });
 
-    // Navigate to page with optimized wait conditions
+    // Navigate to page
     await page.goto(previewUrl, {
-      waitUntil: 'domcontentloaded',  // Changed from networkidle0 for faster loading
+      waitUntil: 'networkidle0',  // Wait until network is quiet
       timeout: 10000,
     });
 
-    // Wait for essential content with reduced timeouts
+    // Wait for content and manually check images
     await Promise.all([
       page.waitForSelector(`#${elementId}`, { timeout: 5000 }),
       page.waitForFunction(() => document.fonts.ready, { timeout: 5000 }),
-      // Optimized image loading check specifically for icons
+      // Custom image loading check
       page.waitForFunction(() => {
         const images = document.getElementsByTagName('img');
-        return Array.from(images).every(img => {
-          // Consider small images (icons) as loaded if they have dimensions
-          if (img.width > 0 && img.height > 0 && img.width <= 64 && img.height <= 64) {
-            return true;
+        let allLoaded = true;
+        console.log("IMAGES LOADING CHECK:", images)
+        for (const img of images) {
+          // Check if image is properly loaded
+          if (!img.complete || img.naturalHeight === 0) {
+            allLoaded = false;
+            break;
           }
-          return img.dataset.loaded === 'true' || img.dataset.error === 'true';
-        });
+        }
+        
+        return allLoaded;
       }, { timeout: 5000 }),
     ]);
 
-    // Short wait for final render
-    await new Promise(resolve => setTimeout(resolve, 500));
+    // Additional wait for final render
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Check and log any unloaded images before PDF generation
+    await page.evaluate(() => {
+      const images = document.getElementsByTagName('img');
+      const unloadedImages = Array.from(images).filter(img => !img.complete || img.naturalHeight === 0);
+      if (unloadedImages.length > 0) {
+        console.warn('Unloaded images found:', unloadedImages.map(img => img.src));
+      }
+    });
 
     const MM_TO_PX = 3.78;
     const pdf = await page.pdf({
