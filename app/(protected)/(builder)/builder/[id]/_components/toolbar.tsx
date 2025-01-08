@@ -39,7 +39,24 @@ export default function BuilderToolbar() {
   const handleDownload = async () => {
     try {
       setGenerating(true)
-      await generatePDF("resume-id", resume, resumeId as string);
+      const res = await generatePDF("resume-id", resume, resumeId as string);
+      // @ts-ignore
+      if (res.success) {
+        // Update the toast to indicate success
+        toast({
+          title: "Download ready ✅",
+          description: "Your file is ready for download.",
+          duration: 5000,
+        })
+      } else {
+        // Update the toast to indicate an error
+        toast({
+          title: "Download failed ❌",
+          description: "There was an error preparing your file. Please try again!",
+          variant: "destructive",
+          duration: 5000,
+        });
+      }
     } catch (error) {
       console.error('Failed to generate PDF:', error);
     } finally {

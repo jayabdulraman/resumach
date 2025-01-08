@@ -1,5 +1,4 @@
 import { ResumeDto } from '@/lib/dto/resume';
-import { NextResponse } from 'next/server';
 
 export async function generatePDF (elementId: string, resume: ResumeDto, resumeId: string): Promise<void> {
     try {
@@ -40,6 +39,8 @@ export async function generatePDF (elementId: string, resume: ResumeDto, resumeI
       
       // Clean up
       window.URL.revokeObjectURL(downloadUrl);
+      // @ts-ignore
+      return { success: true };
     } catch (error) {
       console.error('Error downloading PDF:', error);
       // @ts-ignore

@@ -134,7 +134,6 @@ export function CustomizedResumeDataTable({ data, onDeleteSuccess }: DataTablePr
     toast({
       title: "Download in progress...",
       description: "Your file is being prepared for download.",
-      icon: <Loader2 className="animate-spin h-5 w-5" />,
     })
 
     try {
