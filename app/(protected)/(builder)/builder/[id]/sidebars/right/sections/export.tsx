@@ -5,15 +5,34 @@ import { useResumeStore } from "@/utils/stores/resume";
 import { getSectionIcon } from "../shared/section-icon";
 import { generatePDF } from "@/app/(protected)/(builder)/builder/print-resume/print";
 import { useState } from "react";
+import { useToast } from "@/lib/hooks/use-toast";
 
 export function ExportSection() {
   const [isGenerating, setGenerating] = useState(false)
   const { resume } = useResumeStore.getState();
+  const { toast } = useToast();
 
   const handleDownload = async () => {
     try {
       setGenerating(true)
-      await generatePDF("resume-id", resume, resume.id as string);
+      const res = await generatePDF("resume-id", resume, resume.id as string);
+      // @ts-ignore
+      if (res.success) {
+        // Update the toast to indicate success
+        toast({
+          title: "Download ready ✅",
+          description: "Your file is ready for download.",
+          duration: 5000,
+        })
+      } else {
+        // Update the toast to indicate an error
+        toast({
+          title: "Download failed ❌",
+          description: "There was an error preparing your file. Please try again!",
+          variant: "destructive",
+          duration: 5000,
+        });
+      }
     } catch (error) {
       console.error("Failed to generate PDF:", error);
     } finally {
