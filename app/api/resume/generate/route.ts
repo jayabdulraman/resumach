@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { pageSizeMap } from "@/utils/namespaces/page";
+import { Browser } from "puppeteer";
 
 export const maxDuration = 30;
 
 export async function POST(request: NextRequest) {
-  let browser;
+  let browser: Browser | undefined | null;
   try {
     const { previewUrl, elementId, resume } = await request.json();
     const metadataPage = resume.data.metadata.page;
@@ -14,18 +15,25 @@ export async function POST(request: NextRequest) {
       const puppeteer = require('puppeteer-core');
       const chromium = require("@sparticuz/chromium");
       
+      chromium.setHeadlessMode = true;
       chromium.setGraphicsMode = false;
       browser = await puppeteer.launch({
         args: [
-          ...chromium.args,
-          '--disable-web-security',
-          '--disable-gpu',
+          '--font-render-hinting=none', // Improves font-rendering quality and spacing
           '--no-sandbox',
           '--disable-setuid-sandbox',
+          '--disable-gpu',
+          '--disable-dev-shm-usage',
+          '--disable-accelerated-2d-canvas',
+          '--disable-animations',
+          '--disable-background-timer-throttling',
+          '--disable-restore-session-state',
+          '--disable-web-security', // Only if necessary, be cautious with security implications
+          '--single-process', // Be cautious as this can affect stability in some environments
         ],
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath(),
-        headless: chromium.headless,
+        headless: true,
         ignoreHTTPSErrors: true,
       })
     } else {
@@ -43,6 +51,7 @@ export async function POST(request: NextRequest) {
       });
     }
     // Create new page with increased timeout
+    //@ts-ignore
     const page = await browser.newPage();
     await page.setDefaultNavigationTimeout(30000); // 60 seconds timeout
 
