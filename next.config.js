@@ -11,6 +11,9 @@ const nextConfig = {
       }
       return config;
     },
+    experimental: {
+      serverComponentsExternalPackages: ['puppeteer-core', 'chrome-aws-lambda']
+    }
   };
   
   module.exports = nextConfig;
