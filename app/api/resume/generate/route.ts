@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
       browser = await puppeteer.launch({
           args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox'],
           defaultViewport: chromium.defaultViewport,
-          executablePath: await chromium.executablePath(),
+          executablePath: await chromium.executablePath,
           headless: chromium.headless,
       })
     } else {
