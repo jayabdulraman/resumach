@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import puppeteer from "puppeteer";
 import { pageSizeMap } from "@/utils/namespaces/page";
 
 export async function POST(request: NextRequest) {
@@ -9,19 +8,30 @@ export async function POST(request: NextRequest) {
     const metadataPage = resume.data.metadata.page;
     const filename = resume.title+".pdf";
 
-    // Launch browser with increased timeout
-    browser = await puppeteer.launch({
-      headless: true,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-accelerated-2d-canvas',
-        '--disable-gpu',
-        '--window-size=1920,1080'
-      ],
-    });
-
+    if (process.env.NEXT_PUBLIC_NODE_ENV !== 'development') {
+      const chromium = require('@sparticuz/chromium')
+      const puppeteer = require('puppeteer-core')
+      chromium.setGraphicsMode = false
+      browser = await puppeteer.launch({
+          args: chromium.args,
+          defaultViewport: chromium.defaultViewport,
+          executablePath: await chromium.executablePath(),
+          headless: chromium.headless,
+      })
+    } else {
+      const puppeteer = require('puppeteer')
+      browser = await puppeteer.launch({
+        headless: true,
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-accelerated-2d-canvas',
+          '--disable-gpu',
+          '--window-size=1920,1080'
+        ],
+      });
+    }
     // Create new page with increased timeout
     const page = await browser.newPage();
     await page.setDefaultNavigationTimeout(60000); // 60 seconds timeout

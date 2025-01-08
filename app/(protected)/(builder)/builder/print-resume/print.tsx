@@ -18,10 +18,6 @@ export async function generatePDF (elementId: string, resume: ResumeDto, resumeI
         }),
       });
   
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-  
       // Get the PDF blob
       const blob = await response.blob();
       
