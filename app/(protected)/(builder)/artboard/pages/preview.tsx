@@ -16,8 +16,6 @@ export default function PreviewLayout({ resume }: PreviewLayoutProps){
   const [isLoading, setIsLoading] = useState(true);
   const layout = resume.data.metadata.layout
   const template = resume.data.metadata.template as Template
-  // const layout = useResumeStore((state) => state.resume.data.metadata.layout);
-  // const template = useResumeStore((state) => state.resume.data.metadata.template as Template);
   const Template = useMemo(() => getTemplate(template), [template]);
 
   useEffect(() => {
