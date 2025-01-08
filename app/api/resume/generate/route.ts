@@ -15,7 +15,6 @@ export async function POST(request: NextRequest) {
       const chromium = require("@sparticuz/chromium");
       
       chromium.setGraphicsMode = false;
-      console.log("PROFILE ICONS:", resume.data.sections.profiles.items)
       browser = await puppeteer.launch({
         args: [
           ...chromium.args,
