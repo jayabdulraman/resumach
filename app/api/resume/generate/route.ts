@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
     const page = await browser.newPage();
     
     // Set shorter timeout for initial page load
-    await page.setDefaultNavigationTimeout(15000);
+    await page.setDefaultNavigationTimeout(20000);
     
     // Set viewport
     await page.setViewport({
@@ -118,13 +118,13 @@ export async function POST(request: NextRequest) {
     // Navigate to page
     await page.goto(previewUrl, {
       waitUntil: 'networkidle0',  // Wait until network is quiet
-      timeout: 10000,
+      timeout: 20000,
     });
 
     // Wait for content and manually check images
     await Promise.all([
-      page.waitForSelector(`#${elementId}`, { timeout: 5000 }),
-      page.waitForFunction(() => document.fonts.ready, { timeout: 5000 }),
+      page.waitForSelector(`#${elementId}`, { timeout: 20000 }),
+      page.waitForFunction(() => document.fonts.ready, { timeout: 20000 }),
       // Custom image loading check
       page.waitForFunction(() => {
         const images = document.getElementsByTagName('img');
@@ -139,7 +139,7 @@ export async function POST(request: NextRequest) {
         }
         
         return allLoaded;
-      }, { timeout: 5000 }),
+      }, { timeout: 20000 }),
     ]);
 
     // Additional wait for final render
@@ -164,7 +164,7 @@ export async function POST(request: NextRequest) {
       height: `${pageSizeMap[metadataPage.format].height * MM_TO_PX}px`,
       margin: { top: 0, right: 0, bottom: 0, left: 0 },
       preferCSSPageSize: true,
-      timeout: 10000,
+      timeout: 20000,
     });
 
     return new NextResponse(pdf, {
@@ -174,7 +174,7 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("PDF generation error:", error);
+    //console.error("PDF generation error:", error);
     return NextResponse.json(
       { message: "Error generating PDF", error: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }

@@ -1,4 +1,5 @@
 import { ResumeDto } from '@/lib/dto/resume';
+import { NextResponse } from 'next/server';
 
 export async function generatePDF (elementId: string, resume: ResumeDto, resumeId: string): Promise<void> {
     try {
@@ -16,6 +17,12 @@ export async function generatePDF (elementId: string, resume: ResumeDto, resumeI
           resume,
         }),
       });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        //@ts-ignore
+        return { success: false, error: errorData.message || 'Failed to generate PDF' };
+      }
   
       // Get the PDF blob
       const blob = await response.blob();
@@ -35,7 +42,8 @@ export async function generatePDF (elementId: string, resume: ResumeDto, resumeI
       window.URL.revokeObjectURL(downloadUrl);
     } catch (error) {
       console.error('Error downloading PDF:', error);
-      throw error;
+      // @ts-ignore
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error occurred' };
     }
 };
 
