@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { pageSizeMap } from "@/utils/namespaces/page";
-import puppeteer, { Browser } from 'puppeteer';
-import chromium from '@sparticuz/chromium';
+import { Browser } from 'puppeteer';
 
 export const maxDuration = 30;
 
@@ -13,8 +12,8 @@ export async function POST(request: NextRequest) {
     const filename = resume.title+".pdf";
 
     if (process.env.NEXT_PUBLIC_NODE_ENV !== 'development') {
-      // const puppeteer = require('puppeteer-core');
-      // const chromium = require("@sparticuz/chromium");
+      const puppeteer = require('puppeteer-core');
+      const chromium = require("@sparticuz/chromium");
       
       chromium.setHeadlessMode = true;
       chromium.setGraphicsMode = false;
@@ -35,10 +34,10 @@ export async function POST(request: NextRequest) {
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath(),
         headless: true,
-        // ignoreHTTPSErrors: true,
+        ignoreHTTPSErrors: true,
       })
     } else {
-      // const puppeteer = require('puppeteer')
+      const puppeteer = require('puppeteer')
       browser = await puppeteer.launch({
         headless: true,
         args: [
@@ -93,13 +92,15 @@ export async function POST(request: NextRequest) {
     ]);
 
     // Additional wait for any dynamic content
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise(resolve => setTimeout(resolve, 20000));
 
     // Get the element
     const element = await page.$(`#${elementId}`);
     if (!element) {
       console.error(`Element with ID ${elementId} not found`);
     }
+
+    page.on('requestfailed', (req) => console.log("PUPPETEER REQUEST FAILED:", req.url(), req.failure()));
 
     const MM_TO_PX = 3.78;
     // Generate PDF with specific settings
