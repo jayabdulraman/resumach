@@ -18,19 +18,7 @@ export async function POST(request: NextRequest) {
       chromium.setHeadlessMode = true;
       chromium.setGraphicsMode = false;
       browser = await puppeteer.launch({
-        args: [
-          '--font-render-hinting=none', // Improves font-rendering quality and spacing
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-          '--disable-gpu',
-          '--disable-dev-shm-usage',
-          '--disable-accelerated-2d-canvas',
-          '--disable-animations',
-          '--disable-background-timer-throttling',
-          '--disable-restore-session-state',
-          '--disable-web-security', // Only if necessary, be cautious with security implications
-          '--single-process', // Be cautious as this can affect stability in some environments
-        ],
+        args: chromium.args,
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath(),
         headless: true,
@@ -55,10 +43,10 @@ export async function POST(request: NextRequest) {
     const page = await browser.newPage();
     page.setDefaultNavigationTimeout(30000);
     // set user agent
-    // await page.setUserAgent(
-    //   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36`' ||
-    //   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.5481.100 Safari/537.36'
-    // );
+    await page.setUserAgent(
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36`' ||
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.5481.100 Safari/537.36'
+    );
     
 
     // Set viewport size

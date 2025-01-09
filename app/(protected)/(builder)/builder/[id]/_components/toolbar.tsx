@@ -18,6 +18,7 @@ import { useResumeStore, useTemporalResumeStore } from "@/utils/stores/resume";
 import { useZoomStore } from "@/utils/stores/zoom";
 import { generatePDF } from "../../print-resume/print";
 import { useState } from "react";
+import { Toaster } from "@/components/ui/toaster";
 
 type ZoomType = 'ZOOM_IN' | 'ZOOM_OUT' | 'RESET_VIEW' | 'CENTER_VIEW' | null
 
@@ -151,6 +152,7 @@ export default function BuilderToolbar() {
           </Tooltip>
         </TooltipProvider>
       </div>
+      <Toaster />
     </motion.div>
   );
 };

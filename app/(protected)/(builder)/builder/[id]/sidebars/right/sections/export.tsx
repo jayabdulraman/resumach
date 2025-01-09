@@ -6,6 +6,8 @@ import { getSectionIcon } from "../shared/section-icon";
 import { generatePDF } from "@/app/(protected)/(builder)/builder/print-resume/print";
 import { useState } from "react";
 import { useToast } from "@/lib/hooks/use-toast";
+import { Toaster } from "@/components/ui/toaster";
+
 
 export function ExportSection() {
   const [isGenerating, setGenerating] = useState(false)
@@ -59,6 +61,7 @@ export function ExportSection() {
           Download PDF
         </Button>
       </main>
+      <Toaster />
     </section>
   );
 };

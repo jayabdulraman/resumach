@@ -54,6 +54,9 @@ import { Loader2 } from "lucide-react"
 import { Toaster } from "./ui/toaster"
 import { deleteResumeAction } from "@/lib/adapter/actions"
 import { useRouter } from "next/navigation"
+import { Pencil2Icon, DownloadIcon, TrashIcon} from "@radix-ui/react-icons"; // Import your icon components
+import { Tooltip, TooltipProvider } from "@/components/ui/tooltip"; // Assuming you have a Tooltip component
+
 
 type FileData = {
   id: string;
@@ -206,9 +209,19 @@ export function CustomizedResumeDataTable({ data, onDeleteSuccess }: DataTablePr
   const columns: ColumnDef<FileData>[] = [
     {
       accessorKey: "fileName",
-      header: "File Name",
+      header: ({ column }) => (
+        <div>
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            File Name
+            <CaretSortIcon className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
+      ),
       cell: ({ row }) => 
-        <div className="capitalize">
+        <div>
           <Link className="hover:underline" href={`/builder/${row.original.id}`}>
             {row.getValue("fileName")}
           </Link>
@@ -217,7 +230,7 @@ export function CustomizedResumeDataTable({ data, onDeleteSuccess }: DataTablePr
     {
       accessorKey: "dateModified",
       header: ({ column }) => (
-        <div className="text-right">
+        <div>
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
@@ -227,47 +240,83 @@ export function CustomizedResumeDataTable({ data, onDeleteSuccess }: DataTablePr
           </Button>
         </div>
       ),
-      cell: ({ row }) => <div className="text-right">{formatDate(row.getValue("dateModified"))}</div>,
-    },
-    {
-      accessorKey: "fileSize",
-      header: () => <div className="text-right">File Size</div>,
-      cell: ({ row }) => <div className="text-right">{formatFileSize(row.getValue("fileSize"))}</div>,
+      cell: ({ row }) => <div>{formatDate(row.getValue("dateModified"))}</div>,
     },
     {
       id: "actions",
+      header: "Actions",
       enableHiding: false,
       cell: ({ row }) => {
-        const file = row.original
-  
+        const file = row.original;
+
         return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <DotsHorizontalIcon className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="z-[100]">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem>
+          <div className="flex space-x-2">
+            <TooltipProvider>
+              <Tooltip content="Edit">
                 <Link href={`/builder/${file.id}`}>
-                  Edit
+                    <Button variant="ghost">
+                      <Pencil2Icon className="h-4 w-4" />
+                    </Button>
                 </Link>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => {handleDownload(file)}} className="cursor-pointer">
-                Download
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => handleDeleteClick(file)} className="cursor-pointer text-red-600 focus:text-red-600">
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip content="Download">
+                <Button variant="ghost" onClick={() => handleDownload(file)}>
+                  <DownloadIcon className="h-4 w-4" />
+                </Button>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip content="Delete">
+                <Button variant="ghost" onClick={() => handleDeleteClick(file)}>
+                  <TrashIcon className="h-4 w-4" />
+                </Button>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        );
       },
     },
+    // {
+    //   accessorKey: "fileSize",
+    //   header: () => <div className="text-right">File Size</div>,
+    //   cell: ({ row }) => <div className="text-right">{formatFileSize(row.getValue("fileSize"))}</div>,
+    // },
+    // {
+    //   id: "actions",
+    //   enableHiding: false,
+    //   cell: ({ row }) => {
+    //     const file = row.original
+  
+    //     return (
+    //       <DropdownMenu>
+    //         <DropdownMenuTrigger asChild>
+    //           <Button variant="ghost" className="h-8 w-8 p-0">
+    //             <span className="sr-only">Open menu</span>
+    //             <DotsHorizontalIcon className="h-4 w-4" />
+    //           </Button>
+    //         </DropdownMenuTrigger>
+    //         <DropdownMenuContent align="end" className="z-[100]">
+    //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
+    //           <DropdownMenuItem>
+    //             <Link href={`/builder/${file.id}`}>
+    //               Edit
+    //             </Link>
+    //           </DropdownMenuItem>
+    //           <DropdownMenuSeparator />
+    //           <DropdownMenuItem onClick={() => {handleDownload(file)}} className="cursor-pointer">
+    //             Download
+    //           </DropdownMenuItem>
+    //           <DropdownMenuSeparator />
+    //           <DropdownMenuItem onClick={() => handleDeleteClick(file)} className="cursor-pointer text-red-600 focus:text-red-600">
+    //             Delete
+    //           </DropdownMenuItem>
+    //         </DropdownMenuContent>
+    //       </DropdownMenu>
+    //     )
+    //   },
+    // },
   ]
 
   const table = useReactTable<FileData>({
