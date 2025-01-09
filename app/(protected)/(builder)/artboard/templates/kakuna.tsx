@@ -84,7 +84,7 @@ const Header = () => {
                 />
               </div>
             ))}
-            <img width={fontSize} height={fontSize} src="/screenshots/icon.png" alt="favicon"/>
+            <img width={fontSize} height={fontSize} src={`${process.env.NEXT_PUBLIC_BASE_URL}/screenshots/icon.png`} alt="favicon"/>
         </div>
       )}
     </div>
