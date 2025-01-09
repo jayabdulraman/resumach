@@ -4,10 +4,11 @@ import { defaultItem, defaultUrl, itemSchema, urlSchema } from "../shared";
 
 // Schema
 export const profileSchema = itemSchema.extend({
-  network: z.string().min(1),
-  username: z.string().min(1),
+  network: z.string(),
+  username: z.string(),
   icon: z
     .string()
+    .min(1)
     .describe(
       'Slug for the icon from https://simpleicons.org. For example, "github", "linkedin", etc.',
     ),

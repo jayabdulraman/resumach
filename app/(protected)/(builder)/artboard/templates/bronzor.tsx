@@ -59,18 +59,6 @@ const Header = () => {
           </div>
         )}
         <Link url={basics.url} />
-        {/* {basics.customFields.map((item) => (
-          <div key={item.id} className="flex items-center gap-x-1.5">
-            <i className={cn(`ph ph-bold ph-${item.icon}`, "text-primary")} />
-            {isUrl(item.value) ? (
-              <a href={item.value} target="_blank" rel="noreferrer noopener nofollow">
-                {item.name || item.value}
-              </a>
-            ) : (
-              <span>{[item.name, item.value].filter(Boolean).join(": ")}</span>
-            )}
-          </div>
-        ))} */}
       </div>
       {profiles.visible && profiles.items.length > 0 && (
         <div className="flex items-center gap-x-3 gap-y-0.5">
@@ -113,7 +101,7 @@ const Summary = () => {
 
       <div
         dangerouslySetInnerHTML={{ __html: section.content }}
-        className="wysiwyg col-span-4"
+        className="wysiwyg col-span-4 text-black"
         style={{ columns: 1 }}
       />
     </section>
@@ -204,6 +192,8 @@ const Section = <T,>({
 }: SectionProps<T>) => {
   if (!section.visible || section.items.length === 0) return null;
 
+  const showKeywords = ["Skills"].includes(section.name as string);
+
   return (
     <section id={section.identifier} className="grid grid-cols-5 border-t pt-2.5 px-3">
       <div>
@@ -229,12 +219,12 @@ const Section = <T,>({
                 </div>
 
                 {summary !== undefined && !isEmptyString(summary) && (
-                  <div dangerouslySetInnerHTML={{ __html: summary }} className="wysiwyg" />
+                  <div dangerouslySetInnerHTML={{ __html: summary }} className="wysiwyg text-black" />
                 )}
 
                 {level !== undefined && level > 0 && <Rating level={level} />}
 
-                {keywords !== undefined && keywords.length > 0 && (
+                {keywords !== undefined && keywords.length > 0 && showKeywords && (
                   <p className="text-sm">{keywords.join(", ")}</p>
                 )}
               </div>
@@ -433,7 +423,6 @@ const Projects = () => {
               separateLinks={true}
               className="font-bold"
             />
-            <div>{item.description}</div>
           </div>
 
           <div className="shrink-0 text-right">

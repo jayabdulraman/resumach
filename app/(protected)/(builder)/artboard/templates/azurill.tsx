@@ -40,14 +40,14 @@ const Header = () => {
       <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-sm">
         {basics.location && (
           <div className="flex items-center gap-x-1.5">
-            <i className="ph ph-bold ph-map-pin text-primary" />
+            <i className="ph ph-bold ph-map-pin text-black" />
             {/* <div>{basics.location}</div> */}
           </div>
         )}
         {basics.phone && (
           <div className="flex items-center gap-x-1.5">
             {/* <i className="ph ph-bold ph-phone text-primary" /> */}
-            <Phone className="text-primary" />
+            <Phone className="text-black" />
             <a href={`tel:${basics.phone}`} target="_blank" rel="noreferrer">
               {basics.phone}
             </a>
@@ -55,7 +55,7 @@ const Header = () => {
         )}
         {basics.email && (
           <div className="flex items-center gap-x-1.5">
-            <i className="ph ph-bold ph-at text-primary" />
+            <i className="ph ph-bold ph-at text-black" />
             <a href={`mailto:${basics.email}`} target="_blank" rel="noreferrer">
               {basics.email}
             </a>
@@ -110,12 +110,12 @@ const Summary = () => {
         <div className="size-1.5 rounded-full border border-slate-400" />
       </div>
 
-      <main className={cn("relative space-y-2", "border-l border-primary pl-4")}>
-        <div className="absolute left-[-4.5px] top-[8px] hidden size-[8px] rounded-full bg-primary group-[.main]:block" />
+      <main className={cn("relative space-y-2", "border-l border-slate-400 pl-4")}>
+        <div className="absolute left-[-4.5px] top-[8px] hidden size-[8px] rounded-full bg-slate-400 group-[.main]:block" />
 
         <div
           dangerouslySetInnerHTML={{ __html: section.content }}
-          className="wysiwyg"
+          className="wysiwyg text-black"
           style={{ columns: 1 }}
         />
       </main>
@@ -141,18 +141,21 @@ type LinkProps = {
   iconOnRight?: boolean;
   label?: string;
   className?: string;
+  sectionName?: string;
 };
 
-const Link = ({ url, icon, iconOnRight, label, className }: LinkProps) => {
+const Link = ({ url, icon, iconOnRight, label, className, sectionName }: LinkProps) => {
   if (!isUrl(url?.href)) return null;
+  // Determine if the link should be centered
+  const isCentered = ["Certifications", "Awards"].includes(sectionName as string);
   return (
-    <div className="flex items-center gap-x-1.5">
+    <div className={cn({"flex": !isCentered}, "items-center gap-x-1.5")}>
       {!iconOnRight && (icon ?? <i className="ph ph-bold ph-link text-black" />)}
       <a
         href={url.href as string}
         target="_blank"
         rel="noreferrer noopener nofollow"
-        className={cn("inline-block", className)}
+        className={cn({"inline-block": !isCentered}, className, isCentered ? "text-center" : "" )}
       >
         {label || url.label || url.href}
       </a>
@@ -166,9 +169,11 @@ type LinkedEntityProps = {
   url: URL;
   separateLinks: boolean;
   className?: string;
+  sectionName?: string;
 };
 
-const LinkedEntity = ({ name, url, separateLinks, className }: LinkedEntityProps) => {
+const LinkedEntity = ({ name, url, separateLinks, className, sectionName }: LinkedEntityProps) => {
+  console.log("Section Name:", sectionName)
   return (
     <div className={className}>
       {separateLinks && isUrl(url?.href || "")? (
@@ -177,9 +182,10 @@ const LinkedEntity = ({ name, url, separateLinks, className }: LinkedEntityProps
           label={name}
           icon={<i className="ph ph-bold ph-globe text-black" />}
           iconOnRight={true}
+          sectionName={sectionName}
         />
       ) : (
-        <div>{name}</div>
+        <div className="text-center">{name}</div> // Ensure text is centered
       )}
     </div>
   );
@@ -205,6 +211,8 @@ const Section = <T,>({
   keywordsKey,
 }: SectionProps<T>) => {
   if (!section.visible || section.items.length === 0) return null;
+
+  const showKeywords = ["Skills"].includes(section.name as string);
 
   return (
     <section id={section.identifier} className="grid">
@@ -235,25 +243,25 @@ const Section = <T,>({
                 key={item.id}
                 className={cn(
                   "relative space-y-2",
-                  "border-primary group-[.main]:border-l group-[.main]:pl-4",
+                  "border-slate-400 group-[.main]:border-l group-[.main]:pl-4",
                   className,
                 )}
               >
                 <div>{children?.(item as T)}</div>
 
                 {summary !== undefined && !isEmptyString(summary) && (
-                  <div dangerouslySetInnerHTML={{ __html: summary }} className="wysiwyg" />
+                  <div dangerouslySetInnerHTML={{ __html: summary }} className="wysiwyg text-black" />
                 )}
 
                 {level !== undefined && level > 0 && <Rating level={level} />}
 
-                {keywords !== undefined && keywords.length > 0 && (
+                {keywords !== undefined && keywords.length > 0 && showKeywords && (
                   <p className="text-sm">{keywords.join(", ")}</p>
                 )}
 
                 {/* {url !== undefined && <Link url={url} />} */}
 
-                <div className="absolute left-[-4.5px] top-px hidden size-[8px] rounded-full bg-primary group-[.main]:block" />
+                <div className="absolute left-[-4.5px] top-px hidden size-[8px] rounded-full bg-slate-400 group-[.main]:block" />
               </div>
             );
           })}
@@ -326,7 +334,7 @@ const Awards = () => {
       {(item) => (
         <div>
           <div className="font-bold">{item.title}</div>
-          <LinkedEntity name={item.awarder} url={item.url} separateLinks={true} />
+          <LinkedEntity name={item.awarder} url={item.url} separateLinks={true} sectionName={section.name} />
           <div className="font-bold">{item.date}</div>
         </div>
       )}
@@ -342,7 +350,7 @@ const Certifications = () => {
       {(item) => (
         <div>
           <div className="font-bold">{item.name}</div>
-          <LinkedEntity name={item.issuer} url={item.url} separateLinks={true} />
+          <LinkedEntity name={item.issuer} url={item.url} separateLinks={true} sectionName={section.name} />
           <div className="font-bold">{item.date}</div>
         </div>
       )}

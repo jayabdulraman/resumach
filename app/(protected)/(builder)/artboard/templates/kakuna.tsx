@@ -45,7 +45,7 @@ const Header = () => {
         )}
         {basics.phone && (
           <div className="flex items-center gap-x-1.5">
-            <i className="ph ph-bold ph-phone text-primary" />
+            <i className="ph ph-bold ph-phone text-black" />
             <a href={`tel:${basics.phone}`} target="_blank" rel="noreferrer">
               {basics.phone}
             </a>
@@ -53,7 +53,7 @@ const Header = () => {
         )}
         {basics.email && (
           <div className="flex items-center gap-x-1.5">
-            <i className="ph ph-bold ph-at text-primary" />
+            <i className="ph ph-bold ph-at text-black" />
             <a href={`mailto:${basics.email}`} target="_blank" rel="noreferrer">
               {basics.email}
             </a>
@@ -104,7 +104,7 @@ const Summary = () => {
 
       <div
         dangerouslySetInnerHTML={{ __html: section.content }}
-        className="wysiwyg"
+        className="wysiwyg text-black"
         style={{ columns: 1 }}
       />
     </section>
@@ -218,14 +218,14 @@ const Section = <T,>({
                 <div>{children?.(item as T)}</div>
 
                 {summary !== undefined && !isEmptyString(summary) && (
-                  <div dangerouslySetInnerHTML={{ __html: summary }} className="wysiwyg" />
+                  <div dangerouslySetInnerHTML={{ __html: summary }} className="wysiwyg text-black" />
                 )}
 
                 {level !== undefined && level > 0 && <Rating level={level} />}
 
-                {keywords !== undefined && keywords.length > 0 && (
+                {/* {keywords !== undefined && keywords.length > 0 && (
                   <p className="text-sm">{keywords.join(", ")}</p>
-                )}
+                )} */}
 
                 {/* {url !== undefined && <Link url={url} />} */}
               </div>

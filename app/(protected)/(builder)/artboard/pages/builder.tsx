@@ -44,7 +44,7 @@ export default function BuilderLayout({userId}: BuilderLayoutProps) {
     };
     if (zoomType === "RESET_VIEW") {
       transformRef.current?.resetTransform(0);
-      setTimeout(() => transformRef.current?.centerView(0.8, 0), 10);
+      setTimeout(() => transformRef.current?.centerView(0.6, 0), 10);
     }
     // Reset the zoom type after applying the zoom action
     setZoomType(null)
@@ -74,7 +74,7 @@ export default function BuilderLayout({userId}: BuilderLayoutProps) {
       centerOnInit
       maxScale={2}
       minScale={0.4}
-      initialScale={0.8}
+      initialScale={0.6}
       limitToBounds={false}
     >
       <TransformComponent
@@ -83,6 +83,7 @@ export default function BuilderLayout({userId}: BuilderLayoutProps) {
         contentStyle={{
           //@ts-ignore
           width: `${layout.length * (pageSizeMap[format].width * MM_TO_PX + 42)}px`,
+          height: `1000px`,
           gridTemplateColumns: `repeat(${layout.length}, 1fr)`,
         }}
       >
