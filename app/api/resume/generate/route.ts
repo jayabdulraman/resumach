@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
     ]);
 
     // Additional wait for any dynamic content
-    await new Promise(resolve => setTimeout(resolve, 20000));
+    await new Promise(resolve => setTimeout(resolve, 10000));
 
     // Get the element
     const element = await page.$(`#${elementId}`);
@@ -110,7 +110,8 @@ export async function POST(request: NextRequest) {
     });    
 
     // Right before generating the PDF:
-    await page.screenshot({ path: 'debug-screenshot.png', fullPage: true });
+    const screenshotBase64 = await page.screenshot({ encoding: 'base64' });
+    console.log('Screenshot in base64:', screenshotBase64);    
 
     const MM_TO_PX = 3.78;
     // Generate PDF with specific settings
