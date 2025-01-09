@@ -93,10 +93,6 @@ export async function POST(request: NextRequest) {
       console.error(`Element with ID ${elementId} not found`);
     }
 
-    page.on('console', (msg) => {
-      console.log('PAGE LOG:', msg.text());
-    }); 
-
     const MM_TO_PX = 3.78;
     // Generate PDF with specific settings
     const pdf = await page.pdf({
