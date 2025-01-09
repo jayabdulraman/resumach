@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { pageSizeMap } from "@/utils/namespaces/page";
+import { Browser } from 'puppeteer';
 
 export const maxDuration = 30;
 
 export async function POST(request: NextRequest) {
-  let browser;
+  let browser: Browser | undefined | null;
   try {
     const { previewUrl, elementId, resume } = await request.json();
     const metadataPage = resume.data.metadata.page;
@@ -14,18 +15,13 @@ export async function POST(request: NextRequest) {
       const puppeteer = require('puppeteer-core');
       const chromium = require("@sparticuz/chromium");
       
+      chromium.setHeadlessMode = true;
       chromium.setGraphicsMode = false;
       browser = await puppeteer.launch({
-        args: [
-          ...chromium.args,
-          '--disable-web-security',
-          '--disable-gpu',
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-        ],
+        args: chromium.args,
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath(),
-        headless: chromium.headless,
+        headless: true,
         ignoreHTTPSErrors: true,
       })
     } else {
@@ -43,8 +39,15 @@ export async function POST(request: NextRequest) {
       });
     }
     // Create new page with increased timeout
+    //@ts-ignore
     const page = await browser.newPage();
-    await page.setDefaultNavigationTimeout(30000); // 60 seconds timeout
+    page.setDefaultNavigationTimeout(30000);
+    // set user agent
+    await page.setUserAgent(
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36`' ||
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.5481.100 Safari/537.36'
+    );
+    
 
     // Set viewport size
     await page.setViewport({
