@@ -53,8 +53,13 @@ export async function POST(request: NextRequest) {
     // Create new page with increased timeout
     //@ts-ignore
     const page = await browser.newPage();
-    await page.emulateMediaType('print');
-    page.setDefaultNavigationTimeout(30000); // 60 seconds timeout
+    page.setDefaultNavigationTimeout(30000);
+    // set user agent
+    await page.setUserAgent(
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36`' ||
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.5481.100 Safari/537.36'
+    );
+    
 
     // Set viewport size
     await page.setViewport({
@@ -100,7 +105,12 @@ export async function POST(request: NextRequest) {
       console.error(`Element with ID ${elementId} not found`);
     }
 
-    page.on('requestfailed', (req) => console.log("PUPPETEER REQUEST FAILED:", req.url(), req.failure()));
+    page.on('console', (msg) => {
+      console.log('PAGE LOG:', msg.text());
+    });    
+
+    // Right before generating the PDF:
+    await page.screenshot({ path: 'debug-screenshot.png', fullPage: true });
 
     const MM_TO_PX = 3.78;
     // Generate PDF with specific settings
