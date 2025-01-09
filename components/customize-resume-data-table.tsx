@@ -134,6 +134,7 @@ export function CustomizedResumeDataTable({ data, onDeleteSuccess }: DataTablePr
     toast({
       title: "Download in progress...",
       description: "Your file is being prepared for download.",
+      duration: 10000,
     })
 
     try {
