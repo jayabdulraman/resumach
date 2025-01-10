@@ -101,7 +101,7 @@ export function ProcessingStatus({ processingId }: ProcessingStatusProps) {
   const LoadingContent = () => (
     <div className="flex flex-col items-center justify-center h-full space-y-4">
       <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      <h2 className="text-2xl font-semibold">Processing Your Resume</h2>
+      <h2 className="text-2xl font-semibold">Tailoring Your Resume</h2>
       <p className="text-muted-foreground">
         This may take up to a minute. Please don't close this page.
       </p>
