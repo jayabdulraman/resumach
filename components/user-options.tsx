@@ -1,6 +1,7 @@
 'use client'
 // import { t } from "@lingui/macro";
 import {
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -33,14 +34,14 @@ export function UserOptions ({ children }: Props) {
           className="cursor-pointer"
         >
           {`Settings`}
-          {/* eslint-disable-next-line lingui/no-unlocalized-strings */}
-          <KeyboardShortcut>⇧S</KeyboardShortcut>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => signOutAction} className="cursor-pointer">
-          {`Logout`}
-          {/* eslint-disable-next-line lingui/no-unlocalized-strings */}
-          <KeyboardShortcut>⇧Q</KeyboardShortcut>
+        <DropdownMenuItem>
+          <form action={signOutAction}>
+            <Button type="submit" variant={"ghost"} className="p-0 m-0 h-4">
+              {`Sign out`}
+            </Button>
+          </form>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
