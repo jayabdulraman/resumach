@@ -95,11 +95,11 @@ const Summary = () => {
 
   return (
     <section id={section.identifier} className="px-3">
-      <h4 className="mb-2 border-b pb-0.5 text-sm font-bold text-black">{section.name}</h4>
+      <h1 className="mb-2 border-b pb-0.5 font-bold text-black">{section.name}</h1>
 
       <div
         dangerouslySetInnerHTML={{ __html: section.content }}
-        className="wysiwyg"
+        className="wysiwyg text-black"
         style={{ columns: 1 }}
       />
     </section>
@@ -189,10 +189,11 @@ const Section = <T,>({
   keywordsKey,
 }: SectionProps<T>) => {
   if (!section.visible || section.items.length === 0) return null;
+  const showKeywords = ["Skills"].includes(section.name as string);
 
   return (
     <section id={section.identifier} className="grid px-3">
-      <h4 className="mb-2 border-b pb-0.5 text-sm font-bold text-black">{section.name}</h4>
+      <h1 className="mb-2 border-b pb-0.5 font-bold text-black">{section.name}</h1>
 
       <div
         className="grid gap-x-6 gap-y-3"
@@ -213,12 +214,12 @@ const Section = <T,>({
                 </div>
 
                 {summary !== undefined && !isEmptyString(summary) && (
-                  <div dangerouslySetInnerHTML={{ __html: summary }} className="wysiwyg" />
+                  <div dangerouslySetInnerHTML={{ __html: summary }} className="wysiwyg text-black" />
                 )}
 
                 {level !== undefined && level > 0 && <Rating level={level} />}
 
-                {keywords !== undefined && keywords.length > 0 && (
+                {keywords !== undefined && keywords.length > 0 && showKeywords && (
                   <p className="text-sm">{keywords.join(", ")}</p>
                 )}
               </div>
@@ -417,7 +418,6 @@ const Projects = () => {
               separateLinks={true}
               className="font-bold"
             />
-            <div>{item.description}</div>
           </div>
 
           <div className="shrink-0 text-right">

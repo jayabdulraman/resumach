@@ -13,7 +13,6 @@ import { Button, Separator } from "@/components/ui";
 import { Tooltip, TooltipProvider } from "@/components/ui/tooltip";
 import { motion } from "framer-motion";
 import { useToast } from "@/lib/hooks/use-toast";
-import { useBuilderStore } from "@/utils/stores/builder";
 import { useResumeStore, useTemporalResumeStore } from "@/utils/stores/resume";
 import { useZoomStore } from "@/utils/stores/zoom";
 import { generatePDF } from "../../print-resume/print";
@@ -27,12 +26,7 @@ export default function BuilderToolbar() {
   const setValue = useResumeStore((state) => state.setValue);
   const undo = useTemporalResumeStore((state) => state.undo);
   const redo = useTemporalResumeStore((state) => state.redo);
-  const frameRef = useBuilderStore((state) => state.frame.ref);
   const setZoomType = useZoomStore((state) => state.setZoomType)
-
-  const id = useResumeStore((state) => state.resume.id);
-  const isPublic = useResumeStore((state) => state.resume.visibility === "public");
-  const pageOptions = useResumeStore((state) => state.resume.data.metadata.page.options);
   const resume = useResumeStore((state) => state.resume);
   const resumeId = useResumeStore((state) => state.resume.id)
   const [isGenerating, setGenerating] = useState(false)
