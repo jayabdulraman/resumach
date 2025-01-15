@@ -11,7 +11,7 @@ const EducationSchema = z.object({
   area: z.string().nullable().describe("location of the institution eg Berkeley, CA or Freetown, Sierra Leone."),
   score: z.string().nullable().describe("GPA score of the degree"),
   date: z.string().nullable().describe("Start and end dates of the degree eg May, 2020 - June, 2024."),
-  summary: z.string().nullable().describe("Any additional information about the education. Must be an unordered bulleted list html tag format eg <ul><li><p>info.</p></li><ul><li><p>info.</p></li>...</ul>"),
+  summary: z.string().nullable().describe("An unordered bulleted list of additional education information in html tag format e.g <ul><li><p>education info.</p></li><ul><li><p>education info.</p></li>...</ul>"),
   url: SocialLink.describe("website label and url of the degree or institution"),
 });
 
@@ -19,7 +19,7 @@ const ExperienceSchema = z.object({
   position: z.string().nullable().describe("Job title or position."),
   company: z.string().nullable().describe("Name of the company."),
   location: z.string().nullable().describe("City and state or country location of the company eg Tempe, AZ or London, England."),
-  summary: z.string().nullable().describe("list of job responsibilities or accomplishments. Must be an unordered bulleted list html tag format eg <ul><li><p>info.</p></li><ul><li><p>info.</p></li>...</ul>"),
+  summary: z.string().nullable().describe("An unordered bulleted list of job accomplishments in html tag format eg <ul><li><p>job accomplishment.</p></li><ul><li><p>job accomplishment.</p></li>...</ul>"),
   date: z.string().nullable().describe("Start and end dates of the employment e.g May, 2020 - June, 2024."),
   url: SocialLink.describe("website label and url of the company."),
 });
@@ -27,7 +27,7 @@ const ExperienceSchema = z.object({
 const ProjectSchema = z.object({
   name: z.string().nullable().describe("Title of the project."),
   description: z.string().nullable().describe("Description of the project."),
-  summary: z.string().nullable().describe("summary of the project. Must be an unordered bulleted list html tag format eg <ul><li><p>info.</p></li><ul><li><p>info.</p></li>...</ul>"),
+  summary: z.string().nullable().describe("An unordered bulleted list of addtional project information in html tag format eg <ul><li><p>project info.</p></li><ul><li><p>project info.</p></li>...</ul>"),
   url: SocialLink.describe("URL and label of the project."),
   date: z.string().nullable().describe("creation date of the project."),
   keywords: z.array(z.string()).describe("keywords of the project"),
@@ -44,7 +44,7 @@ const AwardSchema = z.object({
   awarder: z.string().nullable().describe("Name of the awarder."),
   date: z.string().nullable().describe("Date when the award was received."),
   url: SocialLink.describe("website label and url of the award"),
-  summary: z.string().nullable().describe("Summary of the award. Must be an unordered bulleted list html tag format eg <ul><li><p>info.</p></li><ul><li><p>info.</p></li>...</ul>"),
+  summary: z.string().nullable().describe("An unordered bulleted list of award summary in html tag format eg <ul><li><p>award info.</p></li><ul><li><p>award info.</p></li>...</ul>"),
 });
 
 const CertificationSchema = z.object({
@@ -52,7 +52,7 @@ const CertificationSchema = z.object({
   issuer: z.string().nullable().describe("Issuer of the certification."),
   date: z.string().nullable().describe("Date when the certification was obtained."),
   url: SocialLink.describe("website label and url of the certification"),
-  summary: z.string().nullable().describe("Summary of the certification. Must be an unordered bulleted list html tag format eg <ul><li><p>info.</p></li><ul><li><p>info.</p></li>...</ul>"),
+  summary: z.string().nullable().describe("An unordered bulleted list of certification summary in html tag format eg <ul><li><p>certification info.</p></li><ul><li><p>certification info.</p></li>...</ul>"),
 });
 
 const PublicationSchema = z.object({
@@ -60,7 +60,7 @@ const PublicationSchema = z.object({
   publisher: z.string().nullable().describe("Publisher of the publication."),
   date: z.string().nullable().describe("Date of publication."),
   url: SocialLink.describe("website label and url of the publication"),
-  summary: z.string().nullable().describe("Summary of the publication. Must be an unordered bulleted list html tag format eg <ul><li><p>info.</p></li><ul><li><p>info.</p></li>...</ul>"),
+  summary: z.string().nullable().describe("An unordered bulleted list of publication summary in html tag format eg <ul><li><p>publication info.</p></li><ul><li><p>publication info.</p></li>...</ul>"),
 });
 
 const VolunteerSchema = z.object({
@@ -69,7 +69,7 @@ const VolunteerSchema = z.object({
   location: z.string().nullable().describe("Location of the volunteering eg Tempe, AZ."),
   date: z.string().nullable().describe("Date range of the volunteering eg Feb, 2021 - Mar, 2022."),
   url: SocialLink.describe("website label and url of the volunteering"),
-  summary: z.string().nullable().describe("Summary of the volunteering experience. Must be an unordered bulleted list html tag format eg <ul><li><p>info.</p></li><ul><li><p>info.</p></li>...</ul>"),
+  summary: z.string().nullable().describe("An unordered bulleted list of volunteer summary in html tag format eg <ul><li><p>volunteer info.</p></li><ul><li><p>volunteer info.</p></li>...</ul>"),
 });
 
 const ProfileSchema = z.object({
@@ -82,7 +82,7 @@ const ProfileSchema = z.object({
 const ReferenceSchema = z.object({
   name: z.string().nullable().describe("Name of the reference."),
   email: z.string().nullable().describe("Email address of the reference."),
-  summary: z.string().nullable().describe("Summary of the reference. Must be an unordered bulleted list html tag format eg <ul><li><p>info.</p></li><ul><li><p>info.</p></li>...</ul>"),
+  summary: z.string().nullable().describe("An unordered bulleted list of reference summary in html tag format eg <ul><li><p>reference info.</p></li><ul><li><p>reference info.</p></li>...</ul>"),
   description: z.string().nullable().describe("Description of the reference."),
   url: SocialLink.describe("website label and url of the reference"),
 });
@@ -94,7 +94,7 @@ export const ResumeSchema = z.object({
   phone: z.string().nullable().describe("Mobile phone number of the candidate."),
   location: z.string().nullable().describe("Location of the candidate e.g Tempe, AZ."),
   website: SocialLink.nullable().describe("Personal website URL and label of candidate."),
-  summary: z.string().nullable().describe("Summary of the user's profile."),
+  summary: z.string().nullable().describe("A html paragraph summary of the user profile e.g <p>summary</p>"),
   profile: ProfileSchema.array().nullable().describe("Array of social media profiles eg X/twitter, github, facebook etc"),
   education: EducationSchema.array().nullable().describe("Array of education records."),
   experience: ExperienceSchema.array().nullable().describe("Array of employment experience records."),
