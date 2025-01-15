@@ -110,8 +110,9 @@ export async function extractTextAndKeywords(
       Follow further instructions below:
       - Add a one sentence summary of the candidate relevant to the job.
       - Divide the skills into relevant categories based on domain of job, and add any missing skills from the job description. 
-      - Tailor the experience accomplishments in this format: 'Accomplished [X], as measured by [Y], by doing [Z],' ensuring clarity and conciseness. MAINTAIN any impact stats provided from the candidate's resume.
+      - Tailor the experience accomplishments in this format: '<ul><li><p>Accomplished [X], as measured by [Y], by doing [Z]</p></li></ul>' ensuring clarity and conciseness. MAINTAIN any impact stats provided from the candidate's resume.
       - Only add experience, projects, skills, certifications or awards that are relevant to the job description.
+      - Make sure that all summary items, excluding the user profile summary, are in this format: <ul><li><p>item.</p></li></ul>
       - Do not use any markdown formatting in the response.
       - DO NOT add information that is not provided in the keywords, job description, and resume.
       - If there is only one date in Education or Experience sections, use it as the end date.\n
@@ -153,12 +154,15 @@ export async function extractTextAndKeywords(
               ]
               }
           ],
-          max_tokens: 1500,
+          max_completion_tokens: 2500,
           temperature: 0.5,
           response_format: zodResponseFormat(ResumeSchema, "adaptedResume")
       });
 
       const tailoredResponse = response.choices[0].message
+      console.log("Prompt Tokens:", response.usage?.prompt_tokens)
+      console.log("Completion Tokens:", response.usage?.completion_tokens)
+      console.log("Total Tokens:", response.usage?.total_tokens)
       if (tailoredResponse.parsed) {
         adaptedResponse = tailoredResponse.parsed
       } else if (tailoredResponse.refusal) {
