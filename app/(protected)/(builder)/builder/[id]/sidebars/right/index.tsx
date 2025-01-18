@@ -38,13 +38,13 @@ export function RightSidebar({ user, credit_packages } : RightSidebarProps) {
     section?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const LockedOverlay = ({ sectionName }: { sectionName: string }) => (
-    <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center z-10">
-      <div className="dark:bg-gray-800 p-6 rounded-lg shadow-lg text-center">
-        <UpgradeCard credit_packages={credit_packages} user={user}/>
-      </div>
-    </div>
-  );
+  // const LockedOverlay = ({ sectionName }: { sectionName: string }) => (
+  //   <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center z-10">
+  //     <div className="dark:bg-gray-800 p-6 rounded-lg shadow-lg text-center">
+  //       <UpgradeCard credit_packages={credit_packages} user={user}/>
+  //     </div>
+  //   </div>
+  // );
 
   return (
     <div className="flex h-full max-w-[400px] bg-secondary-accent/50">
@@ -56,17 +56,11 @@ export function RightSidebar({ user, credit_packages } : RightSidebarProps) {
           <div className="w-full">
             <div className="relative" id="template">
               <TemplateSection />
-              {userCurrentSubscription === "Free" && (
-                <LockedOverlay sectionName="Template" />
-              )}
             </div>
             <Separator className="my-4" />
             
             <div className="relative" id="layout">
               <LayoutSection />
-              {userCurrentSubscription === "Free" && (
-                <LockedOverlay sectionName="Layout" />
-              )}
             </div>
             <Separator className="my-4" />
             
