@@ -32,25 +32,63 @@ export async function extractKeywordsFromJobDescription(
     messages: [
       {
         role: "system",
-        content: `You're an expert in extracting job-related keywords and action verbs from a Job description text. \n
-                  You are to only use the jobDescription provided below. \n
-                  Do not add keywords that are not in the job desciption. \n
-                  Only extract unique keywords and action verbs without duplicating or similar in meaning. \n
-                  jobDescription: ${jobDescription}\n
-                  Here's a definition of the key terms:\n
-                  job-related-keywords: description of the ideal candidate's primary skills (both hard and soft), and core qualifications for the job e.g Critical thinking, Python, Team collaboration, Photoshop etc.\n
-                  action-verbs: words that demonstrate action(s) of the ideal candidate in their career so far. eg managed, developed, planned, designed etc.\n
+        content: `You are an AI assistant that extracts key details, skills, and keywords from job descriptions. Your goal is to return structured data in JSON format based on the given job description.
 
-                  Your response should be in the format:
-                  keywords = {
-                    job-related-keywords: [comma-seperated values],
-                    action-verbs: [comma-seperated values]
-                  }Å
+                  Extraction Rules:
+                   1. Job Title & Industry & About company
+                      - Extract the exact job title, industry-related keywords, and about company.
+
+                   2. Core Responsibilities
+                      - Identify key action-oriented phrases describing main duties.
+                  
+                   3. Required Skills
+                      - Categorize into technical skills (e.g., programming, tools, methodologies) and soft skills (e.g., communication, leadership).
+                  
+                   4. Tools & Technologies
+                      - Identify specific software, programming languages, platforms, and frameworks.
+                  
+                   5. Qualifications & Certifications
+                      - Extract educational requirements and any certifications listed.
+                  
+                   6. Experience Requirements
+                      - Capture years of experience and relevant fields of experience mentioned.
+                  
+                   7. Company & Location Preferences (If available)
+                      - Extract location preferences (e.g., remote, hybrid, city-specific) and company name.
+                  
+                   8. Keywords & Buzzwords
+                      - Identify industry-related buzzwords, methodologies, and high-impact keywords.
+
+                   9. Do NOT duplicate skills in the skills categories sections e.g Python in technical and also in tools or soft categories.
+                   
+                  Example Output:
+                  {
+                    "job_title": "Product Manager",
+                    "industry": "E-commerce",
+                    "About company": "briefly describe company, mission, vision, team to work with, products etc.",
+                    "responsibilities": [
+                      "Define product roadmap",
+                      "Lead cross-functional teams",
+                      "Analyze market trends"
+                    ],
+                    "skills": {
+                      "technical": ["SQL", "A/B Testing", "Agile Methodologies"],
+                      "tools": ["JIRA", "Google Analytics", "Figma"],
+                      "soft": ["Stakeholder Management", "Communication"]
+                    },
+                    "qualifications": ["MBA", "Bachelors", "Masters", "Certified Scrum Master"],
+                    "experience": {
+                      "years": "3-5",
+                      "fields": ["Product Management", "Business Strategy"]
+                    },
+                    "location": "Phoenix, AZ or Remote, US-based or Rome, Italy",
+                    "keywords": ["Customer-Centric", "Go-to-Market Strategy", "KPIs"]
+                  }
                 `,
       },
       {
         role: "user",
-        content: `Extract up to 10 job-related keywords and action verbs from the job description respectively`,
+        content: `Extract from this job description: ${jobDescription}`,
       },
     ],
     max_tokens: 100,
@@ -102,29 +140,27 @@ export async function extractTextAndKeywords(
   const userCurrentSubscription = formData.get("userCurrentSubscription");
   const startTime = Date.now(); // Start timer
   const keywords = await extractKeywordsFromJobDescription(jobDescription as string);
-
+  console.log("KEYWORDS:", keywords);
   const system_prompt = `
-      You are an expert in tailoring resumes to match job description and their keywords.
-      Given the job description and the following keywords, tailor the Resume to emphasize relevant skills and experience, 
-      including relevant job-related keywords.
-      Follow further instructions below:
-      - Add a one sentence summary of the candidate relevant to the job.
-      - Divide the skills into relevant categories based on domain of job, and add any missing skills from the job description. 
-      - Tailor the experience accomplishments in this format: '<ul><li><p>Accomplished [X], as measured by [Y], by doing [Z]</p></li></ul>' ensuring clarity and conciseness. MAINTAIN any impact stats provided from the candidate's resume.
-      - Only add experience, projects, skills, certifications or awards that are relevant to the job description.
-      - Make sure that all summary items, excluding the user profile summary, are in this format: <ul><li><p>item.</p></li></ul>
-      - Do not use any markdown formatting in the response.
-      - DO NOT add information that is not provided in the keywords, job description, and resume.
-      - If there is only one date in Education or Experience sections, use it as the end date.\n
+      You are an expert in tailoring resumes to match job-related keywords, experience and required skills.
+      Given the following extracted job descriptin keywords in json format, tailor the resume to emphasize relevant skills, 
+      education and experience while ensuring alignment with the job requirements.
 
+      Instructions:
+      - Add a one-sentence summary of the candidate relevant to the job.
+      - Divide skills into relevant categories based on the job domain, and add any missing skills from the provided keywords.
+      - Tailor experience accomplishments in this format: <ul><li><p>Accomplished [X], as measured by [Y], by doing [Z]</p></li></ul>
+      - Ensure clarity and conciseness in experience accomplishments while maintaining any impact stats from the candidate’s resume.
+      - Tailor the experience, projects, skills, certifications, and awards to align with the job.
+      - Do NOT duplicate skills in the skills categories sections e.g Python in Technical Skills and also in Data Analysis categories.
+      - Format all summary items (except the user profile summary) as: <ul><li><p>item.</p></li></ul>
+      - Do NOT use markdown formatting in the response.
+      - Do NOT introduce new information beyond what is provided in the keywords and resume.
+      - If only one date is present in the Education or Experience sections, assume it as the end date.
+      
+      Provided Data:
       Job Description Keywords: ${keywords}\n
-
-      Job Description:
-      ${jobDescription}\n
-
-      Resume:
-      ${resumeText}\n
-
+      Resume: ${resumeText}\n
       Adapted Resume: `;
 
     // define variable to hold parsed resume
