@@ -2,9 +2,11 @@
 
 Tailor your resume easily with an intelligent resume builder and editor.
 
+![Resumach Cover](image1)
+
 ## Overview
 
-Resumach is a modern web application that helps you create, customize, and manage professional resumes. With an intuitive interface and powerful tools, you can tailor your resume for different job applications quickly and efficiently.
+Resumach is a modern web application that helps you create, customize, and manage professional resumes. With an intuitive interface and powerful tools, you can tailor your resume for different job applications.
 
 ## Features
 
