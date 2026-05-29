@@ -2,7 +2,7 @@
 
 Tailor your resume easily with an intelligent resume builder and editor.
 
-![Resumach Cover](image1)
+![Resumach Cover](public/screenshots/builder.png)
 
 ## Overview
 
