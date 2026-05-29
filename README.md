@@ -1,6 +1,6 @@
 # Resumach
 
-Tailor your resume easily with an intelligent resume builder and editor.
+Tailor your resume quickly with an AI resume builder and editor.
 
 ![Resumach Cover](public/screenshots/builder.png)
 
